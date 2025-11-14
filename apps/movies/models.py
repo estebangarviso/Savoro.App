@@ -172,3 +172,44 @@ class Table(NamedModel):
     def __str__(self):
         return f"{self.name} (capacidad: {self.capacity})"
 
+
+# -------------------------------------------------------------------------
+#   MODELO RESERVATION
+# -------------------------------------------------------------------------
+
+class Reservation(TimeStampedModel):
+    """
+    Modelo que representa una reserva en el sistema.
+    Hereda de TimeStampedModel para incluir timestamps y estado.
+    """
+
+    table = models.ForeignKey(
+        Table,
+        on_delete=models.CASCADE,
+        verbose_name="Mesa",
+        related_name="reservations",
+    )
+
+    customer_name = models.CharField(
+        max_length=150,
+        verbose_name="Nombre del cliente",
+    )
+
+    reservation_datetime = models.DateTimeField(
+        verbose_name="Fecha y hora de la reserva",
+    )
+
+    number_of_guests = models.PositiveIntegerField(
+        verbose_name="Número de comensales",
+        validators=[MinValueValidator(1)],
+    )
+
+    class Meta:
+        verbose_name = "Reserva"
+        verbose_name_plural = "Reservas"
+        ordering = ['-reservation_datetime']
+
+    def __str__(self):
+        return f"Reserva de {self.customer_name} para {self.number_of_guests} en {self.table.name} el {self.reservation_datetime}"
+
+
