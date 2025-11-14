@@ -1,14 +1,38 @@
 from django.db import models
 from django.urls import reverse_lazy
 
+# -------------------------------------------------------------------------
+#   MODELOS BASE
+# -------------------------------------------------------------------------
 
-# Create your models here.
+class TimeStampedModel(models.Model):
+    """
+    Modelo base genérico con fechas y estado.
+    Útil para cualquier entidad del sistema: reservas, pedidos, platos, mesas, etc.
+    """
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="Fecha de creación",
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        verbose_name="Última actualización",
+    )
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name="Activo",
+    )
+
+    class Meta:
+        abstract = True
 
 
-class BaseName(models.Model):
+class NamedModel(TimeStampedModel):
+    """
+    Modelo base para entidades que tienen un nombre.
+    Ejemplos: Categorías, Mesas, Platos, etc.
+    """
     name = models.CharField(max_length=150, verbose_name="Nombre")
-    created = models.DateTimeField(auto_now=False, auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True, auto_now_add=False)
 
     class Meta:
         abstract = True
@@ -16,13 +40,37 @@ class BaseName(models.Model):
     def __str__(self):
         return str(self.name)
 
+# -------------------------------------------------------------------------
+#   MODELO FOOD TAG
+# -------------------------------------------------------------------------
 
-class Categories(BaseName):
-    minimum_age = models.IntegerField(verbose_name="Edad Minima")
-
+class FoodTag(NamedModel):
+    """
+    Etiquetas alimentarias para clasificar platos.
+    Pueden ser alérgenos, tipos de dieta, características o restricciones.
+    Ejemplos: Vegano, Sin Gluten, Mariscos, Picante, Maní, Lactosa, etc.
+    """
     class Meta:
-        verbose_name = "Categoria"
-        verbose_name_plural = "Categorias"
+        verbose_name = "Etiqueta alimentaria"
+        verbose_name_plural = "Etiquetas alimentarias"
+        ordering = ['name']
+
+# -------------------------------------------------------------------------
+#   MODELO CATEGORY
+# -------------------------------------------------------------------------
+
+class Category(NamedModel):
+    """
+    Categorías para clasificar platos.
+    Ejemplos: Pastas, Postres, Entradas, Bebidas, Carnes, Ensaladas, etc.
+    """
+    class Meta:
+        verbose_name = "Categoría"
+        verbose_name_plural = "Categorías"
+        ordering = ['name']
+
+
+
 
 
 class Movies(BaseName):
