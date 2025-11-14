@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse_lazy
+from django.core.validators import MinValueValidator
 
 # -------------------------------------------------------------------------
 #   MODELOS BASE
@@ -144,3 +145,30 @@ class Menu(NamedModel):
 
     def get_absolute_url(self):
         return reverse_lazy('menu_detail', kwargs={'pk': self.pk})
+    
+
+# -------------------------------------------------------------------------
+#   MODELO TABLE
+# -------------------------------------------------------------------------
+
+
+class Table(NamedModel):
+    """
+    Modelo que representa una mesa en el sistema.
+    Hereda de NamedModel para incluir nombre, timestamps y estado.
+    """
+
+    capacity = models.PositiveIntegerField(
+        verbose_name="Capacidad",
+        help_text="Número máximo de comensales que puede acomodar la mesa.",
+        validators=[MinValueValidator(1)],
+    )
+
+    class Meta:
+        verbose_name = "Mesa"
+        verbose_name_plural = "Mesas"
+        ordering = ['name']
+
+    def __str__(self):
+        return f"{self.name} (capacidad: {self.capacity})"
+
