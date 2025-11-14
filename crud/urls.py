@@ -21,8 +21,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    # registrar urls de nuestra aplicacion movies
-    path("", include("apps.movies.urls")),
+    # # registrar urls de nuestra aplicacion movies
+    # path("", include("apps.movies.urls")),
 ]
 
 # Esto no es adecuado para produccion !!

@@ -26,7 +26,6 @@ class TimeStampedModel(models.Model):
     class Meta:
         abstract = True
 
-
 class NamedModel(TimeStampedModel):
     """
     Modelo base para entidades que tienen un nombre.
@@ -70,26 +69,78 @@ class Category(NamedModel):
         ordering = ['name']
 
 
+# -------------------------------------------------------------------------
+#   MODELO DISH
+# -------------------------------------------------------------------------
 
 
+class Dish(NamedModel):
+    """
+    Modelo que representa un plato en el sistema.
+    Hereda de NamedModel para incluir nombre, timestamps y estado.
+    """
 
-class Movies(BaseName):
-    description = models.CharField(max_length=256, verbose_name="Descripcion")
-    image = models.ImageField(upload_to="movies", verbose_name="Imagen")
-    release_date = models.DateField(verbose_name="Fecha de publicacion")
-    category = models.ForeignKey(
-        Categories, on_delete=models.CASCADE, verbose_name="Categoria"
+    description = models.TextField(
+        blank=True,
+        verbose_name="Descripción",
+    )
+
+    price = models.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+        verbose_name="Precio",
+    )
+
+    image = models.ImageField(
+        upload_to='media/dishes/',
+        blank=True,
+        null=True,
+        verbose_name="Imagen",
+    )
+
+    # Tags alimentarios (vegano, sin gluten, lactosa, mariscos, picante, etc.)
+    tags = models.ManyToManyField(
+        'FoodTag',
+        blank=True,
+        verbose_name='Etiquetas',
+        related_name='dishes',
     )
 
     class Meta:
-        verbose_name = "Pelicula"
-        verbose_name_plural = "Peliculas"
+        verbose_name = "Plato"
+        verbose_name_plural = "Platos"
+        ordering = ['name']
 
-    def get_edit_url(self):
-        return reverse_lazy("movies:movies-edit", kwargs={"pk": self.pk})
+    def get_absolute_url(self):
+        return reverse_lazy('dish_detail', kwargs={'pk': self.pk}) 
 
-    def get_delete_url(self):
-        return reverse_lazy("movies:movies-delete", kwargs={"pk": self.pk})
 
-    def get_detail_url(self):
-        return reverse_lazy("movies:movies-detail", kwargs={"pk": self.pk})
+# -------------------------------------------------------------------------
+#   MODELO MENU
+# -------------------------------------------------------------------------
+
+
+class Menu(NamedModel):
+    """
+    Modelo que representa un menú en el sistema.
+    Hereda de NamedModel para incluir nombre, timestamps y estado.
+    """
+    description = models.TextField(
+        blank=True,
+        verbose_name="Descripción",
+    )
+
+    dishes = models.ManyToManyField(
+        Dish,                    
+        verbose_name="Platos",
+        related_name='menus',
+        blank=True,              
+    )
+
+    class Meta:
+        verbose_name = "Menú"
+        verbose_name_plural = "Menús"
+        ordering = ['name']
+
+    def get_absolute_url(self):
+        return reverse_lazy('menu_detail', kwargs={'pk': self.pk})

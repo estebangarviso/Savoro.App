@@ -1,9 +1,7 @@
 from django.contrib import admin
-from .models import Categories, Movies
+from .models import Category, FoodTag, Dish, Menu
 
-
-# Register your models here.
-
-@admin.register(Categories, Movies)
-class BaseAdminRegister(admin.ModelAdmin):
-    pass
+admin.site.register(Category)
+admin.site.register(FoodTag)
+admin.site.register(Dish)
+admin.site.register(Menu)
