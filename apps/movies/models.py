@@ -213,3 +213,34 @@ class Reservation(TimeStampedModel):
         return f"Reserva de {self.customer_name} para {self.number_of_guests} en {self.table.name} el {self.reservation_datetime}"
 
 
+# -------------------------------------------------------------------------
+#   MODELO ORDER
+# -------------------------------------------------------------------------
+
+class Order(TimeStampedModel):
+    """
+    Modelo que representa un pedido en el sistema.
+    Hereda de TimeStampedModel para incluir timestamps y estado.
+    """
+
+    table = models.ForeignKey(
+        Table,
+        on_delete=models.CASCADE,
+        verbose_name="Mesa",
+        related_name="orders",
+    )
+
+    dishes = models.ManyToManyField(
+        Dish,
+        verbose_name="Platos",
+        related_name="orders",
+    )
+
+    class Meta:
+        verbose_name = "Pedido"
+        verbose_name_plural = "Pedidos"
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"Pedido #{self.id} para la mesa {self.table.name} creado el {self.created_at}"
+
