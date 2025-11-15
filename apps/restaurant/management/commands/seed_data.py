@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 from datetime import timedelta
+from typing import Any, List
 from apps.restaurant.models import (
     Category,
     Dish,
@@ -15,7 +16,7 @@ from apps.restaurant.models import (
 class Command(BaseCommand):
     help = "Poblar la base de datos con datos iniciales del restaurante"
 
-    def handle(self, *args, **kwargs):
+    def handle(self, *args: Any, **kwargs: Any) -> None:
         self.stdout.write("Iniciando población de datos...")
 
         # Limpiar datos existentes
@@ -65,7 +66,7 @@ class Command(BaseCommand):
         self.stdout.write(f"  - {len(reservations)} reservas")
         self.stdout.write(f"  - {len(orders)} pedidos")
 
-    def _create_food_tags(self):
+    def _create_food_tags(self) -> List[FoodTag]:
         """Crear etiquetas alimentarias"""
         tags_data = [
             "Vegano",
@@ -84,10 +85,10 @@ class Command(BaseCommand):
         tags = []
         for tag_name in tags_data:
             tag, _ = FoodTag.objects.get_or_create(name=tag_name)
-            tags.append(tag)
-        return tags
+            tags.append(tag)  # type: ignore[arg-type]
+        return tags  # type: ignore[return-value]
 
-    def _create_categories(self):
+    def _create_categories(self) -> List[Category]:
         """Crear categorías de platos"""
         categories_data = [
             "Entradas",
@@ -104,10 +105,12 @@ class Command(BaseCommand):
         categories = []
         for cat_name in categories_data:
             category, _ = Category.objects.get_or_create(name=cat_name)
-            categories.append(category)
-        return categories
+            categories.append(category)  # type: ignore[arg-type]
+        return categories  # type: ignore[return-value]
 
-    def _create_dishes(self, tags, categories):
+    def _create_dishes(
+        self, tags: List[FoodTag], categories: List[Category]
+    ) -> List[Dish]:
         """Crear platos con sus etiquetas y categorías"""
         # Crear un diccionario de tags por id (índice en la lista + 1)
         # Índices: 0=Vegano, 1=Vegetariano, 2=Sin Gluten, 3=Sin Lactosa,
@@ -116,7 +119,7 @@ class Command(BaseCommand):
         # Categorías: 0=Entradas, 1=Ensaladas, 2=Sopas, 3=Pastas, 4=Carnes,
         #             5=Pescados y Mariscos, 6=Pizzas, 7=Postres, 8=Bebidas, 9=Vinos
 
-        dishes_data = [
+        dishes_data = [  # type: ignore[var-annotated]
             # Entradas
             {
                 "name": "Empanadas de Carne",
@@ -347,11 +350,11 @@ class Command(BaseCommand):
 
         dishes = []
 
-        for dish_data in dishes_data:
+        for dish_data in dishes_data:  # type: ignore[misc]
             # Asignar categoría si existe
             category = None
             if "category" in dish_data and 0 <= dish_data["category"] < len(categories):
-                category = categories[dish_data["category"]]
+                category = categories[dish_data["category"]]  # type: ignore[misc]
 
             dish = Dish.objects.create(
                 name=dish_data["name"],
@@ -360,14 +363,14 @@ class Command(BaseCommand):
                 category=category,
             )
             # Asignar tags usando los índices
-            for tag_index in dish_data.get("tags", []):
-                if 0 <= tag_index < len(tags):
-                    dish.tags.add(tags[tag_index])
-            dishes.append(dish)
+            for tag_index in dish_data.get("tags", []):  # type: ignore[misc]
+                if 0 <= tag_index < len(tags):  # type: ignore[misc]
+                    dish.tags.add(tags[tag_index])  # type: ignore[misc]
+            dishes.append(dish)  # type: ignore[arg-type]
 
-        return dishes
+        return dishes  # type: ignore[return-value]
 
-    def _create_menus(self, dishes):
+    def _create_menus(self, dishes: List[Dish]) -> List[Menu]:
         """Crear menús con platos"""
         # Organizar platos por tipo (basado en su índice)
         entradas = dishes[0:4]
@@ -380,7 +383,7 @@ class Command(BaseCommand):
         postres = dishes[24:28]
         bebidas = dishes[28:31]
 
-        menus_data = [
+        menus_data = [  # type: ignore[var-annotated]
             {
                 "name": "Menú Ejecutivo",
                 "description": "Menú de almuerzo: entrada, plato principal y postre",
@@ -428,19 +431,19 @@ class Command(BaseCommand):
         ]
 
         menus = []
-        for menu_data in menus_data:
+        for menu_data in menus_data:  # type: ignore[misc]
             menu = Menu.objects.create(
                 name=menu_data["name"],
                 description=menu_data["description"],
             )
-            menu.dishes.set(menu_data["dishes"])
-            menus.append(menu)
+            menu.dishes.set(menu_data["dishes"])  # type: ignore[misc]
+            menus.append(menu)  # type: ignore[arg-type]
 
-        return menus
+        return menus  # type: ignore[return-value]
 
-    def _create_tables(self):
+    def _create_tables(self) -> List[Table]:
         """Crear mesas"""
-        tables_data = [
+        tables_data = [  # type: ignore[var-annotated]
             {"name": "Mesa 1", "capacity": 2},
             {"name": "Mesa 2", "capacity": 2},
             {"name": "Mesa 3", "capacity": 4},
@@ -454,19 +457,19 @@ class Command(BaseCommand):
         ]
 
         tables = []
-        for table_data in tables_data:
+        for table_data in tables_data:  # type: ignore[misc]
             table = Table.objects.create(
                 name=table_data["name"],
                 capacity=table_data["capacity"],
             )
-            tables.append(table)
+            tables.append(table)  # type: ignore[arg-type]
 
-        return tables
+        return tables  # type: ignore[return-value]
 
-    def _create_reservations(self, tables):
+    def _create_reservations(self, tables: List[Table]) -> List[Reservation]:
         """Crear reservas de ejemplo"""
         now = timezone.now()
-        reservations_data = [
+        reservations_data = [  # type: ignore[var-annotated]
             {
                 "table": tables[0],
                 "customer_name": "María González",
@@ -512,15 +515,15 @@ class Command(BaseCommand):
         ]
 
         reservations = []
-        for res_data in reservations_data:
+        for res_data in reservations_data:  # type: ignore[misc]
             reservation = Reservation.objects.create(**res_data)
-            reservations.append(reservation)
+            reservations.append(reservation)  # type: ignore[arg-type]
 
-        return reservations
+        return reservations  # type: ignore[return-value]
 
-    def _create_orders(self, tables, dishes):
+    def _create_orders(self, tables: List[Table], dishes: List[Dish]) -> List[Order]:
         """Crear pedidos de ejemplo"""
-        orders_data = [
+        orders_data = [  # type: ignore[var-annotated]
             {
                 "table": tables[0],
                 "customer_name": "María González",
@@ -581,17 +584,17 @@ class Command(BaseCommand):
         ]
 
         orders = []
-        for order_data in orders_data:
+        for order_data in orders_data:  # type: ignore[misc]
             order = Order.objects.create(
                 table=order_data["table"],
                 customer_name=order_data["customer_name"],
                 status=order_data["status"],
                 is_paid=order_data["is_paid"],
             )
-            order.dishes.set(order_data["dishes"])
+            order.dishes.set(order_data["dishes"])  # type: ignore[misc]
             # Calcular y guardar el total
             order.total_amount = order.calculate_total()
             order.save(update_fields=["total_amount"])
-            orders.append(order)
+            orders.append(order)  # type: ignore[arg-type]
 
-        return orders
+        return orders  # type: ignore[return-value]

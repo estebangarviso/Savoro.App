@@ -53,7 +53,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "crud.urls"
 
-TEMPLATES = [
+TEMPLATES = [  # type: ignore[var-annotated]
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [],
