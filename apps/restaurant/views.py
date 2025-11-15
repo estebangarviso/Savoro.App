@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.db import models
 from .models import Dish, Category
 from .forms import DishForm, CategoryForm, LoginForm
 
@@ -9,7 +10,7 @@ from .forms import DishForm, CategoryForm, LoginForm
 # Authentication
 def login_view(request):
     form = LoginForm(request.POST or None)
-    context = {"message": None, "form": form}
+    context = {"message": None, "form": form, "button_text": "Iniciar sesión"}
     if request.POST and form.is_valid():
         user = authenticate(**form.cleaned_data)
         if user is not None:
@@ -32,8 +33,28 @@ def log_out(request):
 # Dish CRUD
 @login_required(login_url="/")
 def index(request):
-    dishes = Dish.objects.filter(deleted=False).prefetch_related("tags")
-    return render(request, "restaurant/index.html", {"dishes": dishes})
+    # Obtener todas las categorías con sus platos
+    categories = (
+        Category.objects.filter(deleted=False)
+        .prefetch_related(
+            models.Prefetch(
+                "dishes",
+                queryset=Dish.objects.filter(deleted=False).prefetch_related("tags"),
+            )
+        )
+        .order_by("name")
+    )
+
+    # Platos sin categoría
+    uncategorized_dishes = Dish.objects.filter(
+        deleted=False, category__isnull=True
+    ).prefetch_related("tags")
+
+    return render(
+        request,
+        "restaurant/index.html",
+        {"categories": categories, "uncategorized_dishes": uncategorized_dishes},
+    )
 
 
 @login_required(login_url="/")
@@ -53,7 +74,14 @@ def create(request):
     else:
         form = DishForm()
     return render(
-        request, "restaurant/form.html", {"form": form, "title": "Crear Plato"}
+        request,
+        "restaurant/form.html",
+        {
+            "form": form,
+            "title": "Crear Plato",
+            "cancel_url": "restaurant:index",
+            "button_text": "Crear",
+        },
     )
 
 
@@ -69,7 +97,14 @@ def update(request, id):
     else:
         form = DishForm(instance=dish)
     return render(
-        request, "restaurant/form.html", {"form": form, "title": "Editar Plato"}
+        request,
+        "restaurant/form.html",
+        {
+            "form": form,
+            "title": "Editar Plato",
+            "cancel_url": "restaurant:index",
+            "button_text": "Actualizar",
+        },
     )
 
 
@@ -81,7 +116,7 @@ def delete(request, id):
         dish.save()
         messages.success(request, "Plato eliminado exitosamente")
         return redirect("restaurant:index")
-    return render(request, "restaurant/detail.html", {"dish": dish})
+    return render(request, "restaurant/dish_delete_confirm.html", {"dish": dish})
 
 
 # Category views
@@ -104,7 +139,14 @@ def category_create(request):
     else:
         form = CategoryForm()
     return render(
-        request, "restaurant/form.html", {"form": form, "title": "Crear Categoría"}
+        request,
+        "restaurant/form.html",
+        {
+            "form": form,
+            "title": "Crear Categoría",
+            "cancel_url": "restaurant:category_list",
+            "button_text": "Crear",
+        },
     )
 
 
@@ -120,7 +162,14 @@ def category_update(request, id):
     else:
         form = CategoryForm(instance=category)
     return render(
-        request, "restaurant/form.html", {"form": form, "title": "Editar Categoría"}
+        request,
+        "restaurant/form.html",
+        {
+            "form": form,
+            "title": "Editar Categoría",
+            "cancel_url": "restaurant:category_list",
+            "button_text": "Actualizar",
+        },
     )
 
 
@@ -128,8 +177,19 @@ def category_update(request, id):
 def category_delete(request, id):
     category = get_object_or_404(Category, pk=id, deleted=False)
     if request.method == "POST":
+        # Validate if category can be deleted
+        if Dish.objects.filter(category=category, deleted=False).exists():
+            messages.error(
+                request,
+                "No se puede eliminar la categoría porque tiene platos asociados.",
+            )
+            return redirect("restaurant:category_list")
         category.deleted = True
         category.save()
         messages.success(request, "Categoría eliminada exitosamente")
         return redirect("restaurant:category_list")
-    return redirect("restaurant:category_list")
+    return render(
+        request,
+        "restaurant/category/category_delete_confirm.html",
+        {"category": category},
+    )

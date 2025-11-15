@@ -118,6 +118,16 @@ class Dish(NamedModel):
         verbose_name="Imagen",
     )
 
+    # Categoría del plato (Pastas, Postres, Entradas, etc.)
+    category = models.ForeignKey(
+        "Category",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name="Categoría",
+        related_name="dishes",
+    )
+
     # Tags alimentarios (vegano, sin gluten, lactosa, mariscos, picante, etc.)
     tags = models.ManyToManyField(
         "FoodTag",

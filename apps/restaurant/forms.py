@@ -5,7 +5,7 @@ from .models import Dish, Category, Menu, Table, Order, Reservation
 class DishForm(forms.ModelForm):
     class Meta:
         model = Dish
-        fields = ["name", "description", "price", "image", "tags"]
+        fields = ["name", "description", "price", "category", "image", "tags"]
         widgets = {
             "description": forms.Textarea(attrs={"rows": 4}),
             "tags": forms.CheckboxSelectMultiple(),

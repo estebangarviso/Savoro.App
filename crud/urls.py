@@ -29,3 +29,4 @@ urlpatterns = [
 # Para mas informacion de como servir estos archivos en:
 # https://docs.djangoproject.com/en/1.11/howto/static-files/deployment/
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

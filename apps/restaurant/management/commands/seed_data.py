@@ -38,7 +38,7 @@ class Command(BaseCommand):
 
         # Crear platos
         self.stdout.write("Creando platos...")
-        dishes = self._create_dishes(tags)
+        dishes = self._create_dishes(tags, categories)
 
         # Crear menús
         self.stdout.write("Creando menús...")
@@ -107,12 +107,14 @@ class Command(BaseCommand):
             categories.append(category)
         return categories
 
-    def _create_dishes(self, tags):
-        """Crear platos con sus etiquetas"""
+    def _create_dishes(self, tags, categories):
+        """Crear platos con sus etiquetas y categorías"""
         # Crear un diccionario de tags por id (índice en la lista + 1)
         # Índices: 0=Vegano, 1=Vegetariano, 2=Sin Gluten, 3=Sin Lactosa,
         #          4=Picante, 5=Mariscos, 6=Maní, 7=Frutos Secos,
         #          8=Huevo, 9=Soya, 10=Orgánico, 11=Bajo en Calorías
+        # Categorías: 0=Entradas, 1=Ensaladas, 2=Sopas, 3=Pastas, 4=Carnes,
+        #             5=Pescados y Mariscos, 6=Pizzas, 7=Postres, 8=Bebidas, 9=Vinos
 
         dishes_data = [
             # Entradas
@@ -120,24 +122,28 @@ class Command(BaseCommand):
                 "name": "Empanadas de Carne",
                 "description": "Deliciosas empanadas rellenas de carne molida, cebolla y especias tradicionales",
                 "price": 4500.00,
+                "category": 0,  # Entradas
                 "tags": [],
             },
             {
                 "name": "Tabla de Quesos",
                 "description": "Selección de quesos artesanales con mermelada de higos y frutos secos",
                 "price": 8900.00,
+                "category": 0,  # Entradas
                 "tags": [1, 7],  # Vegetariano, Frutos Secos
             },
             {
                 "name": "Ceviche de Pescado",
                 "description": "Pescado fresco marinado en limón con cebolla morada, cilantro y ají",
                 "price": 9500.00,
+                "category": 0,  # Entradas
                 "tags": [2, 4],  # Sin Gluten, Picante
             },
             {
                 "name": "Bruschetta Caprese",
                 "description": "Pan tostado con tomate, mozzarella fresca, albahaca y aceite de oliva",
                 "price": 5200.00,
+                "category": 0,  # Entradas
                 "tags": [1],  # Vegetariano
             },
             # Ensaladas
@@ -145,18 +151,21 @@ class Command(BaseCommand):
                 "name": "Ensalada César",
                 "description": "Lechuga romana, crutones, parmesano y aderezo César casero",
                 "price": 6800.00,
+                "category": 1,  # Ensaladas
                 "tags": [8],  # Huevo
             },
             {
                 "name": "Ensalada Mediterránea",
                 "description": "Mix de lechugas, tomate, pepino, aceitunas, queso feta y vinagreta",
                 "price": 7200.00,
+                "category": 1,  # Ensaladas
                 "tags": [1, 2],  # Vegetariano, Sin Gluten
             },
             {
                 "name": "Ensalada Vegana Bowl",
                 "description": "Quinoa, garbanzos, aguacate, tomates cherry, espinaca y tahini",
                 "price": 7900.00,
+                "category": 1,  # Ensaladas
                 "tags": [0, 2, 10],  # Vegano, Sin Gluten, Orgánico
             },
             # Sopas
@@ -164,12 +173,14 @@ class Command(BaseCommand):
                 "name": "Cazuela de Vacuno",
                 "description": "Tradicional sopa chilena con carne de vacuno, zapallo, choclo y papas",
                 "price": 8500.00,
+                "category": 2,  # Sopas
                 "tags": [],
             },
             {
                 "name": "Crema de Zapallo",
                 "description": "Suave crema de zapallo con jengibre y crema de leche",
                 "price": 5800.00,
+                "category": 2,  # Sopas
                 "tags": [1],  # Vegetariano
             },
             # Pastas
@@ -177,24 +188,28 @@ class Command(BaseCommand):
                 "name": "Fetuccini Alfredo",
                 "description": "Pasta fresca con salsa cremosa de parmesano y mantequilla",
                 "price": 9800.00,
+                "category": 3,  # Pastas
                 "tags": [1],  # Vegetariano
             },
             {
                 "name": "Espagueti Boloñesa",
                 "description": "Pasta con salsa de carne molida, tomate y hierbas italianas",
                 "price": 10500.00,
+                "category": 3,  # Pastas
                 "tags": [],
             },
             {
                 "name": "Ravioles de Espinaca y Ricotta",
                 "description": "Ravioles rellenos de espinaca y ricotta con salsa de tomate albahaca",
                 "price": 11200.00,
+                "category": 3,  # Pastas
                 "tags": [1],  # Vegetariano
             },
             {
                 "name": "Pasta Arrabiata",
                 "description": "Penne con salsa de tomate picante, ajo y perejil",
                 "price": 9200.00,
+                "category": 3,  # Pastas
                 "tags": [1, 0, 4],  # Vegetariano, Vegano, Picante
             },
             # Carnes
@@ -202,24 +217,28 @@ class Command(BaseCommand):
                 "name": "Bife de Chorizo",
                 "description": "Jugoso bife de chorizo de 300g con papas rústicas y vegetales",
                 "price": 15900.00,
+                "category": 4,  # Carnes
                 "tags": [2],  # Sin Gluten
             },
             {
                 "name": "Lomo a la Pimienta",
                 "description": "Medallones de lomo con salsa de pimienta verde y puré de papas",
                 "price": 17500.00,
+                "category": 4,  # Carnes
                 "tags": [],
             },
             {
                 "name": "Costillar de Cerdo BBQ",
                 "description": "Costillar de cerdo glaseado con salsa BBQ casera y ensalada coleslaw",
                 "price": 14800.00,
+                "category": 4,  # Carnes
                 "tags": [],
             },
             {
                 "name": "Pollo al Limón",
                 "description": "Pechuga de pollo con salsa de limón, alcaparras y arroz pilaf",
                 "price": 11900.00,
+                "category": 4,  # Carnes
                 "tags": [2, 11],  # Sin Gluten, Bajo en Calorías
             },
             # Pescados y Mariscos
@@ -227,18 +246,21 @@ class Command(BaseCommand):
                 "name": "Salmón a la Plancha",
                 "description": "Filete de salmón con espárragos y salsa de eneldo",
                 "price": 16500.00,
+                "category": 5,  # Pescados y Mariscos
                 "tags": [2, 11],  # Sin Gluten, Bajo en Calorías
             },
             {
                 "name": "Paella de Mariscos",
                 "description": "Arroz con camarones, calamares, mejillones y azafrán",
                 "price": 18900.00,
+                "category": 5,  # Pescados y Mariscos
                 "tags": [5, 2],  # Mariscos, Sin Gluten
             },
             {
                 "name": "Corvina con Alcaparras",
                 "description": "Filete de corvina con salsa de alcaparras, limón y papas al vapor",
                 "price": 15200.00,
+                "category": 5,  # Pescados y Mariscos
                 "tags": [2],  # Sin Gluten
             },
             # Pizzas
@@ -246,24 +268,28 @@ class Command(BaseCommand):
                 "name": "Pizza Margherita",
                 "description": "Salsa de tomate, mozzarella fresca, albahaca y aceite de oliva",
                 "price": 9500.00,
+                "category": 6,  # Pizzas
                 "tags": [1],  # Vegetariano
             },
             {
                 "name": "Pizza Pepperoni",
                 "description": "Salsa de tomate, mozzarella y abundante pepperoni",
                 "price": 10800.00,
+                "category": 6,  # Pizzas
                 "tags": [],
             },
             {
                 "name": "Pizza Cuatro Quesos",
                 "description": "Mozzarella, gorgonzola, parmesano y provolone",
                 "price": 11500.00,
+                "category": 6,  # Pizzas
                 "tags": [1],  # Vegetariano
             },
             {
                 "name": "Pizza Vegetariana",
                 "description": "Champiñones, pimientos, cebolla, aceitunas y tomate",
                 "price": 10200.00,
+                "category": 6,  # Pizzas
                 "tags": [1],  # Vegetariano
             },
             # Postres
@@ -271,24 +297,28 @@ class Command(BaseCommand):
                 "name": "Tiramisú",
                 "description": "Clásico postre italiano con café, mascarpone y cacao",
                 "price": 5500.00,
+                "category": 7,  # Postres
                 "tags": [1, 8],  # Vegetariano, Huevo
             },
             {
                 "name": "Cheesecake de Frutos Rojos",
                 "description": "Tarta de queso con base de galleta y coulis de frutos rojos",
                 "price": 5800.00,
+                "category": 7,  # Postres
                 "tags": [1],  # Vegetariano
             },
             {
                 "name": "Brownie con Helado",
                 "description": "Brownie de chocolate tibio con helado de vainilla y salsa de chocolate",
                 "price": 5200.00,
+                "category": 7,  # Postres
                 "tags": [1, 7],  # Vegetariano, Frutos Secos
             },
             {
                 "name": "Flan Casero",
                 "description": "Flan tradicional con caramelo casero y crema chantilly",
                 "price": 4200.00,
+                "category": 7,  # Postres
                 "tags": [1, 2],  # Vegetariano, Sin Gluten
             },
             # Bebidas
@@ -296,18 +326,21 @@ class Command(BaseCommand):
                 "name": "Limonada Natural",
                 "description": "Limonada fresca con menta y hielo",
                 "price": 2500.00,
+                "category": 8,  # Bebidas
                 "tags": [0, 2],  # Vegano, Sin Gluten
             },
             {
                 "name": "Jugo Natural del Día",
                 "description": "Jugo de frutas frescas de temporada",
                 "price": 2800.00,
+                "category": 8,  # Bebidas
                 "tags": [0, 2],  # Vegano, Sin Gluten
             },
             {
                 "name": "Café Espresso",
                 "description": "Café espresso italiano",
                 "price": 1800.00,
+                "category": 8,  # Bebidas
                 "tags": [0],  # Vegano
             },
         ]
@@ -315,10 +348,16 @@ class Command(BaseCommand):
         dishes = []
 
         for dish_data in dishes_data:
+            # Asignar categoría si existe
+            category = None
+            if "category" in dish_data and 0 <= dish_data["category"] < len(categories):
+                category = categories[dish_data["category"]]
+
             dish = Dish.objects.create(
                 name=dish_data["name"],
                 description=dish_data["description"],
                 price=dish_data["price"],
+                category=category,
             )
             # Asignar tags usando los índices
             for tag_index in dish_data.get("tags", []):

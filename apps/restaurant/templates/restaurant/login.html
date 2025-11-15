@@ -1,9 +1,10 @@
 {% extends 'restaurant/fragments/base.html' %}
+{% load static %}
 {% block main-content %}
 
 <div class="center-align">
-    <img src="https://cdn.dribbble.com/users/1162077/screenshots/3333053/popcorn.png" alt="movie icon" height="200px"
-        width="200px">
+    <img src="{% static 'images/logo.png' %}" alt="Savoro Logo" style="width: 200px; margin-bottom: 20px;">
+    <h4 class="light-blue-text text-darken-1">Bienvenido</h4>
 </div>
 
 <div class="row">

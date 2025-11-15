@@ -26,13 +26,9 @@
                     <a href="{% url 'restaurant:category_update' category_item.id %}" class="secondary-content">
                         <i class="material-icons">edit</i>
                     </a>
-                    <form method="post" action="{% url 'restaurant:category_delete' category_item.id %}"
-                        style="display: inline;" onsubmit="return confirm('¿Eliminar esta categoría?');">
-                        {% csrf_token %}
-                        <button type="submit" class="btn-flat secondary-content" style="padding: 0;">
-                            <i class="material-icons red-text">delete</i>
-                        </button>
-                    </form>
+                    <a href="{% url 'restaurant:category_delete' category_item.id %}" class="secondary-content">
+                        <i class="material-icons red-text">delete</i>
+                    </a>
                 </div>
             </li>
             {% endfor %}
