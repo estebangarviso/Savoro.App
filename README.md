@@ -1,6 +1,6 @@
-# simple-crud-django
-Simple CRUD con django, utilizando vistas basadas en funciones y autentificacion 
+# Savoro.App
 
+## Guía de Inicio Rápido
 
 1. Crear entorno virtual `pipenv shell`
 2. Instalar dependecias: `pipenv install`
