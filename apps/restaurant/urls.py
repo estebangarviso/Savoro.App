@@ -14,17 +14,21 @@ urlpatterns = (
         # Dishes
         path("dishes/", views.index, name="index"),
         path("dishes/new/", views.create, name="create"),
-        path("dishes/<int:id>/", views.detail, name="detail"),
-        path("dishes/<int:id>/edit/", views.update, name="update"),
-        path("dishes/<int:id>/delete/", views.delete, name="delete"),
+        path("dishes/<int:dish_id>/", views.detail, name="detail"),
+        path("dishes/<int:dish_id>/edit/", views.update, name="update"),
+        path("dishes/<int:dish_id>/delete/", views.delete, name="delete"),
         # Categories
         path("categories/", views.category_list, name="category_list"),
         path("categories/new/", views.category_create, name="category_create"),
         path(
-            "categories/<int:id>/edit/", views.category_update, name="category_update"
+            "categories/<int:category_id>/edit/",
+            views.category_update,
+            name="category_update",
         ),
         path(
-            "categories/<int:id>/delete/", views.category_delete, name="category_delete"
+            "categories/<int:category_id>/delete/",
+            views.category_delete,
+            name="category_delete",
         ),
     ]
     + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

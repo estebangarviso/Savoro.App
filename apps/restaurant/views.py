@@ -1,16 +1,28 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
-from django.contrib import messages
-from django.db import models
-from .models import Dish, Category
-from .forms import DishForm, CategoryForm, LoginForm
+from django.http import HttpRequest, HttpResponse
+from typing import Dict, Any
+from .forms import LoginForm
+
+# Import controllers (similar to importing controllers in NestJS routes)
+from .modules.dish import DishController
+from .modules.category import CategoryController
 
 
-# Authentication
-def login_view(request):
+# ============================================================================
+# AUTHENTICATION VIEWS
+# ============================================================================
+
+
+def login_view(request: HttpRequest) -> HttpResponse:
+    """Login view - handles user authentication"""
     form = LoginForm(request.POST or None)
-    context = {"message": None, "form": form, "button_text": "Iniciar sesión"}
+    context: Dict[str, Any] = {
+        "message": None,
+        "form": form,
+        "button_text": "Iniciar sesión",
+    }
     if request.POST and form.is_valid():
         user = authenticate(**form.cleaned_data)
         if user is not None:
@@ -25,171 +37,64 @@ def login_view(request):
 
 
 @login_required(login_url="/")
-def log_out(request):
+def log_out(request: HttpRequest) -> HttpResponse:
+    """Logout view - handles user logout"""
     logout(request)
     return redirect("restaurant:login")
 
 
-# Dish CRUD
-@login_required(login_url="/")
-def index(request):
-    # Obtener todas las categorías con sus platos
-    categories = (
-        Category.objects.filter(deleted=False)
-        .prefetch_related(
-            models.Prefetch(
-                "dishes",
-                queryset=Dish.objects.filter(deleted=False).prefetch_related("tags"),
-            )
-        )
-        .order_by("name")
-    )
-
-    # Platos sin categoría
-    uncategorized_dishes = Dish.objects.filter(
-        deleted=False, category__isnull=True
-    ).prefetch_related("tags")
-
-    return render(
-        request,
-        "restaurant/index.html",
-        {"categories": categories, "uncategorized_dishes": uncategorized_dishes},
-    )
+# ============================================================================
+# DISH VIEWS - Adapters to DishController
+# These views act as thin adapters delegating to the controller layer
+# Similar to routing in NestJS: route → controller → service → repository
+# ============================================================================
 
 
-@login_required(login_url="/")
-def detail(request, id):
-    dish = get_object_or_404(Dish, pk=id, deleted=False)
-    return render(request, "restaurant/detail.html", {"dish": dish})
+def index(request: HttpRequest) -> HttpResponse:
+    """GET /dishes - List dishes with filters"""
+    return DishController.index(request)
 
 
-@login_required(login_url="/")
-def create(request):
-    if request.method == "POST":
-        form = DishForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Plato creado exitosamente")
-            return redirect("restaurant:index")
-    else:
-        form = DishForm()
-    return render(
-        request,
-        "restaurant/form.html",
-        {
-            "form": form,
-            "title": "Crear Plato",
-            "cancel_url": "restaurant:index",
-            "button_text": "Crear",
-        },
-    )
+def detail(request: HttpRequest, dish_id: int) -> HttpResponse:
+    """GET /dishes/:id - Get dish details"""
+    return DishController.detail(request, dish_id)
 
 
-@login_required(login_url="/")
-def update(request, id):
-    dish = get_object_or_404(Dish, pk=id, deleted=False)
-    if request.method == "POST":
-        form = DishForm(request.POST, request.FILES, instance=dish)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Plato actualizado exitosamente")
-            return redirect("restaurant:detail", id=dish.id)
-    else:
-        form = DishForm(instance=dish)
-    return render(
-        request,
-        "restaurant/form.html",
-        {
-            "form": form,
-            "title": "Editar Plato",
-            "cancel_url": "restaurant:index",
-            "button_text": "Actualizar",
-        },
-    )
+def create(request: HttpRequest) -> HttpResponse:
+    """GET/POST /dishes/create - Create new dish"""
+    return DishController.create(request)
 
 
-@login_required(login_url="/")
-def delete(request, id):
-    dish = get_object_or_404(Dish, pk=id, deleted=False)
-    if request.method == "POST":
-        dish.deleted = True
-        dish.save()
-        messages.success(request, "Plato eliminado exitosamente")
-        return redirect("restaurant:index")
-    return render(request, "restaurant/dish_delete_confirm.html", {"dish": dish})
+def update(request: HttpRequest, dish_id: int) -> HttpResponse:
+    """GET/POST /dishes/:id/update - Update dish"""
+    return DishController.update(request, dish_id)
 
 
-# Category views
-@login_required(login_url="/")
-def category_list(request):
-    categories = Category.objects.filter(deleted=False)
-    return render(
-        request, "restaurant/category/category_list.html", {"categories": categories}
-    )
+def delete(request: HttpRequest, dish_id: int) -> HttpResponse:
+    """POST /dishes/:id/delete - Delete dish"""
+    return DishController.delete(request, dish_id)
 
 
-@login_required(login_url="/")
-def category_create(request):
-    if request.method == "POST":
-        form = CategoryForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Categoría creada exitosamente")
-            return redirect("restaurant:category_list")
-    else:
-        form = CategoryForm()
-    return render(
-        request,
-        "restaurant/form.html",
-        {
-            "form": form,
-            "title": "Crear Categoría",
-            "cancel_url": "restaurant:category_list",
-            "button_text": "Crear",
-        },
-    )
+# ============================================================================
+# CATEGORY VIEWS - Adapters to CategoryController
+# ============================================================================
 
 
-@login_required(login_url="/")
-def category_update(request, id):
-    category = get_object_or_404(Category, pk=id, deleted=False)
-    if request.method == "POST":
-        form = CategoryForm(request.POST, instance=category)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Categoría actualizada exitosamente")
-            return redirect("restaurant:category_list")
-    else:
-        form = CategoryForm(instance=category)
-    return render(
-        request,
-        "restaurant/form.html",
-        {
-            "form": form,
-            "title": "Editar Categoría",
-            "cancel_url": "restaurant:category_list",
-            "button_text": "Actualizar",
-        },
-    )
+def category_list(request: HttpRequest) -> HttpResponse:
+    """GET /categories - List categories with filters"""
+    return CategoryController.list(request)
 
 
-@login_required(login_url="/")
-def category_delete(request, id):
-    category = get_object_or_404(Category, pk=id, deleted=False)
-    if request.method == "POST":
-        # Validate if category can be deleted
-        if Dish.objects.filter(category=category, deleted=False).exists():
-            messages.error(
-                request,
-                "No se puede eliminar la categoría porque tiene platos asociados.",
-            )
-            return redirect("restaurant:category_list")
-        category.deleted = True
-        category.save()
-        messages.success(request, "Categoría eliminada exitosamente")
-        return redirect("restaurant:category_list")
-    return render(
-        request,
-        "restaurant/category/category_delete_confirm.html",
-        {"category": category},
-    )
+def category_create(request: HttpRequest) -> HttpResponse:
+    """GET/POST /categories/create - Create new category"""
+    return CategoryController.create(request)
+
+
+def category_update(request: HttpRequest, category_id: int) -> HttpResponse:
+    """GET/POST /categories/:id/update - Update category"""
+    return CategoryController.update(request, category_id)
+
+
+def category_delete(request: HttpRequest, category_id: int) -> HttpResponse:
+    """POST /categories/:id/delete - Delete category"""
+    return CategoryController.delete(request, category_id)

@@ -1,0 +1,138 @@
+/* ========================================
+   TARJETA DE DETALLE
+   ======================================== */
+
+.detail-card {
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.detail-card-image {
+    height: 450px;
+    object-fit: cover;
+}
+
+.detail-card-image-placeholder {
+    height: 450px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.detail-card-image-placeholder i {
+    font-size: 150px;
+    color: white;
+    opacity: 0.7;
+}
+
+.detail-card-title {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.3) 50%, transparent 100%);
+    font-size: 32px;
+    padding: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+/* ========================================
+   PRECIO
+   ======================================== */
+
+.price-display {
+    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+    color: white;
+    padding: 20px 40px;
+    border-radius: 15px;
+    display: inline-block;
+    font-size: 36px;
+    font-weight: bold;
+    box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
+    margin: 20px 0;
+}
+
+/* ========================================
+   SECCIONES DE INFORMACIÓN
+   ======================================== */
+
+.info-section {
+    margin: 30px 0;
+}
+
+.info-section h5 {
+    color: #0288d1;
+    border-bottom: 2px solid #0288d1;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.info-section-description {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #555;
+}
+
+.info-section-meta {
+    margin-top: 15px;
+    color: #757575;
+}
+
+/* ========================================
+   TAGS
+   ======================================== */
+
+.tag-detail-chip {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 20px;
+    padding: 8px 20px;
+    margin: 5px;
+    display: inline-block;
+    font-size: 14px;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.tag-detail-chip i {
+    font-size: 16px;
+    vertical-align: middle;
+}
+
+.category-chip {
+    font-size: 16px;
+    padding: 10px 20px;
+    height: auto;
+}
+
+/* ========================================
+   BADGES DE ESTADO
+   ======================================== */
+
+.status-badge {
+    padding: 8px 20px;
+    border-radius: 20px;
+    display: inline-block;
+    font-weight: bold;
+}
+
+.status-active {
+    background: #4CAF50;
+    color: white;
+}
+
+.status-inactive {
+    background: #f44336;
+    color: white;
+}
+
+/* ========================================
+   BOTONES DE ACCIÓN
+   ======================================== */
+
+.action-buttons {
+    padding: 30px;
+}
+
+.action-buttons .btn {
+    border-radius: 25px;
+    margin: 5px;
+    padding: 0 30px;
+}

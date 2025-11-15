@@ -1,6 +1,8 @@
 from django.db import models
 from django.urls import reverse_lazy
 from django.core.validators import MinValueValidator
+from decimal import Decimal
+from typing import Any
 
 # -------------------------------------------------------------------------
 #   MODELOS BASE
@@ -47,10 +49,10 @@ class NamedModel(BaseModel):
 
     name = models.CharField(max_length=150, verbose_name="Nombre")
 
-    class Meta:
+    class Meta:  # type: ignore[misc]
         abstract = True
 
-    def __str__(self):
+    def __str__(self) -> str:
         return str(self.name)
 
 
@@ -66,7 +68,7 @@ class FoodTag(NamedModel):
     Ejemplos: Vegano, Sin Gluten, Mariscos, Picante, Maní, Lactosa, etc.
     """
 
-    class Meta:
+    class Meta:  # type: ignore[misc]
         verbose_name = "Etiqueta alimentaria"
         verbose_name_plural = "Etiquetas alimentarias"
         ordering = ["name"]
@@ -83,7 +85,7 @@ class Category(NamedModel):
     Ejemplos: Pastas, Postres, Entradas, Bebidas, Carnes, Ensaladas, etc.
     """
 
-    class Meta:
+    class Meta:  # type: ignore[misc]
         verbose_name = "Categoría"
         verbose_name_plural = "Categorías"
         ordering = ["name"]
@@ -129,14 +131,14 @@ class Dish(NamedModel):
     )
 
     # Tags alimentarios (vegano, sin gluten, lactosa, mariscos, picante, etc.)
-    tags = models.ManyToManyField(
+    tags = models.ManyToManyField(  # type: ignore[var-annotated]
         "FoodTag",
         blank=True,
         verbose_name="Etiquetas",
         related_name="dishes",
     )
 
-    class Meta:
+    class Meta:  # type: ignore[misc]
         verbose_name = "Plato"
         verbose_name_plural = "Platos"
         ordering = ["name"]
@@ -161,14 +163,14 @@ class Menu(NamedModel):
         verbose_name="Descripción",
     )
 
-    dishes = models.ManyToManyField(
+    dishes = models.ManyToManyField(  # type: ignore[var-annotated]
         Dish,
         verbose_name="Platos",
         related_name="menus",
         blank=True,
     )
 
-    class Meta:
+    class Meta:  # type: ignore[misc]
         verbose_name = "Menú"
         verbose_name_plural = "Menús"
         ordering = ["name"]
@@ -194,12 +196,12 @@ class Table(NamedModel):
         validators=[MinValueValidator(1)],
     )
 
-    class Meta:
+    class Meta:  # type: ignore[misc]
         verbose_name = "Mesa"
         verbose_name_plural = "Mesas"
         ordering = ["name"]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.name} (capacidad: {self.capacity})"
 
 
@@ -235,12 +237,12 @@ class Reservation(BaseModel):
         validators=[MinValueValidator(1)],
     )
 
-    class Meta:
+    class Meta:  # type: ignore[misc]
         verbose_name = "Reserva"
         verbose_name_plural = "Reservas"
         ordering = ["-reservation_datetime"]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"Reserva de {self.customer_name} para {self.number_of_guests} en {self.table.name} el {self.reservation_datetime}"
 
 
@@ -269,7 +271,7 @@ class Order(BaseModel):
         related_name="orders",
     )
 
-    dishes = models.ManyToManyField(
+    dishes = models.ManyToManyField(  # type: ignore[var-annotated]
         Dish,
         verbose_name="Platos",
         related_name="orders",
@@ -296,30 +298,30 @@ class Order(BaseModel):
     total_amount = models.DecimalField(
         max_digits=10,
         decimal_places=2,
-        default=0,
+        default=Decimal("0.00"),
         verbose_name="Monto total",
         help_text="Sumatoria de todos los platos del pedido",
     )
 
-    class Meta:
+    class Meta:  # type: ignore[misc]
         verbose_name = "Pedido"
         verbose_name_plural = "Pedidos"
         ordering = ["-created_at"]
 
-    def __str__(self):
-        return f"Pedido #{self.id} - {self.customer_name} - Mesa {self.table.name} - ${self.total_amount}"
+    def __str__(self) -> str:
+        return f"Pedido #{self.pk} - {self.customer_name} - Mesa {self.table.name} - ${self.total_amount}"
 
-    def calculate_total(self):
+    def calculate_total(self) -> Decimal:
         """Calcula el total del pedido sumando los precios de todos los platos"""
-        total = sum(dish.price for dish in self.dishes.all())
-        return total
+        total = sum(dish.price for dish in self.dishes.all())  # type: ignore[misc]
+        return Decimal(str(total))
 
-    def save(self, *args, **kwargs):
+    def save(self, *args: Any, **kwargs: Any) -> None:
         """Guarda el pedido y actualiza el total si ya tiene platos"""
         is_new = self.pk is None
         super().save(*args, **kwargs)
 
         # Si no es nuevo y tiene platos, actualizar el total
-        if not is_new and self.dishes.exists():
+        if not is_new and self.dishes.exists():  # type: ignore[misc]
             self.total_amount = self.calculate_total()
             super().save(update_fields=["total_amount"])

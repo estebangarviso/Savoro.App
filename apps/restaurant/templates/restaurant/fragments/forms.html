@@ -4,33 +4,67 @@
     {% for field in form %}
     <div class="row">
         {% if field.errors %}
-        {{ field.errors }}
+        <div class="col s12">
+            <div class="red-text">
+                {{ field.errors }}
+            </div>
+        </div>
         {% endif %}
-        <div class="{% if field|widget_type == 'clearablefileinput' %}  browser-default{% endif %} input-field col s12">
-            {% comment %}
-            De esta manera podemos hacer formularios reutilizables con widget_tweaks,
-            tambien podemos añadir librerias a nuestro gusto
-            {% endcomment %}
-            {% if field|widget_type == 'clearablefileinput' %}
-            <p class="grey-text"> {{ field.label }} </p>
+
+        {% if field|widget_type == 'checkboxselectmultiple' %}
+        {# Special handling for CheckboxSelectMultiple (tags) #}
+        <div class="col s12">
+            <p><strong>{{ field.label }}</strong></p>
+            <div>
+                {% for value, label in field.field.choices %}
+                <p>
+                    <label>
+                        <input type="checkbox" name="{{ field.name }}" value="{{ value }}"
+                            id="id_{{ field.name }}_{{ forloop.counter0 }}" class="filled-in" {% if field.value %}
+                            {% for selected in field.value %}
+                            {% if selected|stringformat:"s" == value|stringformat:"s" %}checked="checked" {% endif %}
+                            {% endfor %} {% endif %} />
+                        <span>{{ label }}</span>
+                    </label>
+                </p>
+                {% endfor %}
+            </div>
+        </div>
+        {% elif field|widget_type == 'clearablefileinput' %}
+        {# Special handling for file inputs #}
+        <div class="browser-default input-field col s12">
+            <p class="grey-text">{{ field.label }}</p>
             {% render_field field class+="validate" %}
-            {% else %}
+        </div>
+        {% elif field|widget_type == 'textarea' %}
+        {# Special handling for textareas #}
+        <div class="input-field col s12">
+            {% render_field field class+="materialize-textarea validate" %}
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        </div>
+        {% else %}
+        {# Default handling for other inputs #}
+        <div class="input-field col s12">
             {% render_field field class+="validate" %}
             <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-            {% endif %}
         </div>
+        {% endif %}
     </div>
     {% endfor %}
 
     <div class="row">
-        <button class="btn waves-effect waves-light red darken-1" type="submit"
-            name="action">{{ button_text|default:'Guardar' }}
-            <i class="material-icons right">send</i>
-        </button>
-        {% if cancel_url %}
-        <a href="{% url cancel_url %}" class="btn waves-effect waves-light grey">Cancelar
-            <i class="material-icons right">cancel</i>
-        </a>
-        {% endif %}
+        <div class="col s12">
+            <button class="btn waves-effect waves-light red darken-1" type="submit" name="action">
+                {{ button_text|default:'Guardar' }}
+                <i class="material-icons right">send</i>
+            </button>
+            {% if cancel_url %}
+            <a href="{% if '/' in cancel_url %}{{ cancel_url }}{% else %}{% url cancel_url %}{% endif %}"
+                class="btn waves-effect waves-light grey">
+                Cancelar
+                <i class="material-icons right">cancel</i>
+            </a>
+            {% endif %}
+        </div>
     </div>
 </form>

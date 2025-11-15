@@ -1,62 +1,147 @@
 {% extends 'restaurant/fragments/base.html' %}
+{% load static %}
 {% load humanize %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/restaurant-index.css' %}">
+{% endblock %}
+
 {% block main-content %}
+{% csrf_token %}
 <div class="row">
     <div class="col s12">
-        <a class="waves-effect waves-light btn right red darken-1" href="{% url 'restaurant:create' %}">
+        <a class="waves-effect waves-light btn right red darken-1 add-btn" href="{% url 'restaurant:create' %}">
             <i class="material-icons left">add</i>Agregar nuevo plato
         </a>
     </div>
 </div>
+
+<!-- Filtros -->
+<div class="row">
+    <div class="col s12">
+        <div class="filter-card">
+            <h5><i class="material-icons left">filter_list</i>Filtros de búsqueda</h5>
+            <form method="get" id="filterForm">
+                <div class="row" style="margin-bottom: 0;">
+                    <div class="col s12 m4">
+                        <div class="input-field filter-input">
+                            <i class="material-icons prefix" style="color: #667eea;">search</i>
+                            <input type="text" name="search" id="search" value="{{ search_query }}"
+                                placeholder="Buscar por nombre o descripción">
+                        </div>
+                    </div>
+                    <div class="col s12 m4">
+                        <div class="input-field filter-input">
+                            <i class="material-icons prefix" style="color: #667eea;">category</i>
+                            <select name="category" id="category">
+                                <option value="">Todas las categorías</option>
+                                {% for cat in all_categories %}
+                                <option value="{{ cat.id }}"
+                                    {% if category_filter == cat.id|stringformat:"s" %}selected{% endif %}>
+                                    {{ cat.name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col s12 m4">
+                        <div class="input-field filter-input">
+                            <i class="material-icons prefix" style="color: #667eea;">label</i>
+                            <select name="tag" id="tag">
+                                <option value="">Todas las etiquetas</option>
+                                {% for tag in all_tags %}
+                                <option value="{{ tag.id }}"
+                                    {% if tag_filter == tag.id|stringformat:"s" %}selected{% endif %}>
+                                    {{ tag.name }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-bottom: 0;">
+                    <div class="col s12">
+                        <button type="submit" class="waves-effect waves-light btn filter-btn white"
+                            style="color: #667eea;">
+                            <i class="material-icons left">search</i>Buscar
+                        </button>
+                        <a href="{% url 'restaurant:index' %}" class="waves-effect waves-light btn filter-btn white"
+                            style="color: #667eea;">
+                            <i class="material-icons left">clear</i>Limpiar filtros
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 {% if not categories and not uncategorized_dishes %}
 <div class="row">
     <div class="col s12">
-        <div class="card-panel red">
-            <span class="white-text">No hay platos registrados actualmente</span>
+        <div class="no-results">
+            <i class="material-icons">restaurant_menu</i>
+            <h4>No se encontraron platos</h4>
+            <p>{% if search_query or category_filter or tag_filter %}
+                Intenta ajustar los filtros de búsqueda
+                {% else %}
+                No hay platos registrados actualmente
+                {% endif %}</p>
         </div>
     </div>
 </div>
 {% else %}
+
 {% for category in categories %}
 {% if category.dishes.all %}
 <div class="row">
     <div class="col s12">
-        <h4 class="light-blue-text text-darken-2">{{ category.name }}</h4>
-        <div class="divider"></div>
+        <div class="category-header">
+            <h4>{{ category.name }}</h4>
+        </div>
     </div>
 </div>
 <div class="row">
     {% for dish in category.dishes.all %}
     <div class="col s12 m6 l4">
-        <div class="card">
-            <div class="card-image">
+        <div class="card dish-card">
+            <div class="card-image dish-card-image">
                 {% if dish.image %}
-                <img src="{{ dish.image.url }}" alt="{{ dish.name }}" style="height: 200px; object-fit: cover;">
+                <img src="{{ dish.image.url }}" alt="{{ dish.name }}">
                 {% else %}
-                <div
-                    style="height: 200px; background-color: #e0e0e0; display: flex; align-items: center; justify-content: center;">
-                    <i class="material-icons" style="font-size: 64px; color: #9e9e9e;">restaurant</i>
+                <div class="dish-card-image-placeholder">
+                    <i class="material-icons">restaurant</i>
                 </div>
                 {% endif %}
-                <span class="card-title" style="background: rgba(0,0,0,0.5); width: 100%; padding: 10px;">
-                    {{ dish.name }}
-                </span>
+                <span class="card-title dish-card-title">{{ dish.name }}</span>
             </div>
             <div class="card-content">
-                <p>{{ dish.description|truncatewords:15 }}</p>
-                <p><strong>Precio:</strong> ${{ dish.price|intcomma }}</p>
+                <p class="dish-card-description">{{ dish.description|truncatewords:15 }}</p>
+                <div style="margin: 15px 0;">
+                    <span class="price-tag">${{ dish.price|intcomma }}</span>
+                </div>
                 {% if dish.tags.all %}
                 <div style="margin-top: 10px;">
                     {% for tag in dish.tags.all %}
-                    <span class="chip light-blue lighten-4">{{ tag.name }}</span>
+                    <span class="chip light-blue lighten-4 tag-chip">
+                        <i class="material-icons" style="font-size: 16px;">label</i>
+                        {{ tag.name }}
+                    </span>
                     {% endfor %}
                 </div>
                 {% endif %}
             </div>
             <div class="card-action">
-                <a href="{% url 'restaurant:detail' dish.id %}">Ver detalles</a>
-                <a href="{% url 'restaurant:update' dish.id %}">Editar</a>
+                <a href="{% url 'restaurant:detail' dish.id %}" class="blue-text">
+                    <i class="material-icons tiny">visibility</i> Ver detalles
+                </a>
+                <a href="{% url 'restaurant:update' dish.id %}" class="orange-text">
+                    <i class="material-icons tiny">edit</i> Editar
+                </a>
+                <a href="javascript:void(0);" class="red-text delete-dish-btn" data-dish-id="{{ dish.id }}"
+                    data-dish-name="{{ dish.name }}">
+                    <i class="material-icons tiny">delete</i> Eliminar
+                </a>
             </div>
         </div>
     </div>
@@ -68,46 +153,189 @@
 {% if uncategorized_dishes %}
 <div class="row">
     <div class="col s12">
-        <h4 class="grey-text">Sin Categoría</h4>
-        <div class="divider"></div>
+        <div class="category-header category-header-uncategorized">
+            <h4>Sin Categoría</h4>
+        </div>
     </div>
 </div>
 <div class="row">
     {% for dish in uncategorized_dishes %}
     <div class="col s12 m6 l4">
-        <div class="card">
-            <div class="card-image">
+        <div class="card dish-card">
+            <div class="card-image dish-card-image">
                 {% if dish.image %}
-                <img src="{{ dish.image.url }}" alt="{{ dish.name }}" style="height: 200px; object-fit: cover;">
+                <img src="{{ dish.image.url }}" alt="{{ dish.name }}">
                 {% else %}
-                <div
-                    style="height: 200px; background-color: #e0e0e0; display: flex; align-items: center; justify-content: center;">
-                    <i class="material-icons" style="font-size: 64px; color: #9e9e9e;">restaurant</i>
+                <div class="dish-card-image-placeholder">
+                    <i class="material-icons">restaurant</i>
                 </div>
                 {% endif %}
-                <span class="card-title" style="background: rgba(0,0,0,0.5); width: 100%; padding: 10px;">
-                    {{ dish.name }}
+                <span class="card-title dish-card-title">{{ dish.name }}</span>
+            </div>
+        </div>
+        <div class="card-content">
+            <p class="dish-card-description">{{ dish.description|truncatewords:15 }}</p>
+            <div style="margin: 15px 0;">
+                <span class="price-tag">${{ dish.price|intcomma }}</span>
+            </div>
+            {% if dish.tags.all %}
+            <div style="margin-top: 10px;">
+                {% for tag in dish.tags.all %}
+                <span class="chip light-blue lighten-4 tag-chip">
+                    <i class="material-icons" style="font-size: 16px;">label</i>
+                    {{ tag.name }}
                 </span>
+                {% endfor %}
             </div>
-            <div class="card-content">
-                <p>{{ dish.description|truncatewords:15 }}</p>
-                <p><strong>Precio:</strong> ${{ dish.price|intcomma }}</p>
-                {% if dish.tags.all %}
-                <div style="margin-top: 10px;">
-                    {% for tag in dish.tags.all %}
-                    <span class="chip light-blue lighten-4">{{ tag.name }}</span>
-                    {% endfor %}
-                </div>
-                {% endif %}
-            </div>
-            <div class="card-action">
-                <a href="{% url 'restaurant:detail' dish.id %}">Ver detalles</a>
-                <a href="{% url 'restaurant:update' dish.id %}">Editar</a>
-            </div>
+            {% endif %}
+        </div>
+        <div class="card-action">
+            <a href="{% url 'restaurant:detail' dish.id %}" class="blue-text">
+                <i class="material-icons tiny">visibility</i> Ver detalles
+            </a>
+            <a href="{% url 'restaurant:update' dish.id %}" class="orange-text">
+                <i class="material-icons tiny">edit</i> Editar
+            </a>
+            <a href="javascript:void(0);" class="red-text delete-dish-btn" data-dish-id="{{ dish.id }}"
+                data-dish-name="{{ dish.name }}">
+                <i class="material-icons tiny">delete</i> Eliminar
+            </a>
         </div>
     </div>
     {% endfor %}
 </div>
 {% endif %}
+
 {% endif %}
+
+<!-- Modal de confirmación de eliminación de plato -->
+<div id="deleteDishModal" class="modal">
+    <div class="modal-content">
+        <h4 class="red-text"><i class="material-icons left">warning</i>Confirmar eliminación</h4>
+        <p>¿Estás seguro de que deseas eliminar el plato <strong id="dishNameToDelete"></strong>?</p>
+        <p class="grey-text">Esta acción marcará el plato como eliminado.</p>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-light btn-flat">Cancelar</a>
+        <a href="javascript:void(0);" class="waves-effect waves-light btn red darken-1" id="confirmDeleteDishBtn">
+            <i class="material-icons left">delete</i>Eliminar
+        </a>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/restaurant-filters.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Initialize modals
+        const modalElems = document.querySelectorAll('.modal');
+        const instances = M.Modal.init(modalElems);
+
+        let dishToDelete = null;
+        const deleteDishModal = document.getElementById('deleteDishModal');
+        const modal = M.Modal.getInstance(deleteDishModal);
+
+        // Handle delete button clicks
+        document.querySelectorAll('.delete-dish-btn').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                dishToDelete = {
+                    id: this.dataset.dishId,
+                    name: this.dataset.dishName
+                };
+
+                document.getElementById('dishNameToDelete').textContent = dishToDelete.name;
+                modal.open();
+            });
+        });
+
+        // Handle confirm delete
+        document.getElementById('confirmDeleteDishBtn').addEventListener('click', function () {
+            if (!dishToDelete) return;
+
+            // Get CSRF token
+            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+            // Send DELETE request
+            fetch(`/dishes/${dishToDelete.id}/delete/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    modal.close();
+
+                    if (data.success) {
+                        // Show success toast
+                        M.toast({
+                            html: '<i class="material-icons left">check_circle</i>' + data.message,
+                            classes: 'green darken-1',
+                            displayLength: 4000
+                        });
+
+                        // Remove the dish card from DOM
+                        const dishCard = document.querySelector(`[data-dish-id="${dishToDelete.id}"]`).closest('.col');
+                        if (dishCard) {
+                            dishCard.style.opacity = '0';
+                            setTimeout(() => dishCard.remove(), 300);
+                        }
+                    } else {
+                        // Show error toast
+                        M.toast({
+                            html: '<i class="material-icons left">error</i>' + data.message,
+                            classes: 'red darken-1',
+                            displayLength: 5000
+                        });
+                    }
+
+                    dishToDelete = null;
+                })
+                .catch(error => {
+                    modal.close();
+                    M.toast({
+                        html: '<i class="material-icons left">error</i>Error al eliminar el plato',
+                        classes: 'red darken-1',
+                        displayLength: 5000
+                    });
+                    console.error('Error:', error);
+                });
+        });
+    });
+
+    // Display Django messages as Materialize toasts
+    {% if messages %}
+    {% for message in messages %}
+    {% if message.tags == 'error' %}
+    M.toast({
+        html: '<i class="material-icons left">error</i>{{ message|escapejs }}',
+        classes: 'red darken-1',
+        displayLength: 5000
+    });
+    {% elif message.tags == 'success' %}
+    M.toast({
+        html: '<i class="material-icons left">check_circle</i>{{ message|escapejs }}',
+        classes: 'green darken-1',
+        displayLength: 4000
+    });
+    {% elif message.tags == 'warning' %}
+    M.toast({
+        html: '<i class="material-icons left">warning</i>{{ message|escapejs }}',
+        classes: 'orange darken-1',
+        displayLength: 4000
+    });
+    {% else %}
+    M.toast({
+        html: '<i class="material-icons left">info</i>{{ message|escapejs }}',
+        classes: 'blue darken-1',
+        displayLength: 4000
+    });
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+</script>
 {% endblock %}
