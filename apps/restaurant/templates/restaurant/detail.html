@@ -50,31 +50,10 @@
             </div>
             <div class="card-action">
                 <a href="{% url 'restaurant:update' dish.id %}">Editar</a>
-                <a href="#deleteModal" class="modal-trigger red-text">Eliminar</a>
+                <a href="{% url 'restaurant:delete' dish.id %}" class="red-text">Eliminar</a>
                 <a href="{% url 'restaurant:index' %}">Volver a lista</a>
             </div>
         </div>
     </div>
 </div>
-
-<!-- Delete Confirmation Modal -->
-<div id="deleteModal" class="modal">
-    <div class="modal-content">
-        <h4>Confirmar eliminación</h4>
-        <p>¿Estás seguro de que deseas eliminar el plato "{{ dish.name }}"?</p>
-    </div>
-    <div class="modal-footer">
-        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Cancelar</a>
-        <form method="post" action="{% url 'restaurant:delete' dish.id %}" style="display: inline;">
-            {% csrf_token %}
-            <button type="submit" class="waves-effect waves-red btn red">Eliminar</button>
-        </form>
-    </div>
-</div>
-
-<script>
-    $(document).ready(function () {
-        $('.modal').modal();
-    });
-</script>
 {% endblock %}
