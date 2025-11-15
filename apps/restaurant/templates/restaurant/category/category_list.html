@@ -1,0 +1,43 @@
+{% extends 'restaurant/fragments/base.html' %}
+{% load humanize %}
+
+{% block main-content %}
+<div class="row">
+    <div class="col s12">
+        <a class="waves-effect waves-light btn right red darken-1" href="{% url 'restaurant:category_create' %}">
+            <i class="material-icons left">add</i>Nueva categoría
+        </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12">
+        {% if not categories %}
+        <div class="card-panel red">
+            <span class="white-text">No hay categorías registradas actualmente</span>
+        </div>
+        {% else %}
+        <ul class="collection">
+            {% for category_item in categories %}
+            <li class="collection-item">
+                <div>
+                    <span class="title">{{ category_item.name }}</span>
+                    <p>Creado: {{ category_item.created_at|naturaltime }}</p>
+                    <p>Última actualización: {{ category_item.updated_at|naturaltime }}</p>
+                    <a href="{% url 'restaurant:category_update' category_item.id %}" class="secondary-content">
+                        <i class="material-icons">edit</i>
+                    </a>
+                    <form method="post" action="{% url 'restaurant:category_delete' category_item.id %}"
+                        style="display: inline;" onsubmit="return confirm('¿Eliminar esta categoría?');">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-flat secondary-content" style="padding: 0;">
+                            <i class="material-icons red-text">delete</i>
+                        </button>
+                    </form>
+                </div>
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
