@@ -6,7 +6,7 @@ from django.core.validators import MinValueValidator
 #   MODELOS BASE
 # -------------------------------------------------------------------------
 
-class TimeStampedModel(models.Model):
+class BaseModel(models.Model):
     """
     Modelo base genérico con fechas y estado.
     Útil para cualquier entidad del sistema: reservas, pedidos, platos, mesas, etc.
@@ -19,15 +19,23 @@ class TimeStampedModel(models.Model):
         auto_now=True,
         verbose_name="Última actualización",
     )
+    delete_at = models.DateTimeField(
+        blank=True,
+        null=True,
+        verbose_name="Fecha de eliminación",
+    )
+    deleted = models.BooleanField(
+        default=False,
+        verbose_name="Eliminado",
+    )
     is_active = models.BooleanField(
         default=True,
         verbose_name="Activo",
     )
-
     class Meta:
         abstract = True
 
-class NamedModel(TimeStampedModel):
+class NamedModel(BaseModel):
     """
     Modelo base para entidades que tienen un nombre.
     Ejemplos: Categorías, Mesas, Platos, etc.
@@ -177,7 +185,7 @@ class Table(NamedModel):
 #   MODELO RESERVATION
 # -------------------------------------------------------------------------
 
-class Reservation(TimeStampedModel):
+class Reservation(BaseModel):
     """
     Modelo que representa una reserva en el sistema.
     Hereda de TimeStampedModel para incluir timestamps y estado.
@@ -217,7 +225,7 @@ class Reservation(TimeStampedModel):
 #   MODELO ORDER
 # -------------------------------------------------------------------------
 
-class Order(TimeStampedModel):
+class Order(BaseModel):
     """
     Modelo que representa un pedido en el sistema.
     Hereda de TimeStampedModel para incluir timestamps y estado.
