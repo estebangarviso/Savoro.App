@@ -12,6 +12,8 @@ pytz = ">=2023.3"
 [dev-packages]
 pylint = "3.3.9"
 pylint-django = "2.6.1"
+django-stubs = "*"
+djlint = "*"
 
 [requires]
 python_version = "3.12"

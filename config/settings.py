@@ -51,7 +51,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "crud.urls"
+ROOT_URLCONF = "config.urls"
 
 TEMPLATES = [  # type: ignore[var-annotated]
     {
@@ -70,7 +70,7 @@ TEMPLATES = [  # type: ignore[var-annotated]
     },
 ]
 
-WSGI_APPLICATION = "crud.wsgi.application"
+WSGI_APPLICATION = "config.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases

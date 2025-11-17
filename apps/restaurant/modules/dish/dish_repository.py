@@ -3,7 +3,9 @@ Dish Repository - Data access layer for Dish entity
 Similar to TypeORM Repository in NestJS
 """
 
-from typing import Optional, List
+from __future__ import annotations
+
+from typing import Optional
 from django.db.models import QuerySet, Q
 from ...common import BaseRepository, Injectable
 from ...models import Dish

@@ -1,281 +1,281 @@
-{% extends 'restaurant/fragments/base.html' %}
+{% extends "restaurant/fragments/base.html" %}
 {% load static %}
 {% load humanize %}
-
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/category-list.css' %}">
-{% endblock %}
-
+  <link rel="stylesheet" href="{% static 'css/category-list.css' %}" />
+{% endblock extra_css %}
 {% block main-content %}
-{% csrf_token %}
-
-<div class="row">
+  {% csrf_token %}
+  <div class="row">
     <div class="col s12">
-        <a class="waves-effect waves-light btn right red darken-1 category-add-btn"
-            href="{% url 'restaurant:category_create' %}">
-            <i class="material-icons left">add</i>Nueva categoría
-        </a>
+      <a class="waves-effect waves-light btn right red darken-1 category-add-btn"
+         href="{% url 'restaurant:category_create' %}">
+        <i class="material-icons left">add</i>Nueva categoría
+      </a>
     </div>
-</div>
-
-<!-- Filtros -->
-<div class="row">
+  </div>
+  <!-- Filtros -->
+  <div class="row">
     <div class="col s12">
-        <div class="category-filter-card">
-            <h5><i class="material-icons left">filter_list</i>Buscar categorías</h5>
-            <form method="get" id="categoryFilterForm">
-                <div class="row" style="margin-bottom: 0;">
-                    <div class="col s12 m8">
-                        <div class="input-field category-filter-input">
-                            <i class="material-icons prefix" style="color: #FF6B6B;">search</i>
-                            <input type="text" name="search" id="categorySearch" value="{{ search_query }}"
-                                placeholder="Buscar por nombre de categoría">
-                        </div>
-                    </div>
-                    <div class="col s12 m4">
-                        <button type="submit" class="waves-effect waves-light btn category-filter-btn white"
-                            style="color: #FF6B6B; margin-top: 10px;">
-                            <i class="material-icons left">search</i>Buscar
-                        </button>
-                        <a href="{% url 'restaurant:category_list' %}"
-                            class="waves-effect waves-light btn category-filter-btn white"
-                            style="color: #FF6B6B; margin-top: 10px;">
-                            <i class="material-icons left">clear</i>Limpiar
-                        </a>
-                    </div>
-                </div>
-            </form>
-        </div>
+      <div class="category-filter-card">
+        <h5>
+          <i class="material-icons left">filter_list</i>Buscar categorías
+        </h5>
+        <form method="get" id="categoryFilterForm">
+          <div class="row valign-wrapper">
+            <div class="col s12 m8">
+              <div class="input-field category-filter-input">
+                <i class="material-icons prefix red-text text-lighten-1">search</i>
+                <input type="text"
+                       name="search"
+                       id="categorySearch"
+                       value="{{ search_query }}"
+                       placeholder="Buscar por nombre de categoría" />
+              </div>
+            </div>
+            <div class="col s12 m4">
+              <button type="submit"
+                      class="waves-effect waves-light btn category-filter-btn white red-text text-lighten-1">
+                <i class="material-icons left">search</i>Buscar
+              </button>
+              <a href="{% url 'restaurant:category_list' %}"
+                 class="waves-effect waves-light btn category-filter-btn white red-text text-lighten-1">
+                <i class="material-icons left">clear</i>Limpiar
+              </a>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
-</div>
-
-{% if not categories %}
-<div class="row">
-    <div class="col s12">
+  </div>
+  {% if not categories %}
+    <div class="row">
+      <div class="col s12">
         <div class="category-no-results">
-            <i class="material-icons">category</i>
-            <h4>No se encontraron categorías</h4>
-            <p>{% if search_query %}
-                Intenta ajustar tu búsqueda
-                {% else %}
-                No hay categorías registradas actualmente
-                {% endif %}</p>
+          <i class="material-icons">category</i>
+          <h4>No se encontraron categorías</h4>
+          <p>
+            {% if search_query %}
+              Intenta ajustar tu búsqueda
+            {% else %}
+              No hay
+              categorías registradas actualmente
+            {% endif %}
+          </p>
         </div>
+      </div>
     </div>
-</div>
-{% else %}
-
-<!-- Contador de resultados -->
-<div class="row">
-    <div class="col s12">
-        <p style="color: #757575; font-size: 14px;">
-            <i class="material-icons tiny" style="vertical-align: middle;">info</i>
-            Mostrando {{ total_count }} categoría{{ total_count|pluralize }}
+  {% else %}
+    <!-- Contador de resultados -->
+    <div class="row">
+      <div class="col s12">
+        <p class="grey-text text-darken-1">
+          <i class="material-icons tiny">info</i>
+          Mostrando {{ total_count }} categoría{{ total_count|pluralize }}
         </p>
+      </div>
     </div>
-</div>
-
-<!-- Grid de categorías -->
-<div class="row">
-    {% for category_item in categories %}
-    <div class="col s12 m6 l4">
-        <div class="card category-card">
+    <!-- Grid de categorías -->
+    <div class="row">
+      {% for category_item in categories %}
+        <div class="col s12 m6 l4">
+          <div class="card category-card">
             <div class="category-card-header">
-                <i class="material-icons category-card-icon">restaurant_menu</i>
-                <h5 class="category-card-title">{{ category_item.name }}</h5>
+              <i class="material-icons category-card-icon">restaurant_menu</i>
+              <h5 class="category-card-title">{{ category_item.name }}</h5>
             </div>
-
             <div class="category-card-content">
-                <div class="category-stats">
-                    <div class="category-stat">
-                        <span class="category-stat-value">{{ category_item.dish_count }}</span>
-                        <span class="category-stat-label">Plato{{ category_item.dish_count|pluralize }}</span>
-                    </div>
+              <div class="category-stats">
+                <div class="category-stat">
+                  <span class="category-stat-value">{{ category_item.dish_count }}</span>
+                  <span class="category-stat-label">Plato{{ category_item.dish_count|pluralize }}</span>
                 </div>
-
-                <div class="category-meta">
-                    <i class="material-icons">access_time</i>
-                    <strong>Creado:</strong> {{ category_item.created_at|naturaltime }}
-                </div>
-
-                <div class="category-meta">
-                    <i class="material-icons">update</i>
-                    <strong>Actualizado:</strong> {{ category_item.updated_at|naturaltime }}
-                </div>
-
-                <div>
-                    <span
-                        class="category-status-badge {% if category_item.is_active %}category-status-active{% else %}category-status-inactive{% endif %}">
-                        {% if category_item.is_active %}
-                        <i class="material-icons tiny">check_circle</i> Activa
-                        {% else %}
-                        <i class="material-icons tiny">cancel</i> Inactiva
-                        {% endif %}
-                    </span>
-                </div>
+              </div>
+              <div class="category-meta">
+                <i class="material-icons">access_time</i>
+                <strong>Creado:</strong> {{ category_item.created_at|naturaltime }}
+              </div>
+              <div class="category-meta">
+                <i class="material-icons">update</i>
+                <strong>Actualizado:</strong> {{ category_item.updated_at|naturaltime
+                }}
+              </div>
+              <div>
+                <span class="category-status-badge {% if category_item.is_active %}category-status-active{% else %}category-status-inactive{% endif %}">
+                  {% if category_item.is_active %}
+                    <i class="material-icons tiny">check_circle</i> Activa
+                  {% else %}
+                    <i class="material-icons tiny">cancel</i> Inactiva
+                  {% endif %}
+                </span>
+              </div>
             </div>
-
             <div class="card-action">
-                <div class="category-action-buttons">
-                    <a href="{% url 'restaurant:category_update' category_item.id %}"
-                        class="waves-effect waves-light btn orange darken-1">
-                        <i class="material-icons left">edit</i>Editar
-                    </a>
-                    <a href="javascript:void(0);" class="waves-effect waves-light btn red darken-1 delete-category-btn"
-                        data-category-id="{{ category_item.id }}" data-category-name="{{ category_item.name }}"
-                        data-has-dishes="{{ category_item.dish_count }}">
-                        <i class="material-icons left">delete</i>Eliminar
-                    </a>
-                </div>
+              <div class="category-action-buttons">
+                <a href="{% url 'restaurant:category_update' category_item.id %}"
+                   class="waves-effect waves-light btn orange darken-1">
+                  <i class="material-icons left">edit</i>Editar
+                </a>
+                <a href="javascript:void(0);"
+                   class="waves-effect waves-light btn red darken-1 delete-category-btn"
+                   data-category-id="{{ category_item.id }}"
+                   data-category-name="{{ category_item.name }}"
+                   data-has-dishes="{{ category_item.dish_count }}">
+                  <i class="material-icons left">delete</i>Eliminar
+                </a>
+              </div>
             </div>
+          </div>
         </div>
+      {% endfor %}
     </div>
-    {% endfor %}
-</div>
-
-{% endif %}
-
-<!-- Modal de confirmación de eliminación -->
-<div id="deleteCategoryModal" class="modal">
+  {% endif %}
+  <!-- Modal de confirmación de eliminación -->
+  <div id="deleteCategoryModal" class="modal">
     <div class="modal-content">
-        <h4 class="red-text"><i class="material-icons left">warning</i>Confirmar eliminación</h4>
-        <p>¿Estás seguro de que deseas eliminar la categoría <strong id="categoryNameToDelete"></strong>?</p>
-        <p class="grey-text" id="categoryWarning"></p>
+      <h4 class="red-text">
+        <i class="material-icons left">warning</i>Confirmar eliminación
+      </h4>
+      <p>
+        ¿Estás seguro de que deseas eliminar la categoría
+        <strong id="categoryNameToDelete"></strong>?
+      </p>
+      <p class="grey-text" id="categoryWarning"></p>
     </div>
     <div class="modal-footer">
-        <a href="#!" class="modal-close waves-effect waves-light btn-flat">Cancelar</a>
-        <a href="#!" class="waves-effect waves-light btn red darken-1" id="confirmDeleteBtn">
-            <i class="material-icons left">delete</i>Eliminar
-        </a>
+      <a href="#!" class="modal-close waves-effect waves-light btn-flat">Cancelar</a>
+      <a href="#!"
+         class="waves-effect waves-light btn red darken-1"
+         id="confirmDeleteBtn">
+        <i class="material-icons left">delete</i>Eliminar
+      </a>
     </div>
-</div>
-
-{% endblock %}
-
+  </div>
+{% endblock main-content %}
 {% block extra_js %}
-<script src="{% static 'js/category-filters.js' %}"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Initialize modals
-        const modalElems = document.querySelectorAll('.modal');
-        const instances = M.Modal.init(modalElems);
+  <script src="{% static 'js/category-filters.js' %}"></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', function () {
+      // Initialize modals
+      const modalElems = document.querySelectorAll('.modal');
+      const instances = M.Modal.init(modalElems);
 
-        let categoryToDelete = null;
-        const deleteCategoryModal = document.getElementById('deleteCategoryModal');
-        const modal = M.Modal.getInstance(deleteCategoryModal);
+      let categoryToDelete = null;
+      const deleteCategoryModal = document.getElementById('deleteCategoryModal');
+      const modal = M.Modal.getInstance(deleteCategoryModal);
 
-        // Handle delete button clicks
-        const deleteButtons = document.querySelectorAll('.delete-category-btn');
-        console.log('Delete buttons', deleteButtons);
-        deleteButtons.forEach(btn => {
-            btn.addEventListener('click', function (e) {
-                e.preventDefault();
-                categoryToDelete = {
-                    id: this.dataset.categoryId,
-                    name: this.dataset.categoryName,
-                    hasDishes: parseInt(this.dataset.hasDishes) > 0
-                };
+      // Handle delete button clicks
+      const deleteButtons = document.querySelectorAll('.delete-category-btn');
+      console.log('Delete buttons', deleteButtons);
+      deleteButtons.forEach(btn => {
+          btn.addEventListener('click', function (e) {
+              e.preventDefault();
+              categoryToDelete = {
+                  id: this.dataset.categoryId,
+                  name: this.dataset.categoryName,
+                  hasDishes: parseInt(this.dataset.hasDishes) > 0
+              };
 
-                document.getElementById('categoryNameToDelete').textContent = categoryToDelete.name;
+              document.getElementById('categoryNameToDelete').textContent = categoryToDelete.name;
 
-                if (categoryToDelete.hasDishes) {
-                    document.getElementById('categoryWarning').innerHTML =
-                        '<i class="material-icons tiny left red-text">warning</i>Esta categoría tiene ' +
-                        this.dataset.hasDishes + ' plato(s) asociado(s). No podrá ser eliminada.';
-                } else {
-                    document.getElementById('categoryWarning').textContent =
-                        'Esta acción marcará la categoría como eliminada.';
-                }
+              if (categoryToDelete.hasDishes) {
+                  document.getElementById('categoryWarning').innerHTML =
+                      '<i class="material-icons tiny left red-text">warning</i>Esta categoría tiene ' +
+                      this.dataset.hasDishes + ' plato(s) asociado(s). No podrá ser eliminada.';
+              } else {
+                  document.getElementById('categoryWarning').textContent =
+                      'Esta acción marcará la categoría como eliminada.';
+              }
 
-                modal.open();
-            });
-        });
+              modal.open();
+          });
+      });
 
-        // Handle confirm delete
-        document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
-            if (!categoryToDelete) return;
+      // Handle confirm delete
+      document.getElementById('confirmDeleteBtn').addEventListener('click', function () {
+          if (!categoryToDelete) return;
 
-            // Get CSRF token
-            const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+          // Get CSRF token
+          const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-            // Send DELETE request
-            fetch(`/categories/${categoryToDelete.id}/delete/`, {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': csrftoken,
-                    'Content-Type': 'application/json',
-                },
-            })
-                .then(response => response.json())
-                .then(data => {
-                    modal.close();
+          // Send DELETE request
+          fetch(`/categories/${categoryToDelete.id}/delete/`, {
+              method: 'POST',
+              headers: {
+                  'X-CSRFToken': csrftoken,
+                  'Content-Type': 'application/json',
+              },
+          })
+              .then(response => response.json())
+              .then(data => {
+                  modal.close();
 
-                    if (data.success) {
-                        // Show success toast
-                        M.toast({
-                            html: '<i class="material-icons left">check_circle</i>' + data.message,
-                            classes: 'green darken-1',
-                            displayLength: 4000
-                        });
+                  if (data.success) {
+                      // Show success toast
+                      M.toast({
+                          html: '<i class="material-icons left">check_circle</i>' + data.message,
+                          classes: 'green darken-1',
+                          displayLength: 4000
+                      });
 
-                        // Remove the category card from DOM
-                        const categoryCard = document.querySelector(`[data-category-id="${categoryToDelete.id}"]`).closest('.col');
-                        if (categoryCard) {
-                            categoryCard.style.opacity = '0';
-                            setTimeout(() => categoryCard.remove(), 300);
-                        }
-                    } else {
-                        // Show error toast
-                        M.toast({
-                            html: '<i class="material-icons left">error</i>' + data.message,
-                            classes: 'red darken-1',
-                            displayLength: 5000
-                        });
-                    }
+                      // Remove the category card from DOM
+                      const categoryCard = document.querySelector(`[data-category-id="${categoryToDelete.id}"]`).closest('.col');
+                      if (categoryCard) {
+                          categoryCard.style.opacity = '0';
+                          setTimeout(() => categoryCard.remove(), 300);
+                      }
+                  } else {
+                      // Show error toast
+                      M.toast({
+                          html: '<i class="material-icons left">error</i>' + data.message,
+                          classes: 'red darken-1',
+                          displayLength: 5000
+                      });
+                  }
 
-                    categoryToDelete = null;
-                })
-                .catch(error => {
-                    modal.close();
-                    M.toast({
-                        html: '<i class="material-icons left">error</i>Error al eliminar la categoría',
-                        classes: 'red darken-1',
-                        displayLength: 5000
-                    });
-                    console.error('Error:', error);
-                });
-        });
-    });
+                  categoryToDelete = null;
+              })
+              .catch(error => {
+                  modal.close();
+                  M.toast({
+                      html: '<i class="material-icons left">error</i>Error al eliminar la categoría',
+                      classes: 'red darken-1',
+                      displayLength: 5000
+                  });
+                  console.error('Error:', error);
+              });
+      });
+  });
 
-    // Display Django messages as Materialize toasts
-    {% if messages %}
-    {% for message in messages %}
-    {% if message.tags == 'error' %}
-    M.toast({
-        html: '<i class="material-icons left">error</i>{{ message|escapejs }}',
-        classes: 'red darken-1',
-        displayLength: 5000
-    });
-    {% elif message.tags == 'success' %}
-    M.toast({
-        html: '<i class="material-icons left">check_circle</i>{{ message|escapejs }}',
-        classes: 'green darken-1',
-        displayLength: 4000
-    });
-    {% elif message.tags == 'warning' %}
-    M.toast({
-        html: '<i class="material-icons left">warning</i>{{ message|escapejs }}',
-        classes: 'orange darken-1',
-        displayLength: 4000
-    });
-    {% else %}
-    M.toast({
-        html: '<i class="material-icons left">info</i>{{ message|escapejs }}',
-        classes: 'blue darken-1',
-        displayLength: 4000
-    });
-    {% endif %}
-    {% endfor %}
-    {% endif %}
-</script>
-{% endblock %}
+  // Display Django messages as Materialize toasts
+  {% if messages %}
+  {% for message in messages %}
+  {% if message.tags == 'error' %}
+  M.toast({
+      html: '<i class="material-icons left">error</i>{{ message|escapejs }}',
+      classes: 'red darken-1',
+      displayLength: 5000
+  });
+  {% elif message.tags == 'success' %}
+  M.toast({
+      html: '<i class="material-icons left">check_circle</i>{{ message|escapejs }}',
+      classes: 'green darken-1',
+      displayLength: 4000
+  });
+  {% elif message.tags == 'warning' %}
+  M.toast({
+      html: '<i class="material-icons left">warning</i>{{ message|escapejs }}',
+      classes: 'orange darken-1',
+      displayLength: 4000
+  });
+  {% else %}
+  M.toast({
+      html: '<i class="material-icons left">info</i>{{ message|escapejs }}',
+      classes: 'blue darken-1',
+      displayLength: 4000
+  });
+  {% endif %}
+  {% endfor %}
+  {% endif %}
+  </script>
+{% endblock extra_js %}

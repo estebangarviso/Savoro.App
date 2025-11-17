@@ -3,6 +3,8 @@ Servicios para la gestión de filtros de platos y categorías
 Aplicando el principio de Responsabilidad Única (Single Responsibility Principle)
 """
 
+from __future__ import annotations
+
 from django.db import models
 from django.db.models import Count, Q, QuerySet
 from django.http import HttpRequest

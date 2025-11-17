@@ -3,10 +3,12 @@ Category Service - Business logic layer for Category
 Similar to NestJS Service (@Injectable())
 """
 
+from __future__ import annotations
+
 from typing import Optional, Dict, Any
 from django.db.models import QuerySet
 from ...common import BaseService, Injectable, NotFoundException, BadRequestException
-from ...models import Category
+from ...models import Category, Dish
 from .category_repository import CategoryRepository
 
 
@@ -32,7 +34,7 @@ class CategoryService(BaseService):
         """Get category by ID"""
         category = self.repository.find_by_id(category_id)
         if not category:
-            raise NotFoundException(f"Category with ID {category_id} not found")
+            raise NotFoundException(f"Categoría con ID {category_id} no encontrada")
         return category
 
     def find_all_with_stats(self) -> QuerySet[Category]:
@@ -50,7 +52,9 @@ class CategoryService(BaseService):
 
         return queryset
 
-    def find_all_with_dishes(self, dishes_queryset) -> QuerySet[Category]:
+    def find_all_with_dishes(
+        self, dishes_queryset: QuerySet[Dish]
+    ) -> QuerySet[Category]:
         """Get categories with specific dishes preloaded"""
         return self.repository.find_all_with_dishes(dishes_queryset)
 
@@ -66,7 +70,7 @@ class CategoryService(BaseService):
         # Validate name uniqueness
         if self.repository.exists_by_name(data.get("name", "")):
             raise BadRequestException(
-                f"Category with name '{data['name']}' already exists"
+                f"Ya existe una categoría con el nombre '{data['name']}'"
             )
 
         return self.repository.create(**data)
@@ -83,13 +87,13 @@ class CategoryService(BaseService):
         if "name" in data and data["name"] != category.name:
             if self.repository.exists_by_name(data["name"], exclude_id=category_id):
                 raise BadRequestException(
-                    f"Category with name '{data['name']}' already exists"
+                    f"Ya existe una categoría con el nombre '{data['name']}'"
                 )
 
         # Update category
         updated_category = self.repository.update(category_id, **data)
         if not updated_category:
-            raise NotFoundException(f"Category with ID {category_id} not found")
+            raise NotFoundException(f"Categoría con ID {category_id} no encontrada")
 
         return updated_category
 
@@ -103,7 +107,9 @@ class CategoryService(BaseService):
 
         # Check if category has dishes
         if self.repository.has_dishes(category_id):
-            raise BadRequestException("Cannot delete category with associated dishes")
+            raise BadRequestException(
+                "No se puede eliminar una categoría con platos asociados"
+            )
 
         # Perform soft delete
         return self.repository.delete(category_id)

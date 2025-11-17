@@ -16,6 +16,10 @@
     font-weight: 300;
 }
 
+.filter-card .row.valign-wrapper {
+    margin-bottom: 0;
+}
+
 .filter-input {
     background: white !important;
     border-radius: 8px !important;
@@ -90,6 +94,10 @@
    PRECIOS
    ======================================== */
 
+.dish-price-container {
+    margin: 15px 0;
+}
+
 .price-tag {
     background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
     color: white;
@@ -105,6 +113,10 @@
    TAGS
    ======================================== */
 
+.dish-tags-container {
+    margin-top: 10px;
+}
+
 .tag-chip {
     border-radius: 15px;
     font-size: 12px;
@@ -112,6 +124,10 @@
     height: 28px;
     line-height: 28px;
     margin: 4px 2px;
+}
+
+.tag-icon {
+    font-size: 16px !important;
 }
 
 /* ========================================

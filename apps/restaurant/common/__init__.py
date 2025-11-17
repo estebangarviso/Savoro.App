@@ -3,12 +3,19 @@ Common module - Base interfaces, decorators and utilities
 Similar to NestJS @nestjs/common
 """
 
-from typing import Protocol, TypeVar, Generic, Optional, Dict, Any
+from __future__ import annotations
+
+from typing import Protocol, TypeVar, Generic, Optional, Dict, Any, TYPE_CHECKING
 from abc import ABC, abstractmethod
 from django.db.models import QuerySet
 from django.db import models
 
-T = TypeVar("T")
+if TYPE_CHECKING:
+    from typing import Type
+
+T_co = TypeVar("T_co", bound=models.Model, covariant=True)
+T = TypeVar("T", bound=models.Model)
+ClassT = TypeVar("ClassT")
 
 
 # ============================================================================
@@ -19,29 +26,27 @@ T = TypeVar("T")
 class IService(Protocol):
     """Base interface for all services"""
 
-    pass
 
-
-class IRepository(Protocol[T]):
+class IRepository(Protocol[T_co]):
     """Base interface for repositories (similar to TypeORM Repository)"""
 
-    def find_all(self) -> QuerySet[T]:  # type: ignore
+    def find_all(self) -> QuerySet[T_co]:
         """Find all entities"""
         ...
 
-    def find_by_id(self, id: int) -> Optional[T]:
+    def find_by_id(self, entity_id: int) -> Optional[T_co]:
         """Find entity by ID"""
         ...
 
-    def create(self, data: Dict[str, Any]) -> T:
+    def create(self, data: Dict[str, Any]) -> T_co:
         """Create new entity"""
         ...
 
-    def update(self, id: int, data: Dict[str, Any]) -> T:
+    def update(self, entity_id: int, data: Dict[str, Any]) -> T_co:
         """Update entity"""
         ...
 
-    def delete(self, id: int) -> bool:
+    def delete(self, entity_id: int) -> bool:
         """Delete entity"""
         ...
 
@@ -49,7 +54,7 @@ class IRepository(Protocol[T]):
 class IFilterService(Protocol[T]):
     """Interface for filter services"""
 
-    def apply_filters(self, queryset: QuerySet[T], **filters: Any) -> QuerySet[T]:  # type: ignore
+    def apply_filters(self, queryset: QuerySet[T], **filters: Any) -> QuerySet[T]:
         """Apply filters to queryset"""
         ...
 
@@ -59,44 +64,44 @@ class IFilterService(Protocol[T]):
 # ============================================================================
 
 
-class BaseRepository(Generic[T], ABC):
+class BaseRepository(Generic[T_co], ABC):
     """
     Base repository implementation (similar to TypeORM BaseRepository)
     Provides common CRUD operations
     """
 
-    def __init__(self, model_class: type[models.Model]):
+    def __init__(self, model_class: Type[models.Model]):
         self.model = model_class
 
-    def find_all(self) -> QuerySet[T]:  # type: ignore
+    def find_all(self) -> QuerySet[T_co]:
         """Find all non-deleted entities"""
-        return self.model.objects.filter(deleted=False)  # type: ignore
+        return self.model.objects.filter(deleted=False)  # type: ignore[return-value]
 
-    def find_by_id(self, id: int) -> Optional[T]:
+    def find_by_id(self, entity_id: int) -> Optional[T_co]:
         """Find entity by ID"""
         try:
-            return self.model.objects.get(pk=id, deleted=False)  # type: ignore
+            return self.model.objects.get(pk=entity_id, deleted=False)  # type: ignore[return-value]
         except self.model.DoesNotExist:
             return None
 
-    def create(self, **data: Any) -> T:
+    def create(self, **data: Any) -> T_co:
         """Create new entity"""
-        return self.model.objects.create(**data)  # type: ignore
+        return self.model.objects.create(**data)  # type: ignore[return-value]
 
-    def update(self, id: int, **data: Any) -> Optional[T]:
+    def update(self, entity_id: int, **data: Any) -> Optional[T_co]:
         """Update entity"""
-        instance = self.find_by_id(id)
+        instance = self.find_by_id(entity_id)
         if instance:
             for key, value in data.items():
                 setattr(instance, key, value)
             instance.save()
         return instance
 
-    def delete(self, id: int) -> bool:
+    def delete(self, entity_id: int) -> bool:
         """Soft delete entity"""
-        instance = self.find_by_id(id)
+        instance = self.find_by_id(entity_id)
         if instance:
-            instance.deleted = True
+            instance.deleted = True  # type: ignore[attr-defined]
             instance.save()
             return True
         return False
@@ -108,16 +113,12 @@ class BaseService(ABC):
     Services contain business logic
     """
 
-    pass
-
 
 class BaseController(ABC):
     """
     Base controller class (similar to NestJS Controllers)
     Controllers handle HTTP requests and delegate to services
     """
-
-    pass
 
 
 # ============================================================================
@@ -134,9 +135,9 @@ class Injectable:
     def __init__(self, scope: str = "singleton"):
         self.scope = scope
 
-    def __call__(self, cls):
-        cls._injectable = True
-        cls._scope = self.scope
+    def __call__(self, cls: type[ClassT]) -> type[ClassT]:
+        cls._injectable = True  # type: ignore[attr-defined]
+        cls._scope = self.scope  # type: ignore[attr-defined]
         return cls
 
 
@@ -148,9 +149,9 @@ class Controller:
     def __init__(self, prefix: str = ""):
         self.prefix = prefix
 
-    def __call__(self, cls):
-        cls._controller = True
-        cls._prefix = self.prefix
+    def __call__(self, cls: type[ClassT]) -> type[ClassT]:
+        cls._controller = True  # type: ignore[attr-defined]
+        cls._prefix = self.prefix  # type: ignore[attr-defined]
         return cls
 
 
@@ -167,13 +168,13 @@ class BaseDTO(ABC):
     @abstractmethod
     def to_dict(self) -> Dict[str, Any]:
         """Convert DTO to dictionary"""
-        pass
+        ...
 
     @classmethod
     @abstractmethod
     def from_dict(cls, data: Dict[str, Any]):
         """Create DTO from dictionary"""
-        pass
+        ...
 
 
 # ============================================================================

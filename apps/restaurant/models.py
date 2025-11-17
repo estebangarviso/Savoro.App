@@ -1,8 +1,12 @@
+from __future__ import annotations
+
+from datetime import datetime
+from decimal import Decimal
+from typing import Any
+
 from django.db import models
 from django.urls import reverse_lazy
 from django.core.validators import MinValueValidator
-from decimal import Decimal
-from typing import Any
 
 # -------------------------------------------------------------------------
 #   MODELOS BASE
@@ -15,24 +19,28 @@ class BaseModel(models.Model):
     Útil para cualquier entidad del sistema: reservas, pedidos, platos, mesas, etc.
     """
 
-    created_at = models.DateTimeField(
+    id: int
+
+    created_at: models.DateTimeField[datetime, datetime] = models.DateTimeField(
         auto_now_add=True,
         verbose_name="Fecha de creación",
     )
-    updated_at = models.DateTimeField(
+    updated_at: models.DateTimeField[datetime, datetime] = models.DateTimeField(
         auto_now=True,
         verbose_name="Última actualización",
     )
-    delete_at = models.DateTimeField(
-        blank=True,
-        null=True,
-        verbose_name="Fecha de eliminación",
+    delete_at: models.DateTimeField[datetime | None, datetime | None] = (
+        models.DateTimeField(
+            blank=True,
+            null=True,
+            verbose_name="Fecha de eliminación",
+        )
     )
-    deleted = models.BooleanField(
+    deleted: models.BooleanField[bool, bool] = models.BooleanField(
         default=False,
         verbose_name="Eliminado",
     )
-    is_active = models.BooleanField(
+    is_active: models.BooleanField[bool, bool] = models.BooleanField(
         default=True,
         verbose_name="Activo",
     )
@@ -47,9 +55,11 @@ class NamedModel(BaseModel):
     Ejemplos: Categorías, Mesas, Platos, etc.
     """
 
-    name = models.CharField(max_length=150, verbose_name="Nombre")
+    name: models.CharField[str, str] = models.CharField(
+        max_length=150, verbose_name="Nombre"
+    )
 
-    class Meta:  # type: ignore[misc]
+    class Meta:  # pyright: ignore[reportIncompatibleVariableOverride]
         abstract = True
 
     def __str__(self) -> str:
@@ -102,12 +112,12 @@ class Dish(NamedModel):
     Hereda de NamedModel para incluir nombre, timestamps y estado.
     """
 
-    description = models.TextField(
+    description: models.TextField[str, str] = models.TextField(
         blank=True,
         verbose_name="Descripción",
     )
 
-    price = models.DecimalField(
+    price: models.DecimalField[Decimal, Decimal] = models.DecimalField(
         max_digits=8,
         decimal_places=2,
         verbose_name="Precio",
@@ -121,8 +131,8 @@ class Dish(NamedModel):
     )
 
     # Categoría del plato (Pastas, Postres, Entradas, etc.)
-    category = models.ForeignKey(
-        "Category",
+    category: models.ForeignKey[Category | None, Category | None] = models.ForeignKey(
+        Category,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
@@ -131,7 +141,7 @@ class Dish(NamedModel):
     )
 
     # Tags alimentarios (vegano, sin gluten, lactosa, mariscos, picante, etc.)
-    tags = models.ManyToManyField(  # type: ignore[var-annotated]
+    tags: models.ManyToManyField[FoodTag, FoodTag] = models.ManyToManyField(
         "FoodTag",
         blank=True,
         verbose_name="Etiquetas",
@@ -158,12 +168,12 @@ class Menu(NamedModel):
     Hereda de NamedModel para incluir nombre, timestamps y estado.
     """
 
-    description = models.TextField(
+    description: models.TextField[str, str] = models.TextField(
         blank=True,
         verbose_name="Descripción",
     )
 
-    dishes = models.ManyToManyField(  # type: ignore[var-annotated]
+    dishes: models.ManyToManyField[Dish, Dish] = models.ManyToManyField(
         Dish,
         verbose_name="Platos",
         related_name="menus",
@@ -190,7 +200,7 @@ class Table(NamedModel):
     Hereda de NamedModel para incluir nombre, timestamps y estado.
     """
 
-    capacity = models.PositiveIntegerField(
+    capacity: models.PositiveIntegerField[int, int] = models.PositiveIntegerField(
         verbose_name="Capacidad",
         help_text="Número máximo de comensales que puede acomodar la mesa.",
         validators=[MinValueValidator(1)],
@@ -216,25 +226,29 @@ class Reservation(BaseModel):
     Hereda de TimeStampedModel para incluir timestamps y estado.
     """
 
-    table = models.ForeignKey(
+    table: models.ForeignKey[Table, Table] = models.ForeignKey(
         Table,
         on_delete=models.CASCADE,
         verbose_name="Mesa",
         related_name="reservations",
     )
 
-    customer_name = models.CharField(
+    customer_name: models.CharField[str, str] = models.CharField(
         max_length=150,
         verbose_name="Nombre del cliente",
     )
 
-    reservation_datetime = models.DateTimeField(
-        verbose_name="Fecha y hora de la reserva",
+    reservation_datetime: models.DateTimeField[datetime, datetime] = (
+        models.DateTimeField(
+            verbose_name="Fecha y hora de la reserva",
+        )
     )
 
-    number_of_guests = models.PositiveIntegerField(
-        verbose_name="Número de comensales",
-        validators=[MinValueValidator(1)],
+    number_of_guests: models.PositiveIntegerField[int, int] = (
+        models.PositiveIntegerField(
+            verbose_name="Número de comensales",
+            validators=[MinValueValidator(1)],
+        )
     )
 
     class Meta:  # type: ignore[misc]
@@ -243,7 +257,10 @@ class Reservation(BaseModel):
         ordering = ["-reservation_datetime"]
 
     def __str__(self) -> str:
-        return f"Reserva de {self.customer_name} para {self.number_of_guests} en {self.table.name} el {self.reservation_datetime}"
+        return (
+            f"Reserva de {self.customer_name} para {self.number_of_guests} "
+            f"en {self.table.name} el {self.reservation_datetime}"
+        )
 
 
 # -------------------------------------------------------------------------
@@ -264,38 +281,39 @@ class Order(BaseModel):
         READY = "READY", "Listo"
         DELIVERED = "DELIVERED", "Entregado"
 
-    table = models.ForeignKey(
+    table: models.ForeignKey[Table, Table] = models.ForeignKey(
         Table,
         on_delete=models.CASCADE,
         verbose_name="Mesa",
         related_name="orders",
     )
 
-    dishes = models.ManyToManyField(  # type: ignore[var-annotated]
+    # Note: ManyToManyField types require django-stubs for full type inference
+    dishes: models.ManyToManyField[Dish, Dish] = models.ManyToManyField(  # type: ignore[assignment]
         Dish,
         verbose_name="Platos",
         related_name="orders",
     )
 
-    status = models.CharField(
+    status: models.CharField[str, str] = models.CharField(
         max_length=20,
         choices=OrderStatus.choices,
         default=OrderStatus.PENDING,
         verbose_name="Estado",
     )
 
-    is_paid = models.BooleanField(
+    is_paid: models.BooleanField[bool, bool] = models.BooleanField(
         default=False,
         verbose_name="Pagado",
     )
 
-    customer_name = models.CharField(
+    customer_name: models.CharField[str, str] = models.CharField(
         max_length=150,
         verbose_name="Nombre del cliente",
         help_text="Cliente que consume y puede ocupar múltiples mesas",
     )
 
-    total_amount = models.DecimalField(
+    total_amount: models.DecimalField[Decimal, Decimal] = models.DecimalField(
         max_digits=10,
         decimal_places=2,
         default=Decimal("0.00"),
@@ -313,7 +331,7 @@ class Order(BaseModel):
 
     def calculate_total(self) -> Decimal:
         """Calcula el total del pedido sumando los precios de todos los platos"""
-        total = sum(dish.price for dish in self.dishes.all())  # type: ignore[misc]
+        total = sum(dish.price for dish in self.dishes.all())
         return Decimal(str(total))
 
     def save(self, *args: Any, **kwargs: Any) -> None:
@@ -322,6 +340,6 @@ class Order(BaseModel):
         super().save(*args, **kwargs)
 
         # Si no es nuevo y tiene platos, actualizar el total
-        if not is_new and self.dishes.exists():  # type: ignore[misc]
+        if not is_new and self.dishes.exists():
             self.total_amount = self.calculate_total()
             super().save(update_fields=["total_amount"])

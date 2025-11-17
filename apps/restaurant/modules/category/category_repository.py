@@ -3,10 +3,12 @@ Category Repository - Data access layer for Category entity
 Similar to TypeORM Repository in NestJS
 """
 
+from __future__ import annotations
+
 from typing import Optional
 from django.db.models import QuerySet, Count, Q, Prefetch
 from ...common import BaseRepository, Injectable
-from ...models import Category
+from ...models import Category, Dish
 
 
 @Injectable()
@@ -27,7 +29,9 @@ class CategoryRepository(BaseRepository[Category]):
             .order_by("-dish_count", "name")
         )
 
-    def find_all_with_dishes(self, dishes_queryset) -> QuerySet[Category]:
+    def find_all_with_dishes(
+        self, dishes_queryset: QuerySet[Dish]
+    ) -> QuerySet[Category]:
         """Find all categories with specific dishes preloaded"""
         return (
             self.find_all()
@@ -48,6 +52,4 @@ class CategoryRepository(BaseRepository[Category]):
 
     def has_dishes(self, category_id: int) -> bool:
         """Check if category has associated dishes"""
-        from ...models import Dish
-
         return Dish.objects.filter(category_id=category_id, deleted=False).exists()
