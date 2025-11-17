@@ -3,38 +3,98 @@
    ======================================== */
 
 .filter-card {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 15px;
-    padding: 25px;
+    border-radius: 20px;
+    padding: 30px;
     margin-bottom: 30px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+    background: linear-gradient(135deg, #4a148c 0%, #6a1b9a 100%) !important;
 }
 
 .filter-card h5 {
-    color: white;
-    margin-bottom: 20px;
-    font-weight: 300;
+    font-weight: 600;
+    margin-bottom: 25px;
+    font-size: 1.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-.filter-card .row.valign-wrapper {
+.filter-card h5 i {
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+.filter-row {
+    margin-bottom: 20px;
+}
+
+.filter-row-buttons {
     margin-bottom: 0;
 }
 
-.filter-input {
-    background: white !important;
-    border-radius: 8px !important;
-    padding: 10px 15px !important;
-    margin-bottom: 15px !important;
+.filter-input-wrapper {
+    position: relative;
 }
 
-.filter-input input {
+.filter-input-no-margin input,
+.filter-input-no-margin select {
+    margin: 0 !important;
+}
+
+.filter-input {
     margin-bottom: 0 !important;
 }
 
+.filter-input input,
+.filter-input select {
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 12px 15px 12px 45px !important;
+    font-size: 1rem !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+    margin-bottom: 0 !important;
+    height: auto !important;
+    transition: all 0.3s ease !important;
+}
+
+.filter-input input:focus,
+.filter-input select:focus {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+    background-color: #fff !important;
+}
+
+.filter-input .prefix {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6a1b9a !important;
+    z-index: 2;
+}
+
+.filter-input input::placeholder {
+    color: #9e9e9e !important;
+}
+
 .filter-btn {
-    border-radius: 25px;
     margin-right: 10px;
     margin-bottom: 10px;
+    border-radius: 25px !important;
+    padding: 0 30px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2) !important;
+    transition: all 0.3s ease !important;
+}
+
+.filter-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3) !important;
+}
+
+.filter-btn i {
+    font-size: 1.2rem;
 }
 
 /* ========================================
@@ -44,12 +104,15 @@
 .dish-card {
     border-radius: 15px;
     overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: all 0.3s ease;
+}
+
+.dish-card-clickable {
+    cursor: pointer;
 }
 
 .dish-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
 }
 
 .dish-card-image {
@@ -61,15 +124,41 @@
     transition: transform 0.5s ease;
     height: 250px;
     object-fit: cover;
+    width: 100%;
 }
 
 .dish-card:hover .dish-card-image img {
     transform: scale(1.1);
 }
 
+.delete-dish-btn-floating {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 2;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.3s ease;
+}
+
+.edit-dish-btn-floating {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    z-index: 2;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.3s ease;
+}
+
+.dish-card:hover .delete-dish-btn-floating,
+.dish-card:hover .edit-dish-btn-floating {
+    opacity: 1;
+    transform: scale(1);
+}
+
 .dish-card-image-placeholder {
     height: 250px;
-    background: linear-gradient(135deg, #e0e0e0 0%, #bdbdbd 100%);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -77,21 +166,18 @@
 
 .dish-card-image-placeholder i {
     font-size: 80px;
-    color: #9e9e9e;
 }
 
 .dish-card-title {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-    font-weight: 500;
 }
 
 .dish-card-description {
     min-height: 60px;
-    color: #757575;
 }
 
 /* ========================================
-   PRECIOS
+   PRECIOS Y TAGS
    ======================================== */
 
 .dish-price-container {
@@ -99,19 +185,12 @@
 }
 
 .price-tag {
-    background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
-    color: white;
     padding: 8px 20px;
     border-radius: 25px;
     display: inline-block;
     font-size: 20px;
     font-weight: bold;
-    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
 }
-
-/* ========================================
-   TAGS
-   ======================================== */
 
 .dish-tags-container {
     margin-top: 10px;
@@ -135,21 +214,14 @@
    ======================================== */
 
 .category-header {
-    background: linear-gradient(90deg, #0288d1 0%, #03a9f4 100%);
-    color: white;
     padding: 15px 25px;
     border-radius: 10px;
     margin-bottom: 20px;
-    box-shadow: 0 4px 15px rgba(2, 136, 209, 0.3);
 }
 
 .category-header h4 {
     margin: 0;
     font-weight: 300;
-}
-
-.category-header-uncategorized {
-    background: linear-gradient(90deg, #757575 0%, #9e9e9e 100%);
 }
 
 /* ========================================
@@ -159,7 +231,6 @@
 .add-btn {
     border-radius: 25px;
     padding: 0 30px;
-    box-shadow: 0 4px 15px rgba(244, 67, 54, 0.4);
 }
 
 /* ========================================
@@ -167,12 +238,9 @@
    ======================================== */
 
 .no-results {
-    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
     border-radius: 15px;
     padding: 40px;
     text-align: center;
-    color: white;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .no-results i {

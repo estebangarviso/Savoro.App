@@ -1,6 +1,7 @@
 {% extends "restaurant/fragments/base.html" %}
 {% load static %}
 {% load humanize %}
+{% load custom_filters %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/restaurant-detail.css' %}">
@@ -30,7 +31,7 @@
                 <div class="info-section">
                     <h5><i class="material-icons left">attach_money</i>Precio</h5>
                     <div class="price-display">
-                        ${{ dish.price|intcomma }}
+                        {{ dish.price|currency }}
                     </div>
                 </div>
 
