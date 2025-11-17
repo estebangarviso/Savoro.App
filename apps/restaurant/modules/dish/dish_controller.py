@@ -3,6 +3,8 @@ Dish Controller - HTTP request handler for Dish
 Similar to NestJS Controller (@Controller('dishes'))
 """
 
+from __future__ import annotations
+
 from typing import Dict, Any
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -10,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from ...common import BaseController, Controller
 from ...forms import DishForm
+from ...models import FoodTag
 from .dish_service import DishService
 from ..category.category_service import CategoryService
 
@@ -58,9 +61,9 @@ class DishController(BaseController):
 
         # Get filter options
         all_categories = controller.category_service.find_all()
-        all_tags = controller.service.repository.model.tags.through.objects.all()
+        all_tags = FoodTag.objects.filter(deleted=False).order_by("name")
 
-        context = {
+        context: Dict[str, Any] = {
             "categories": categories,
             "uncategorized_dishes": uncategorized_dishes,
             "all_categories": all_categories,
@@ -113,7 +116,7 @@ class DishController(BaseController):
         else:
             form = DishForm()
 
-        context = {
+        context: Dict[str, Any] = {
             "form": form,
             "title": "Crear Plato",
             "cancel_url": "restaurant:index",
@@ -155,7 +158,7 @@ class DishController(BaseController):
 
         from django.urls import reverse
 
-        context = {
+        context: Dict[str, Any] = {
             "form": form,
             "title": "Editar Plato",
             "cancel_url": reverse("restaurant:detail", kwargs={"dish_id": dish_id}),

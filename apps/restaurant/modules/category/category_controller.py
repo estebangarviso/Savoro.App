@@ -3,6 +3,9 @@ Category Controller - HTTP request handler for Category
 Similar to NestJS Controller (@Controller('categories'))
 """
 
+from __future__ import annotations
+
+from typing import Dict, Any
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -43,7 +46,7 @@ class CategoryController(BaseController):
             search_query=search_query if search_query else None
         )
 
-        context = {
+        context: Dict[str, Any] = {
             "categories": categories,
             "search_query": search_query,
             "total_count": categories.count(),
@@ -76,7 +79,7 @@ class CategoryController(BaseController):
         else:
             form = CategoryForm()
 
-        context = {
+        context: Dict[str, Any] = {
             "form": form,
             "title": "Crear Categoría",
             "cancel_url": "restaurant:category_list",
@@ -116,7 +119,7 @@ class CategoryController(BaseController):
         else:
             form = CategoryForm(instance=category)
 
-        context = {
+        context: Dict[str, Any] = {
             "form": form,
             "title": "Editar Categoría",
             "cancel_url": "restaurant:category_list",
@@ -152,7 +155,7 @@ class CategoryController(BaseController):
             except Exception as e:
                 # Return JSON for AJAX requests
                 if request.headers.get("Content-Type") == "application/json":
-                    return JsonResponse({"success": False, "message": str(e)})
+                    return JsonResponse({"success": False, "message": e})
 
                 messages.error(request, str(e))
 

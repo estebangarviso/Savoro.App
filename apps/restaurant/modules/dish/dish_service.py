@@ -3,10 +3,13 @@ Dish Service - Business logic layer for Dish
 Similar to NestJS Service (@Injectable())
 """
 
-from typing import Optional, Dict, Any, List
+from __future__ import annotations
+
+from typing import Optional, Dict, Any
+from django.db import models
 from django.db.models import QuerySet
 from ...common import BaseService, Injectable, NotFoundException, BadRequestException
-from ...models import Dish, Category, FoodTag
+from ...models import Dish, Category
 from .dish_repository import DishRepository
 
 
@@ -32,7 +35,7 @@ class DishService(BaseService):
         """Get dish by ID"""
         dish = self.repository.find_by_id(dish_id)
         if not dish:
-            raise NotFoundException(f"Dish with ID {dish_id} not found")
+            raise NotFoundException(f"Plato con ID {dish_id} no encontrado")
         return dish
 
     def find_filtered(
@@ -80,14 +83,16 @@ class DishService(BaseService):
         """
         # Validate name uniqueness
         if self.repository.exists_by_name(data.get("name", "")):
-            raise BadRequestException(f"Dish with name '{data['name']}' already exists")
+            raise BadRequestException(
+                f"Ya existe un plato con el nombre '{data['name']}'"
+            )
 
         # Validate category if provided
         if "category_id" in data and data["category_id"]:
             if not Category.objects.filter(
                 pk=data["category_id"], deleted=False
             ).exists():
-                raise BadRequestException("Invalid category")
+                raise BadRequestException("Categoría inválida")
 
         # Create dish
         tags = data.pop("tags", [])
@@ -95,7 +100,10 @@ class DishService(BaseService):
 
         # Add tags if provided
         if tags:
-            dish.tags.set(tags)
+            from typing import cast
+            from ...models import FoodTag
+
+            dish.tags.set(cast(list[FoodTag], tags))  # type: ignore[misc]
 
         return dish
 
@@ -111,7 +119,7 @@ class DishService(BaseService):
         if "name" in data and data["name"] != dish.name:
             if self.repository.exists_by_name(data["name"], exclude_id=dish_id):
                 raise BadRequestException(
-                    f"Dish with name '{data['name']}' already exists"
+                    f"Ya existe un plato con el nombre '{data['name']}'"
                 )
 
         # Validate category if provided
@@ -119,17 +127,20 @@ class DishService(BaseService):
             if not Category.objects.filter(
                 pk=data["category_id"], deleted=False
             ).exists():
-                raise BadRequestException("Invalid category")
+                raise BadRequestException("Categoría inválida")
 
         # Update tags if provided
         tags = data.pop("tags", None)
         if tags is not None:
-            dish.tags.set(tags)
+            from typing import cast
+            from ...models import FoodTag
+
+            dish.tags.set(cast(list[FoodTag], tags))  # type: ignore[misc]
 
         # Update dish
         updated_dish = self.repository.update(dish_id, **data)
         if not updated_dish:
-            raise NotFoundException(f"Dish with ID {dish_id} not found")
+            raise NotFoundException(f"Plato con ID {dish_id} no encontrado")
 
         return updated_dish
 
@@ -165,7 +176,3 @@ class DishService(BaseService):
     def count_active(self) -> int:
         """Get count of active dishes"""
         return self.repository.find_active().count()
-
-
-# Import models for type hints
-from django.db import models

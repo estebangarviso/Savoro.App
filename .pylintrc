@@ -5,7 +5,9 @@ load-plugins=pylint_django
 disable=missing-docstring,
         too-few-public-methods,
         no-member,
-        import-error
+        import-error,
+        unnecessary-ellipsis,
+        broad-exception-caught
 
 [FORMAT]
 max-line-length=120

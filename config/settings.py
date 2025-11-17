@@ -51,7 +51,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "crud.urls"
+ROOT_URLCONF = "config.urls"
 
 TEMPLATES = [  # type: ignore[var-annotated]
     {
@@ -70,7 +70,7 @@ TEMPLATES = [  # type: ignore[var-annotated]
     },
 ]
 
-WSGI_APPLICATION = "crud.wsgi.application"
+WSGI_APPLICATION = "config.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
@@ -112,6 +112,11 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+# Directorio de formatos personalizados
+FORMAT_MODULE_PATH = [
+    "config.formats",
+]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
