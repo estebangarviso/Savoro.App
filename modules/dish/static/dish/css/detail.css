@@ -1,0 +1,76 @@
+/* ========================================
+   DISH DETAIL STYLES - Dish-specific
+   ======================================== */
+
+.detail-card-image {
+  height: 450px;
+  object-fit: cover;
+}
+
+.detail-card-image-placeholder {
+  height: 450px;
+  background: var(--gradient-purple);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.detail-card-image-placeholder i {
+  font-size: 150px;
+  color: white;
+  opacity: 0.7;
+}
+
+.detail-card-title {
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(0, 0, 0, 0.3) 50%,
+    transparent 100%
+  );
+  font-size: 32px;
+  padding: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+/* ========================================
+   PRICE DISPLAY
+   ======================================== */
+
+.price-display {
+  background: var(--gradient-green);
+  color: white;
+  padding: 20px 40px;
+  border-radius: var(--border-radius-lg);
+  display: inline-block;
+  font-size: 36px;
+  font-weight: bold;
+  box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
+  margin: 20px 0;
+}
+
+/* ========================================
+   TAGS - Dish-specific
+   ======================================== */
+
+.tag-detail-chip {
+  background: var(--gradient-purple);
+  color: white;
+  border-radius: var(--border-radius-xl);
+  padding: 8px 20px;
+  margin: 5px;
+  display: inline-block;
+  font-size: 14px;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.tag-detail-chip i {
+  font-size: 16px;
+  vertical-align: middle;
+}
+
+.category-chip {
+  font-size: 16px;
+  padding: 10px 20px;
+  height: auto;
+}

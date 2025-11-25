@@ -1,0 +1,15 @@
+{% if messages %}
+<script>
+    // Display Django messages as Materialize toasts using custom events
+    document.addEventListener('DOMContentLoaded', function() {
+        {% for message in messages %}
+        document.dispatchEvent(new CustomEvent('toast:show', {
+            detail: {
+                message: '{{ message|escapejs }}',
+                tag: '{{ message.tags }}'
+            }
+        }));
+        {% endfor %}
+    });
+</script>
+{% endif %}

@@ -1,0 +1,153 @@
+/* ========================================
+   COMMON FILTER STYLES - Shared across modules
+   ======================================== */
+
+.filter-card {
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-xl);
+  margin-bottom: var(--spacing-xl);
+  box-shadow: var(--shadow-lg) !important;
+}
+
+.filter-card h5 {
+  font-weight: 600;
+  margin-bottom: 25px;
+  font-size: 1.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.filter-card h5 i {
+  vertical-align: middle;
+  margin-right: var(--spacing-sm);
+}
+
+.filter-row {
+  margin-bottom: var(--spacing-lg);
+}
+
+.filter-row-buttons {
+  margin-bottom: 0;
+}
+
+.filter-input-wrapper {
+  position: relative;
+}
+
+.filter-input-no-margin input,
+.filter-input-no-margin select {
+  margin: 0 !important;
+}
+
+.filter-input {
+  margin-bottom: 0 !important;
+}
+
+.filter-input input,
+.filter-input select {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border: none !important;
+  border-radius: var(--border-radius-sm) !important;
+  padding: 12px 15px 12px 45px !important;
+  font-size: 1rem !important;
+  box-shadow: var(--shadow-sm) !important;
+  margin-bottom: 0 !important;
+  height: auto !important;
+  transition: all var(--transition-speed) ease !important;
+}
+
+.filter-input input:focus,
+.filter-input select:focus {
+  box-shadow: var(--shadow-md) !important;
+  background-color: #fff !important;
+}
+
+.filter-input .prefix {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+.filter-input input::placeholder {
+  color: var(--placeholder-gray) !important;
+}
+
+.filter-btn {
+  margin-right: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+  border-radius: var(--border-radius-pill) !important;
+  padding: 0 30px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  box-shadow: var(--shadow-md) !important;
+  transition: all var(--transition-speed) ease !important;
+}
+
+.filter-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover) !important;
+}
+
+.filter-btn i {
+  font-size: 1.2rem;
+}
+
+/* ========================================
+   COMMON LIST/CARD STYLES
+   ======================================== */
+
+.card-grid {
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  transition: all var(--transition-speed) ease;
+  cursor: pointer;
+}
+
+.card-grid:hover {
+  transform: translateY(-8px);
+}
+
+.no-results {
+  border-radius: var(--border-radius-lg);
+  padding: 40px;
+  text-align: center;
+}
+
+.no-results i {
+  font-size: 80px;
+  margin-bottom: 20px;
+}
+
+.add-btn {
+  border-radius: var(--border-radius-pill);
+  padding: 0 30px;
+}
+
+/* Floating action buttons */
+.delete-btn-floating,
+.edit-btn-floating {
+  position: absolute;
+  z-index: 2;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all var(--transition-speed) ease;
+}
+
+.delete-btn-floating {
+  top: var(--spacing-sm);
+  right: var(--spacing-sm);
+}
+
+.edit-btn-floating {
+  bottom: var(--spacing-sm);
+  right: var(--spacing-sm);
+}
+
+.card-grid:hover .delete-btn-floating,
+.card-grid:hover .edit-btn-floating {
+  opacity: 1;
+  transform: scale(1);
+}

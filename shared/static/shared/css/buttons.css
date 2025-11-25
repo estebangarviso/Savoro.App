@@ -1,0 +1,19 @@
+/* ========================================
+   COMMON BUTTON STYLES - Shared across modules
+   ======================================== */
+
+.add-btn {
+    border-radius: var(--border-radius-pill);
+    padding: 0 30px;
+}
+
+.action-buttons {
+    display: flex;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+}
+
+.action-buttons .btn {
+    border-radius: var(--border-radius-lg);
+    flex: 1;
+}

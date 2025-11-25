@@ -1,0 +1,47 @@
+{% load humanize %}
+{% for category_item in categories %}
+  <div class="col s12 m6 l4">
+    <div class="card card-grid" data-href="{% url 'category:detail' category_item.id %}">
+      <div class="card-header deep-purple darken-2 white-text">
+        <i class="material-icons card-icon">restaurant_menu</i>
+        <h5 class="card-title">{{ category_item.name }}</h5>
+        <a href="#!"
+           class="btn-floating btn-small red darken-1 delete-btn-floating delete-category-btn waves-effect waves-light"
+           data-category-id="{{ category_item.id }}"
+           data-category-name="{{ category_item.name }}"
+           data-has-dishes="{{ category_item.dish_count }}">
+            <i class="material-icons">delete</i>
+        </a>
+        <a href="{% url 'category:update' category_item.id %}"
+           class="btn-floating btn-small orange darken-1 edit-btn-floating waves-effect waves-light">
+            <i class="material-icons">edit</i>
+        </a>
+      </div>
+      <div class="card-content-wrapper">
+        <div class="card-stats">
+          <div class="card-stat">
+            <span class="card-stat-value category-stat-value">{{ category_item.dish_count }}</span>
+            <span class="card-stat-label">Plato{{ category_item.dish_count|pluralize }}</span>
+          </div>
+        </div>
+        <div class="card-meta">
+          <i class="material-icons">access_time</i>
+          <strong>Creado:</strong> {{ category_item.created_at|naturaltime }}
+        </div>
+        <div class="card-meta">
+          <i class="material-icons">update</i>
+          <strong>Actualizado:</strong> {{ category_item.updated_at|naturaltime }}
+        </div>
+        <div>
+          <span class="status-badge {% if category_item.is_active %}status-active{% else %}status-inactive{% endif %}">
+            {% if category_item.is_active %}
+              <i class="material-icons tiny">check_circle</i> Activa
+            {% else %}
+              <i class="material-icons tiny">cancel</i> Inactiva
+            {% endif %}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endfor %}

@@ -1,32 +1,36 @@
-"""crud URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/1.11/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import path, include
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+"""
+URL configuration for restaurant project.
 """
 
-from django.urls import path, include
-from django.contrib import admin
 from django.conf import settings
-from django.conf.urls.static import static
+from django.conf.urls.static import static  # type: ignore
+from django.contrib import admin
+from django.http import HttpRequest, HttpResponseRedirect
+from django.shortcuts import redirect
+from django.urls import URLPattern, URLResolver, include, path
+from config.settings import LOGIN_REDIRECT_URL, LOGOUT_REDIRECT_URL
 
-urlpatterns = [
+
+def root_redirect(request: HttpRequest) -> HttpResponseRedirect:
+    if not request.user.is_authenticated:
+        return redirect(LOGOUT_REDIRECT_URL)
+    return redirect(LOGIN_REDIRECT_URL)
+
+
+urlpatterns: list[URLResolver | URLPattern] = [
     path("admin/", admin.site.urls),
-    # registrar urls de nuestra aplicacion restaurant
-    path("", include("apps.restaurant.urls")),
+    # Authentication
+    path("", include("modules.authentication.urls")),
+    # Domain modules
+    path("dishes/", include("modules.dish.urls")),
+    path("categories/", include("modules.category.urls")),
+    # Redirect root to login
+    path("", root_redirect),
 ]
 
-# Esto no es adecuado para produccion !!
-# Para mas informacion de como servir estos archivos en:
-# https://docs.djangoproject.com/en/1.11/howto/static-files/deployment/
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# Serve static and media files in development
+if settings.DEBUG:
+    # Serve media files
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    # Serve static files from STATIC_ROOT (compiled Vite assets)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

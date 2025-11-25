@@ -1,0 +1,122 @@
+{% load widget_tweaks shared_filters %}
+<form enctype="multipart/form-data" method="post">
+    {% csrf_token %}
+    
+    {% for field in form %}
+        <div class="row">
+            {% if field.errors %}
+                <div class="col s12">
+                    <div class="red-text">
+                        {{ field.errors }}
+                    </div>
+                </div>
+            {% endif %}
+            
+            {% if field|widget_type == 'checkboxselectmultiple' %}
+                <!-- Checkboxes múltiples -->
+                <div class="col s12">
+                    <p><strong>{{ field.label }}</strong></p>
+                    <div>
+                        {% for value, label in field.field.choices %}
+                            <p>
+                                <label>
+                                    <input type="checkbox" 
+                                           name="{{ field.name }}" 
+                                           value="{{ value }}"
+                                           id="id_{{ field.name }}_{{ forloop.counter0 }}" 
+                                           class="filled-in"
+                                           {% if field.value %}
+                                               {% for selected in field.value %}
+                                                   {% if selected|stringformat:"s" == value|stringformat:"s" %}
+                                                       checked="checked"
+                                                   {% endif %}
+                                               {% endfor %}
+                                           {% endif %} />
+                                    <span>{{ label }}</span>
+                                </label>
+                            </p>
+                        {% endfor %}
+                    </div>
+                </div>
+            
+            {% elif field|widget_type == 'clearablefileinput' %}
+                <!-- File inputs -->
+                <div class="file-field input-field col s12">
+                    <div class="btn">
+                        <span>{{ field.label }}</span>
+                        {% render_field field %}
+                    </div>
+                    <div class="file-path-wrapper">
+                        <input class="file-path validate" type="text" placeholder="{{ field.label }}">
+                    </div>
+                </div>
+            
+            {% elif field|widget_type == 'textarea' %}
+                <!-- Textareas -->
+                <div class="input-field col s12">
+                    {% render_field field class+="materialize-textarea validate" %}
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                </div>
+            
+            {% elif field|widget_type == 'select' %}
+                <!-- Select -->
+                <div class="input-field col s12">
+                    {% render_field field class+="browser-default" %}
+                </div>
+            
+            {% elif field|widget_type == 'checkboxinput' %}
+                <!-- Checkbox -->
+                <div class="col s12">
+                    <p>
+                        <label>
+                            {% render_field field class+="filled-in" %}
+                            <span>{{ field.label }}</span>
+                        </label>
+                    </p>
+                </div>
+            
+            {% else %}
+                <!-- Inputs por defecto -->
+                <div class="input-field col s12">
+                    {% render_field field class+="validate" %}
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                </div>
+            {% endif %}
+        </div>
+    {% endfor %}
+    
+    <div class="row">
+        <div class="col s12">
+            <button class="btn waves-effect waves-light red darken-1" 
+                    type="submit" 
+                    name="action">
+                {% if submit_text %}
+                    {{ submit_text }}
+                {% elif form.instance.pk %}
+                    Actualizar
+                {% else %}
+                    Crear
+                {% endif %}
+                <i class="material-icons right">send</i>
+            </button>
+            
+            {% if redirect %}
+                {% if '/' in redirect %}
+                    {# URL absoluta #}
+                    <a href="{{ redirect }}"
+                       class="btn waves-effect waves-light grey">
+                        Cancelar
+                        <i class="material-icons right">cancel</i>
+                    </a>
+                {% else %}
+                    {# Nombre de URL de Django #}
+                    <a href="{% url_with_id redirect form.instance %}"
+                       class="btn waves-effect waves-light grey">
+                        Cancelar
+                        <i class="material-icons right">cancel</i>
+                    </a>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+</form>

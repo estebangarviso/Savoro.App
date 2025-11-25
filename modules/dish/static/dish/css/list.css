@@ -1,0 +1,122 @@
+/* ========================================
+   DISH-SPECIFIC OVERRIDES
+   ======================================== */
+
+/* Dish Filter Card - specific gradient */
+.filter-card {
+    background: var(--gradient-purple) !important;
+}
+
+.filter-input .prefix {
+    color: var(--primary-purple) !important;
+}
+
+/* ========================================
+   DISH CARD IMAGE
+   ======================================== */
+
+.dish-card {
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+    transition: all var(--transition-speed) ease;
+}
+
+.dish-card-clickable {
+    cursor: pointer;
+}
+
+.dish-card:hover {
+    transform: translateY(-10px);
+}
+
+.dish-card-image {
+    position: relative;
+    overflow: hidden;
+}
+
+.dish-card-image img {
+    transition: transform var(--transition-slow) ease;
+    height: 250px;
+    object-fit: cover;
+    width: 100%;
+}
+
+.dish-card:hover .dish-card-image img {
+    transform: scale(1.1);
+}
+
+.dish-card-image-placeholder {
+    height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dish-card-image-placeholder i {
+    font-size: 80px;
+}
+
+.dish-card-title {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.dish-card-description {
+    min-height: 60px;
+}
+
+/* ========================================
+   PRECIOS Y TAGS
+   ======================================== */
+
+.dish-price-container {
+    margin: var(--spacing-md) 0;
+}
+
+.price-tag {
+    padding: 8px var(--spacing-lg);
+    border-radius: var(--border-radius-pill);
+    display: inline-block;
+    font-size: var(--font-size-lg);
+    font-weight: bold;
+}
+
+.dish-tags-container {
+    margin-top: var(--spacing-sm);
+}
+
+.tag-chip {
+    border-radius: var(--border-radius-md);
+    font-size: var(--font-size-xs);
+    padding: 0 12px;
+    height: 28px;
+    line-height: 28px;
+    margin: 4px 2px;
+}
+
+.tag-icon {
+    font-size: 16px !important;
+}
+
+/* ========================================
+   CATEGORÍAS
+   ======================================== */
+
+.category-header {
+    padding: var(--spacing-md) 25px;
+    border-radius: var(--border-radius-sm);
+    margin-bottom: var(--spacing-lg);
+}
+
+.category-header h4 {
+    margin: 0;
+    font-weight: 300;
+}
+
+/* ========================================
+   DISH NO RESULTS - Specific gradient
+   ======================================== */
+
+.no-results {
+    background: var(--gradient-warning);
+    color: white;
+}
