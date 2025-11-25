@@ -1,0 +1,12 @@
+/**
+ * Main CSS Entry Point
+ * All shared styles (Materialize is imported via JS)
+ */
+
+/* Import shared styles in order */
+@import "./variables.css";
+@import "./base.css";
+@import "./buttons.css";
+@import "./cards.css";
+@import "./components.css";
+@import "./filters.css";

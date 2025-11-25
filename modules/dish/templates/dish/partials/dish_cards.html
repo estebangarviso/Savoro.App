@@ -1,0 +1,123 @@
+{% load shared_filters %}
+{% for category in categories %}
+  {% if category.dishes.all %}
+    <div class="row">
+      <div class="col s12">
+        <div class="card-panel blue lighten-1 white-text category-header">
+          <h4>{{ category.name }}</h4>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      {% for dish in category.dishes.all %}
+        <div class="col s12 m6 l4">
+          <div class="card dish-card card-grid" data-href="{% url 'dish:detail' dish.id %}">
+            <div class="card-image dish-card-image">
+              {% if dish.image %}
+                <img src="{{ dish.image.url }}" alt="{{ dish.name }}">
+              {% else %}
+                <div class="dish-card-image-placeholder grey lighten-2">
+                  <i class="material-icons grey-text text-darken-1">restaurant</i>
+                </div>
+              {% endif %}
+              <span class="card-title dish-card-title">{{ dish.name }}</span>
+              <a href="#!"
+                 class="btn-floating btn-small red darken-1 delete-btn-floating delete-dish-btn waves-effect waves-light"
+                 data-dish-id="{{ dish.id }}"
+                 data-dish-name="{{ dish.name }}">
+                <i class="material-icons">delete</i>
+              </a>
+              <a href="{% url 'dish:update' dish.id %}"
+                 class="btn-floating btn-small orange darken-1 edit-btn-floating waves-effect waves-light">
+                <i class="material-icons">edit</i>
+              </a>
+            </div>
+            <div class="card-content">
+              <p class="dish-card-description grey-text text-darken-1">{{ dish.description|truncatewords:15 }}</p>
+              <div class="dish-price-container">
+                <span class="price-tag green white-text">
+                  {{ dish.price|currency }}
+                </span>
+              </div>
+              {% if dish.tags.all %}
+                <div class="dish-tags-container">
+                  {% for tag in dish.tags.all %}
+                    <span class="chip light-blue lighten-4 tag-chip">
+                      <i class="material-icons tag-icon">label</i>
+                      {{ tag.name }}
+                    </span>
+                  {% endfor %}
+                </div>
+              {% else %}
+                <div class="dish-tags-container">
+                  <span class="chip transparent tag-chip">
+                    &nbsp;
+                  </span>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endfor %}
+{% if uncategorized_dishes %}
+  <div class="row">
+    <div class="col s12">
+      <div class="card-panel grey white-text category-header">
+        <h4>Sin Categoría</h4>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    {% for dish in uncategorized_dishes %}
+      <div class="col s12 m6 l4">
+        <div class="card dish-card dish-card-clickable" data-href="{% url 'dish:detail' dish.id %}">
+          <div class="card-image dish-card-image">
+            {% if dish.image %}
+              <img src="{{ dish.image.url }}" alt="{{ dish.name }}">
+            {% else %}
+              <div class="dish-card-image-placeholder grey lighten-2">
+                <i class="material-icons grey-text text-darken-1">restaurant</i>
+              </div>
+            {% endif %}
+            <span class="card-title dish-card-title">{{ dish.name }}</span>
+            <a href="#!"
+               class="btn-floating btn-small red darken-1 delete-dish-btn-floating delete-dish-btn waves-effect waves-light"
+               data-dish-id="{{ dish.id }}"
+               data-dish-name="{{ dish.name }}">
+              <i class="material-icons">delete</i>
+            </a>
+            <a href="{% url 'dish:update' dish.id %}"
+               class="btn-floating btn-small orange darken-1 edit-dish-btn-floating waves-effect waves-light">
+              <i class="material-icons">edit</i>
+            </a>
+          </div>
+          <div class="card-content">
+            <p class="dish-card-description grey-text text-darken-1">{{ dish.description|truncatewords:15 }}</p>
+            <div class="dish-price-container">
+              <span class="price-tag green white-text">{{ dish.price|currency }}</span>
+            </div>
+            {% if dish.tags.all %}
+              <div class="dish-tags-container">
+                {% for tag in dish.tags.all %}
+                  <span class="chip light-blue lighten-4 tag-chip">
+                    <i class="material-icons tag-icon">label</i>
+                    {{ tag.name }}
+                  </span>
+                {% endfor %}
+              </div>
+            {% else %}
+              <div class="dish-tags-container">
+                <span class="chip transparent tag-chip">
+                  &nbsp;
+                </span>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}

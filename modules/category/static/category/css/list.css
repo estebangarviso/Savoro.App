@@ -1,0 +1,43 @@
+/* ========================================
+   CATEGORY-SPECIFIC OVERRIDES
+   ======================================== */
+
+/* Category Filter Card - specific gradient */
+.filter-card {
+    background: var(--gradient-red) !important;
+}
+
+.filter-input .prefix {
+    color: var(--primary-red) !important;
+}
+
+/* Category-specific stat value color */
+.category-stat-value {
+    color: #667eea;
+}
+
+/* Category Card Header - specific gradient */
+.category-card .card-header {
+    background: var(--gradient-card);
+}
+
+/* Category No Results - specific gradient */
+.no-results {
+    background: var(--gradient-warning);
+    color: white;
+}
+
+/* Responsive overrides */
+@media (max-width: 600px) {
+    .card-header {
+        min-height: 120px;
+    }
+
+    .card-icon {
+        font-size: 50px !important;
+    }
+
+    .card-title {
+        font-size: var(--font-size-lg);
+    }
+}

@@ -1,0 +1,66 @@
+/**
+ * Reusable components
+ */
+
+.card {
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
+.card-image img {
+  height: 200px;
+  object-fit: cover;
+}
+
+.hoverable:hover {
+  box-shadow: var(--card-shadow-hover) !important;
+  transform: translateY(-2px);
+  transition: all var(--transition-speed) ease;
+}
+
+.status-badge {
+  border-radius: 12px;
+  padding: 4px 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.status-badge.success {
+  background-color: var(--success-color);
+  color: white;
+}
+
+.status-badge.danger {
+  background-color: var(--danger-color);
+  color: white;
+}
+
+.status-badge.warning {
+  background-color: var(--warning-color);
+  color: white;
+}
+
+.price-tag {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.filter-section {
+  background: var(--light-gray);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  margin-bottom: 2rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #999;
+}
+
+.empty-state i {
+  font-size: 5rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}

@@ -1,0 +1,28 @@
+.login-card {
+    margin-top: 50px;
+    padding: 20px;
+}
+
+.login-card .material-icons.large {
+    font-size: 80px;
+    color: var(--auth-primary);
+}
+
+.login-card h4 {
+    margin-top: 10px;
+    margin-bottom: 30px;
+    color: var(--dark-gray);
+}
+
+.login-card .input-field {
+    margin-top: 30px;
+}
+
+.login-card .btn-large {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.primary-text {
+    color: var(--auth-primary);
+}

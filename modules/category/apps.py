@@ -1,0 +1,11 @@
+"""
+Category app configuration
+"""
+from django.apps import AppConfig
+
+
+class CategoryConfig(AppConfig):
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "modules.category"
+    label = "category"
+    verbose_name = "Categorías"

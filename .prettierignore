@@ -1,0 +1,21 @@
+# Python
+*.pyc
+__pycache__/
+venv/
+env/
+*.sqlite3
+media/
+*.log
+
+# Node
+node_modules/
+package-lock.json
+pnpm-lock.yaml
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

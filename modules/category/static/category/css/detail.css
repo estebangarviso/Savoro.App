@@ -1,0 +1,26 @@
+/* Category Detail Styles - Category-specific overrides */
+
+.detail-card .card-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--category-primary);
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.detail-card .card-title i {
+    font-size: 2.5rem;
+    margin-right: 10px;
+}
+
+/* Responsive adjustments */
+@media only screen and (max-width: 600px) {
+    .detail-card .card-title {
+        font-size: 1.5rem;
+    }
+
+    .detail-card .card-title i {
+        font-size: 2rem;
+    }
+}

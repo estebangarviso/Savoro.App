@@ -1,3 +1,15 @@
+# Node
+node_modules/
+package-lock.json
+pnpm-lock.yaml
+
+# Vite build outputs
+staticfiles/.vite/
+staticfiles/manifest.json
+staticfiles/**/chunks/
+node_modules/
+.vite/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
