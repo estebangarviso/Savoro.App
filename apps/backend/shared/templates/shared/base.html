@@ -1,0 +1,94 @@
+{% load static i18n vite_tags %}
+<!DOCTYPE html>
+<html lang="{% get_current_language as LANGUAGE_CODE %}{{ LANGUAGE_CODE }}">
+    <head>
+        <meta charset="UTF-8">
+        <title>
+            {% block title %}
+                Savoro App
+            {% endblock title %}
+        </title>
+        {% if add_seo_meta %}
+            <meta name="description"
+                  content="{% block description %}Sistema de gestión de restaurante{% endblock description %}">
+            <meta name="keywords"
+                  content="{% block keywords %}restaurante, gestión, savoro, platos, menú{% endblock keywords %}">
+        {% endif %}
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+              rel="stylesheet">
+        {# Vite HMR for development #}
+        {% vite_hmr %}
+        <!-- Materialize CSS -->
+        <link rel="stylesheet" href="{% static 'vendor/materialize.css' %}" />
+        <!-- Main CSS bundle (custom styles) -->
+        <link rel="stylesheet" href="{% static 'shared/css/main.css' %}" />
+        {% block extra_css %}
+        {% endblock extra_css %}
+    </head>
+    <body class="body">
+        <!-- Navigation -->
+        <nav class="light-blue lighten-1" role="navigation">
+            <div class="nav-wrapper container">
+                <a id="logo-container" href="{% url 'dish:list' %}" class="brand-logo">
+                    <img src="{% static 'shared/images/logo.png' %}" alt="Savoro Logo">
+                    Savoro
+                </a>
+                {% if request.user.is_authenticated %}
+                    <ul class="right hide-on-med-and-down">
+                        <li>
+                            <a href="{% url 'dish:list' %}">Platos</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'category:list' %}">Categorías</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'authentication:logout' %}">Salir</a>
+                        </li>
+                    </ul>
+                    <ul id="nav-mobile" class="sidenav">
+                        <li>
+                            <a href="{% url 'dish:list' %}">Platos</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'category:list' %}">Categorías</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'authentication:logout' %}">Salir</a>
+                        </li>
+                    </ul>
+                    <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+                {% endif %}
+            </div>
+        </nav>
+        <!-- Messages -->
+        {% include "shared/fragments/messages.html" %}
+        <!-- Main Content -->
+        <main id="main-content" class="container">
+            <div class="section">
+                {% block content %}
+                {% endblock content %}
+            </div>
+        </main>
+        <!-- Footer -->
+        <footer class="page-footer light-blue lighten-1">
+            <div class="container">
+                <div class="row">
+                    <div class="col l6 s12">
+                        <h5 class="white-text">Savoro App</h5>
+                        <p class="grey-text text-lighten-4">Sistema de gestión de restaurante</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-copyright">
+                <div class="container">© 2025 Savoro App</div>
+            </div>
+        </footer>
+        <!-- Vite-built JavaScript (includes Materialize initialization) -->
+        <script type="module" src="{% static 'shared/js/main.js' %}"></script>
+        {% block extra_js %}
+        {% endblock extra_js %}
+    </body>
+</html>

@@ -32,35 +32,32 @@ fi
 # Limpiar build anterior dinámicamente
 echo -e "${BLUE}🧹 Limpiando archivos de build anteriores...${NC}"
 
-# Limpiar manifest y cache de Vite
-rm -rf staticfiles/.vite
 
-# Escanear módulos y limpiar solo los que existen
-if [ -d "modules" ]; then
-    for module_dir in modules/*/; do
-        if [ -d "$module_dir" ]; then
-            module_name=$(basename "$module_dir")
-            # Limpiar JS y CSS de este módulo si existen
-            [ -d "staticfiles/$module_name/js" ] && rm -rf "staticfiles/$module_name/js"
-            [ -d "staticfiles/$module_name/css" ] && rm -rf "staticfiles/$module_name/css"
-        fi
-    done
-fi
+# Limpiar manifest y cache de Vite
+rm -rf apps/frontend/staticfiles/.vite
+
+# Limpiar JS y CSS generados por Vite en cada módulo
+for module_dir in apps/frontend/staticfiles/*/; do
+    module_name=$(basename "$module_dir")
+    [ -d "apps/frontend/staticfiles/$module_name/js" ] && rm -rf "apps/frontend/staticfiles/$module_name/js"
+    [ -d "apps/frontend/staticfiles/$module_name/css" ] && rm -rf "apps/frontend/staticfiles/$module_name/css"
+done
 
 # Limpiar shared si existe
-if [ -d "shared/static" ]; then
-    [ -d "staticfiles/shared/js" ] && rm -rf "staticfiles/shared/js"
-    [ -d "staticfiles/shared/css" ] && rm -rf "staticfiles/shared/css"
-fi
+[ -d "apps/frontend/staticfiles/shared/js" ] && rm -rf "apps/frontend/staticfiles/shared/js"
+[ -d "apps/frontend/staticfiles/shared/css" ] && rm -rf "apps/frontend/staticfiles/shared/css"
 
 # Limpiar chunks generados por Vite
-[ -d "staticfiles/js/chunks" ] && rm -rf "staticfiles/js/chunks"
+[ -d "apps/frontend/staticfiles/js/chunks" ] && rm -rf "apps/frontend/staticfiles/js/chunks"
 
 echo -e "${GREEN}✓ Limpieza completada${NC}"
 
 # Compilar assets con Vite (producción)
+
 echo -e "${BLUE}🔨 Compilando assets con Vite (modo producción)...${NC}"
+cd apps/frontend
 NODE_ENV=production pnpm run build
+cd ../..
 
 # Verificar que la compilación fue exitosa
 if [ $? -ne 0 ]; then
@@ -69,20 +66,23 @@ if [ $? -ne 0 ]; then
 fi
 
 # Recopilar archivos estáticos de Django
+
 echo -e "${BLUE}📁 Recopilando archivos estáticos de Django...${NC}"
-pipenv run python manage.py collectstatic --noinput --clear
+pipenv run python apps/backend/manage.py collectstatic --noinput --clear
 
 # Ejecutar migraciones
+
 echo -e "${BLUE}🗄️  Aplicando migraciones de base de datos...${NC}"
-pipenv run python manage.py migrate --noinput
+pipenv run python apps/backend/manage.py migrate --noinput
 
 echo ""
 echo -e "${GREEN}✅ Build de producción completado exitosamente${NC}"
 echo ""
 echo -e "${YELLOW}📊 Resumen de archivos generados:${NC}"
-echo -e "   - Archivos JavaScript con sourcemaps en staticfiles/*/js/"
-echo -e "   - Archivos CSS optimizados en staticfiles/*/css/"
-echo -e "   - Manifest de Vite en staticfiles/.vite/manifest.json"
+
+echo -e "   - Archivos JavaScript con sourcemaps en apps/frontend/staticfiles/*/js/"
+echo -e "   - Archivos CSS optimizados en apps/frontend/staticfiles/*/css/"
+echo -e "   - Manifest de Vite en apps/frontend/staticfiles/.vite/manifest.json"
 echo ""
 echo -e "${BLUE}🚀 Para ejecutar en producción:${NC}"
 echo -e "   pipenv run gunicorn config.wsgi:application --bind 0.0.0.0:8000"

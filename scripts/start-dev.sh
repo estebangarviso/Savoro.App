@@ -25,18 +25,12 @@ echo -e "${BLUE}📦 Activando entorno virtual de Python...${NC}"
 export PIPENV_VERBOSITY=-1
 
 # Verificar que node_modules existe
-if [ ! -d "node_modules" ]; then
+if [ ! -d "apps/frontend/node_modules" ]; then
     echo -e "${YELLOW}⚠️  node_modules no encontrado. Instalando dependencias...${NC}"
+    cd apps/frontend
     pnpm install
+    cd ../..
 fi
-
-# Compilar assets con Vite
-echo -e "${BLUE}🔨 Compilando assets con Vite...${NC}"
-pnpm run build
-
-# Recopilar archivos estáticos
-echo -e "${BLUE}📁 Recopilando archivos estáticos...${NC}"
-pipenv run python manage.py collectstatic --noinput --clear
 
 echo ""
 echo -e "${GREEN}✅ Compilación completada${NC}"
@@ -44,8 +38,8 @@ echo ""
 echo -e "${BLUE}🌐 Iniciando servidor Django...${NC}"
 echo -e "${YELLOW}   Accede a: http://localhost:8000${NC}"
 echo ""
-echo -e "${YELLOW}💡 Tip: Para desarrollo con HMR, ejecuta 'pnpm run dev' en otra terminal${NC}"
+echo -e "${YELLOW}💡 Ahora ejecuta 'make hmr' en JavaScript Debug Terminal${NC}"
 echo ""
 
 # Iniciar Django
-pipenv run python manage.py runserver
+pipenv run python apps/backend/manage.py runserver

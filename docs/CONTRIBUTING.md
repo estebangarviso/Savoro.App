@@ -4,6 +4,7 @@
 
 1. Fork el repositorio
 2. Crear rama desde `develop` usando Git Flow:
+
    ```bash
    # Inicializar Git Flow (solo primera vez)
    git flow init
@@ -17,7 +18,9 @@
    # Crear release branch
    git flow release start 1.0.0
    ```
+
 3. Realizar commits con [Conventional Commits](https://www.conventionalcommits.org/):
+
    ```bash
    git commit -m "feat: add user authentication"
    git commit -m "fix: resolve login validation issue"
@@ -27,7 +30,9 @@
    git commit -m "test: add unit tests for category service"
    git commit -m "chore: update dependencies"
    ```
+
 4. Finalizar feature/hotfix/release:
+
    ```bash
    # Finalizar feature (merge a develop)
    git flow feature finish amazing-feature
@@ -38,6 +43,7 @@
    # Finalizar release (merge a main y develop, crear tag)
    git flow release finish 1.0.0
    ```
+
 5. Push y abrir Pull Request con descripción clara
 
 ## Ramas Git Flow
@@ -53,18 +59,21 @@
 ## Convención de Nombres
 
 ### Features
+
 `feature/` + descripción en kebab-case
 - `feature/add-reservation-system`
 - `feature/dish-export-pdf`
 - `feature/user-authentication`
 
 ### Hotfixes
+
 `hotfix/` + descripción del bug
 - `hotfix/login-validation-error`
 - `hotfix/image-upload-crash`
 - `hotfix/security-vulnerability`
 
 ### Releases
+
 `release/` + versión semántica
 - `release/1.0.0`
 - `release/1.1.0`
@@ -86,6 +95,7 @@
 ## Estándares de Código
 
 ### Python
+
 - Seguir PEP 8
 - Usar type hints en funciones y métodos
 - Documentar clases y funciones complejas con docstrings
@@ -93,6 +103,7 @@
 - Usar nombres descriptivos en inglés para código, español para mensajes de usuario
 
 **Herramientas de linting:**
+
 ```bash
 # Linter principal (configurado para Django)
 pipenv run pylint modules/ core/
@@ -105,6 +116,7 @@ pipenv run isort modules/ core/
 ```
 
 ### JavaScript
+
 - Seguir configuración ESLint del proyecto
 - Usar sintaxis ES2021+
 - camelCase para variables y funciones
@@ -114,6 +126,7 @@ pipenv run isort modules/ core/
 - Documentar funciones con JSDoc
 
 **Herramientas de linting:**
+
 ```bash
 # Linter JavaScript
 pnpm run lint
@@ -126,6 +139,7 @@ pnpm run lint:fix
 ```
 
 ### CSS
+
 - Usar clases BEM-like descriptivas
 - Aprovechar CSS Variables definidas
 - Mobile First approach
@@ -133,12 +147,14 @@ pnpm run lint:fix
 - No usar !important (excepto casos justificados)
 
 ### Templates Django
+
 - Usar indentación consistente
 - Comentar secciones complejas
 - Evitar lógica compleja en templates
 - Usar template tags personalizados para lógica reutilizable
 
 **Herramientas de linting:**
+
 ```bash
 # Linter para templates Django
 pipenv run djlint modules/ shared/ --reformat
@@ -171,6 +187,7 @@ class DishServiceTest(TestCase):
 ```
 
 **Ejecutar tests:**
+
 ```bash
 # Todos los tests
 pipenv run python manage.py test
@@ -212,7 +229,7 @@ describe('displayToast', () => {
 - [ ] Type hints correctos (pylint)
 - [ ] Documentación actualizada si aplica
 - [ ] Commit sigue Conventional Commits
-- [ ] Sin archivos innecesarios (logs, cache, __pycache__, node_modules)
+- [ ] Sin archivos innecesarios (logs, cache, \__pycache__, node_modules)
 - [ ] Migraciones creadas si hay cambios en modelos
 
 ## Checklist Pull Request

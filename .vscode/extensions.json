@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "monosans.djlint",
+    "ms-python.black-formatter",
+    "batisteo.vscode-django",
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+  ]
+}

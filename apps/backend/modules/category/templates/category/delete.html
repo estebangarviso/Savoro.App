@@ -1,0 +1,40 @@
+{% extends "shared/base.html" %}
+{% load vite_tags %}
+{% block content %}
+    <div class="row">
+        <div class="col s12 m8 offset-m2 l6 offset-l3">
+            <div class="card">
+                <div class="card-content">
+                    <span class="card-title red-text">
+                        <i class="material-icons left">warning</i>
+                        Confirmar eliminación
+                    </span>
+                    <p class="flow-text">
+                        ¿Está seguro que desea eliminar la categoría <strong>"{{ category.name }}"</strong>?
+                    </p>
+                    {% if category.dishes.count > 0 %}
+                        <div class="card-panel orange lighten-4">
+                            <i class="material-icons left">info</i>
+                            <strong>Advertencia:</strong> Esta categoría tiene {{ category.dishes.count }} plato{{ category.dishes.count|pluralize }} asociado{{ category.dishes.count|pluralize }}.
+                        </div>
+                    {% endif %}
+                    <p class="grey-text">Esta acción no se puede deshacer.</p>
+                </div>
+                <div class="card-action center-align">
+                    <form method="post" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn waves-effect waves-light red darken-1">
+                            <i class="material-icons left">delete</i>
+                            Sí, eliminar
+                        </button>
+                    </form>
+                    <a href="{% url 'category:detail' category.id %}"
+                       class="btn waves-effect waves-light grey">
+                        <i class="material-icons left">cancel</i>
+                        Cancelar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
