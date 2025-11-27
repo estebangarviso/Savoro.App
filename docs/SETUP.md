@@ -5,6 +5,7 @@ Esta guía proporciona instrucciones detalladas para configurar el entorno de de
 ## Prerrequisitos
 
 ### Python
+
 - **Versión requerida**: Python 3.10 hasta 3.13 (según `Pipfile`)
 - Python debe estar instalado y configurado en el PATH del sistema
 - **Descargar**: [python.org/downloads](https://www.python.org/downloads/)
@@ -26,6 +27,7 @@ where python  # Windows
 - **Windows**: Descargar desde [python.org](https://www.python.org/downloads/) (marcar "Add Python to PATH")
 
 ### Pipenv
+
 - **Gestor de entornos virtuales y dependencias** para Python
 - **Documentación**: [pipenv.pypa.io](https://pipenv.pypa.io/en/latest/)
 
@@ -38,6 +40,7 @@ pipenv --version
 ```
 
 ### Otros requisitos
+
 - **Node.js 16+**: [nodejs.org](https://nodejs.org/) (opcional, para desarrollo frontend)
 - **pnpm**: [pnpm.io/installation](https://pnpm.io/installation) (opcional, gestor de paquetes JavaScript)
 - **Git**: [git-scm.com/downloads](https://git-scm.com/downloads)
@@ -51,7 +54,7 @@ pipenv --version
 ./scripts/setup.sh
 
 # Crear superusuario
-pipenv run python manage.py createsuperuser
+pipenv run python apps/backend/manage.py createsuperuser
 
 # Iniciar desarrollo
 ./scripts/start-dev.sh
@@ -90,18 +93,18 @@ pipenv --python 3.12 install
 
 ```bash
 # Ejecutar migraciones
-python manage.py makemigrations
-python manage.py migrate
+python apps/backend/manage.py makemigrations
+python apps/backend/manage.py migrate
 
 # Crear superusuario
-python manage.py createsuperuser
+python apps/backend/manage.py createsuperuser
 # Usuario recomendado: admin
 # Email: admin@savoro.app
 # Password: (tu contraseña segura)
 
 # Poblar datos de prueba (opcional)
 # Crea categorías, etiquetas y platos de ejemplo
-python manage.py seed_data  # Si existe el comando
+python apps/backend/manage.py seed_data  # Si existe el comando
 ```
 
 **Configuración de entornos:**
@@ -110,24 +113,26 @@ El proyecto usa diferentes settings según el entorno:
 
 ```bash
 # Desarrollo (default)
-python manage.py runserver --settings=config.settings.development
+python apps/backend/manage.py runserver --settings=config.settings.development
 
 # Producción
-python manage.py runserver --settings=config.settings.production
+python apps/backend/manage.py runserver --settings=config.settings.production
 
 # O configurar variable de entorno
 export DJANGO_SETTINGS_MODULE=config.settings.development
 ```
 
 Archivos de configuración:
-- `config/settings/base.py`: Configuración compartida
-- `config/settings/development.py`: Debug activado, SQLite
-- `config/settings/production.py`: Debug desactivado, PostgreSQL
+
+- `apps/backend/config/settings/base.py`: Configuración compartida
+- `apps/backend/config/settings/development.py`: Debug activado, SQLite
+- `apps/backend/config/settings/production.py`: Debug desactivado, PostgreSQL
 
 ### 3. Configurar Frontend (Opcional)
 
 ```bash
 # Instalar dependencias Node.js
+cd apps/frontend
 pnpm install
 
 # Compilar assets con Vite (producción)
@@ -145,7 +150,7 @@ pnpm run format
 
 **Sobre Vite:**
 
-Vite es el empaquetador de módulos utilizado para compilar y optimizar los archivos JavaScript y CSS. Escanea automáticamente los archivos en `modules/*/static/` y `shared/static/` y genera:
+Vite es el empaquetador de módulos utilizado para compilar y optimizar los archivos JavaScript y CSS. Escanea automáticamente los archivos en `src/*/static/` y genera:
 
 - **Archivos minificados** para producción
 - **Sourcemaps** (`.js.map`, `.css.map`) para debugging
@@ -164,15 +169,16 @@ pnpm run build:watch  # Recompila automáticamente al guardar
 pnpm run preview      # Sirve build en localhost:4173
 ```
 
-Los assets compilados se generan en `staticfiles/` y se integran automáticamente con Django.
+Los assets compilados se generan en `apps/frontend/staticfiles/` y se integran automáticamente con Django.
 
 ### 4. Ejecutar Servidor
 
 ```bash
-python manage.py runserver
+python apps/backend/manage.py runserver
 ```
 
 Acceder a:
+
 - **Aplicación**: http://localhost:8000
 - **Admin**: http://localhost:8000/admin
 
@@ -197,5 +203,5 @@ Si SQLite está bloqueada, asegúrate de cerrar todas las conexiones activas o r
 ### Puerto 8000 ocupado
 Si el puerto 8000 está en uso, puedes especificar otro puerto:
 ```bash
-python manage.py runserver 8001
+python apps/backend/manage.py runserver 8001
 ```

@@ -13,6 +13,7 @@ En lugar de exponer funciones en `window`, usamos **Custom Events** para la comu
 #### Ejemplo: Sistema de Toast Notifications
 
 **❌ Mal - Contaminando el scope global:**
+
 ```javascript
 // messages.js
 export function displayToast(message, tag) { ... }
@@ -25,6 +26,7 @@ window.displayToast = displayToast; // ❌ Mala práctica
 ```
 
 **✅ Bien - Usando Custom Events:**
+
 ```javascript
 // messages.js
 export function displayToast(message, tag) { ... }
@@ -55,6 +57,7 @@ Para inicializar eventos en elementos cargados dinámicamente (AJAX, infinite sc
 #### Ejemplo: Inicialización de Cards
 
 **❌ Mal - Event Delegation Global:**
+
 ```javascript
 // Problema: eventos duplicados, difícil de mantener
 document.addEventListener('click', function(e) {
@@ -65,6 +68,7 @@ document.addEventListener('click', function(e) {
 ```
 
 **✅ Bien - MutationObserver + Inicialización Individual:**
+
 ```javascript
 // card-initializer.js
 import { initializeCard } from './list.js';
@@ -122,6 +126,7 @@ import { displayToast } from '@shared/js/messages.js';
 ```
 
 **Configuración en `vite.config.js`:**
+
 ```javascript
 resolve: {
   alias: {
@@ -134,6 +139,7 @@ resolve: {
 ### 4. Evitar Inline Scripts en Templates
 
 **❌ Mal:**
+
 ```html
 <div id="card-{{ id }}">
   <script>
@@ -145,6 +151,7 @@ resolve: {
 ```
 
 **✅ Bien:**
+
 ```html
 <div class="card" data-href="...">
   <!-- Sin scripts inline -->

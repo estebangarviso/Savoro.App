@@ -41,29 +41,35 @@ echo ""
 
 # Instalar dependencias de Python
 echo -e "${BLUE}📦 Instalando dependencias de Python...${NC}"
+cd apps/backend
 pipenv install
+cd ../..
 
 # Instalar dependencias de Node
 echo -e "${BLUE}📦 Instalando dependencias de JavaScript...${NC}"
+cd apps/frontend
 pnpm install
+cd ../..
 
 # Crear base de datos y ejecutar migraciones
 echo -e "${BLUE}🗄️  Configurando base de datos...${NC}"
-pipenv run python manage.py migrate
+pipenv run python apps/backend/manage.py migrate
 
 # Compilar assets iniciales
 echo -e "${BLUE}🔨 Compilando assets con Vite...${NC}"
+cd apps/frontend
 pnpm run build
+cd ../..
 
 # Recopilar archivos estáticos
 echo -e "${BLUE}📁 Recopilando archivos estáticos...${NC}"
-pipenv run python manage.py collectstatic --noinput
+pipenv run python apps/backend/manage.py collectstatic --noinput
 
 echo ""
 echo -e "${GREEN}✅ Configuración completada exitosamente${NC}"
 echo ""
 echo -e "${YELLOW}🎯 Próximos pasos:${NC}"
-echo -e "   1. Crear superusuario: ${BLUE}pipenv run python manage.py createsuperuser${NC}"
-echo -e "   2. Iniciar desarrollo: ${BLUE}./start-dev.sh${NC}"
-echo -e "   3. O usar: ${BLUE}pnpm run start:dev${NC}"
+echo -e "   1. Crear superusuario: ${BLUE}pipenv run python apps/backend/manage.py createsuperuser${NC}"
+echo -e "   2. Iniciar desarrollo: ${BLUE}./scripts/start-dev.sh${NC}"
+echo -e "   3. O usar: ${BLUE}cd apps/frontend && pnpm run dev${NC}"
 echo ""

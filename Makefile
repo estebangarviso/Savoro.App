@@ -1,8 +1,8 @@
 .PHONY: help setup dev prod build clean install migrate superuser
 
 # Variables
-PYTHON := pipenv run python
-PNPM := pnpm
+PYTHON := pipenv run python apps/backend/manage.py
+PNPM := cd apps/frontend && pnpm
 
 help: ## Mostrar esta ayuda
 	@echo "Savoro App - Comandos disponibles:"
@@ -16,6 +16,7 @@ setup: ## Configuración inicial completa del proyecto
 
 dev: ## Iniciar servidor de desarrollo
 	@echo "🚀 Iniciando desarrollo..."
+	@make clean
 	@./scripts/start-dev.sh
 
 prod: ## Build de producción completo
@@ -24,56 +25,63 @@ prod: ## Build de producción completo
 
 build: ## Compilar assets con Vite
 	@echo "🔨 Compilando assets..."
-	@$(PNPM) run build
-	@$(PYTHON) manage.py collectstatic --noinput
+	@cd apps/frontend && pnpm run build
 
 clean: ## Limpiar archivos generados
 	@echo "🧹 Limpiando archivos..."
-	@rm -rf staticfiles/.vite
-	@find modules -type d -name "static" 2>/dev/null | while read -r static_dir; do \
-		module_name=$$(basename $$(dirname "$$static_dir")); \
-		rm -rf "staticfiles/$$module_name/js" "staticfiles/$$module_name/css" 2>/dev/null || true; \
-	done
-	@rm -rf staticfiles/shared/js staticfiles/shared/css 2>/dev/null || true
-	@rm -rf staticfiles/js/chunks 2>/dev/null || true
-	@rm -rf node_modules/.vite 2>/dev/null || true
-	@rm -rf staticfiles/**/*.css staticfiles/**/*.js 2>/dev/null || true
-	@echo "✅ Limpieza completada"
+	@if [ ! -d "apps/frontend/staticfiles" ]; then \
+		echo "⚠️  El directorio apps/frontend/staticfiles no existe. Saltando limpieza."; \
+		exit 0; \
+	else \
+		echo "🗑️  Eliminando archivos generados por Vite..." ; \
+		rm -rf apps/frontend/staticfiles/.vite ; \
+		rm -rf apps/frontend/staticfiles/.vite-manifest.json ; \
+		rm -rf apps/frontend/staticfiles/manifest.json ; \
+		rm -rf apps/frontend/staticfiles/vendor ; \
+		find apps/frontend/staticfiles -type f \( -name "*.js" -o -name "*.css" \) -delete ; \
+		find apps/frontend/staticfiles -type d -name "chunks" -exec rm -rf {} + 2>/dev/null || true ; \
+		rm -rf apps/frontend/node_modules/.vite ; \
+		echo "✅ Limpieza completada" ; \
+	fi
 
 install: ## Instalar dependencias
 	@echo "📦 Instalando dependencias..."
-	@pipenv install --dev
-	@$(PNPM) install
+	@cd apps/backend && pipenv install --dev
+	@cd apps/frontend && pnpm install
 
 migrate: ## Ejecutar migraciones de base de datos
 	@echo "🗄️  Ejecutando migraciones..."
-	@$(PYTHON) manage.py migrate
+	@pipenv run python apps/backend/manage.py migrate
 
 superuser: ## Crear superusuario
 	@echo "👤 Creando superusuario..."
-	@$(PYTHON) manage.py createsuperuser
+	@pipenv run python apps/backend/manage.py createsuperuser
 
 test: ## Ejecutar tests
 	@echo "🧪 Ejecutando tests..."
-	@$(PYTHON) manage.py test
+	@pipenv run python apps/backend/manage.py test
 
 lint: ## Verificar código con linters
 	@echo "🔍 Verificando código..."
-	@$(PNPM) run lint
-	@pipenv run pylint **/*.py || true
-	@pipenv run black --check **/*.py || true
-	@pipenv run isort --check-only **/*.py || true
+	@cd apps/frontend && pnpm run lint
+	@cd apps/backend && pipenv run pylint **/*.py || true
+	@cd apps/backend && pipenv run black --check **/*.py || true
+	@cd apps/backend && pipenv run isort --check-only **/*.py || true
 
 lint-fix: ## Corregir código con linters
 	@echo "🔧 Corrigiendo código..."
-	@pipenv run pylint **/*.py || true
-	@pipenv run black **/*.py
-	@pipenv run isort **/*.py
+	@cd apps/backend && pipenv run pylint **/*.py || true
+	@cd apps/backend && pipenv run black **/*.py
+	@cd apps/backend && pipenv run isort **/*.py
 
 format: ## Formatear código
 	@echo "✨ Formateando código..."
-	@$(PNPM) run format
+	@cd apps/frontend && pnpm run format
 
 watch: ## Modo desarrollo con recarga automática (Vite)
 	@echo "👁️  Iniciando Vite en modo watch..."
-	@$(PNPM) run build:watch
+	@cd apps/frontend && pnpm run build:watch
+
+hmr: ## Modo desarrollo con Hot Module Replacement (HMR)
+	@echo "🔥 Iniciando Vite con HMR..."
+	@cd apps/frontend && pnpm run dev

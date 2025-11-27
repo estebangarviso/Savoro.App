@@ -2,12 +2,64 @@
 
 ## Índice
 
-1. [Estructura del Proyecto](#estructura-del-proyecto)
-2. [Arquitectura Modular](#arquitectura-modular)
-3. [Arquitectura CSS](#arquitectura-css)
-4. [Patrones de Diseño](#patrones-de-diseño)
-5. [Convenciones de Código](#convenciones-de-código)
-6. [Tecnologías](#tecnologías)
+1. [Monorepo Structure](#monorepo-structure)
+2. [Estructura del Proyecto](#estructura-del-proyecto)
+3. [Arquitectura Modular](#arquitectura-modular)
+4. [Arquitectura CSS](#arquitectura-css)
+5. [Patrones de Diseño](#patrones-de-diseño)
+6. [Convenciones de Código](#convenciones-de-código)
+7. [Tecnologías](#tecnologías)
+
+## Monorepo Structure
+
+El proyecto utiliza una **arquitectura monorepo** que separa el backend (Django) del frontend (Vite build system):
+
+```
+SavoroApp/
+├── apps/
+│   ├── backend/          # Django REST API + Panel Admin
+│   │   ├── manage.py
+│   │   ├── config/       # Settings, URLs, WSGI
+│   │   ├── core/         # Clases base, decoradores, utils
+│   │   └── modules/      # Feature modules (dish, category, etc.)
+│   └── frontend/         # Vite + Materialize CSS assets
+│       ├── src/          # JavaScript/CSS fuente
+│       ├── staticfiles/  # Assets compilados
+│       └── vite.config.js
+├── docs/                 # Documentación técnica
+├── scripts/              # Scripts de automatización
+├── Makefile              # Comandos Make
+└── README.md             # Documentación principal
+```
+
+### Ventajas del Monorepo
+
+1. **Separación clara**: Backend y frontend como aplicaciones independientes
+2. **Versionado unificado**: Un solo repositorio para todo el proyecto
+3. **Compartir código**: Facilita compartir tipos, validaciones, etc.
+4. **Build independiente**: Cada app tiene su propio build system
+5. **Escalabilidad**: Fácil añadir nuevas apps (mobile, admin separado, etc.)
+
+### Flujo de Desarrollo
+
+1. **Backend** (`apps/backend/`):
+   - Django maneja HTTP requests
+   - Sirve templates HTML
+   - Expone API REST
+   
+2. **Frontend** (`apps/frontend/`):
+   - Vite compila JavaScript/CSS
+   - Genera assets optimizados en `staticfiles/`
+   - Django sirve los assets compilados
+
+3. **Integración**:
+   ```bash
+   # Terminal 1: Vite watch mode
+   cd apps/frontend && pnpm run build:watch
+   
+   # Terminal 2: Django server
+   cd apps/backend && python manage.py runserver
+   ```
 
 ## Arquitectura Modular
 
@@ -15,10 +67,10 @@ El proyecto sigue una **arquitectura modular** donde cada feature es un módulo 
 
 ### Estructura de un Módulo
 
-Cada módulo sigue este patrón (ejemplo: `modules/dish/`):
+Cada módulo sigue este patrón (ejemplo: `apps/backend/modules/dish/`):
 
 ```
-dish/
+apps/backend/modules/dish/
 ├── __init__.py           # Exporta DishService, DishRepository, DishController
 ├── models.py             # Modelo Dish (entidad de dominio)
 ├── repository.py         # DishRepository (acceso a datos)
@@ -28,17 +80,22 @@ dish/
 ├── forms.py              # DishForm (validación)
 ├── urls.py               # URLs del módulo
 ├── migrations/           # Migraciones de DB
-├── templates/dish/       # Templates específicos
-│   ├── list.html
-│   ├── detail.html
-│   └── form.html
-└── static/dish/          # Assets del módulo
-    ├── css/
-    │   ├── list.css
-    │   └── detail.css
-    └── js/
-        ├── list.js
-        └── filters.js
+└── templates/dish/       # Templates específicos
+    ├── list.html
+    ├── detail.html
+    └── form.html
+```
+
+**Nota**: Los assets (CSS/JS) del módulo están en `apps/frontend/src/dish/`:
+
+```
+apps/frontend/src/dish/
+├── css/
+│   ├── list.css
+│   └── detail.css
+└── js/
+    ├── list.js
+    └── filters.js
 ```
 
 ### Flujo de Datos en un Módulo
@@ -62,12 +119,14 @@ Database
 ### Módulos Actuales
 
 #### Módulos Completos
+
 - **authentication**: Login/logout con Django auth
 - **category**: CRUD de categorías con búsqueda y estadísticas
 - **dish**: CRUD de platos con filtros, búsqueda y relaciones
 - **food_tag**: Gestión de etiquetas alimentarias
 
 #### Módulos en Desarrollo
+
 - **menu**: Gestión de menús
 - **order**: Sistema de órdenes
 - **reservation**: Reservas de mesas
@@ -75,10 +134,10 @@ Database
 
 ### Core: Funcionalidad Compartida
 
-El directorio `core/` contiene clases base y utilidades reutilizables:
+El directorio `apps/backend/core/` contiene clases base y utilidades reutilizables:
 
-```
-core/
+```sh
+apps/backend/core/
 ├── base/                 # Clases base abstractas
 │   ├── models.py         # BaseModel, NamedModel
 │   ├── services.py       # BaseService
@@ -104,100 +163,88 @@ core/
 
 ## Estructura del Proyecto
 
-```
+```sh
 SavoroApp/
-├── config/                 # Configuración Django
-│   ├── settings/           # Settings por entorno (dev/prod/base)
-│   │   ├── base.py         # Configuración compartida
-│   │   ├── development.py  # Settings de desarrollo
-│   │   └── production.py   # Settings de producción
-│   ├── formats/            # Formatos localizados (es_CL)
-│   ├── urls.py             # URLs principales
-│   └── wsgi.py             # WSGI application
-├── core/                   # Funcionalidad base reutilizable
-│   ├── base/               # Clases base abstractas
-│   │   ├── models.py       # BaseModel, NamedModel (timestamps, soft delete)
-│   │   ├── services.py     # BaseService (lógica de negocio)
-│   │   ├── repositories.py # BaseRepository (acceso a datos)
-│   │   ├── controllers.py  # BaseController (manejo de HTTP)
-│   │   └── forms.py        # BaseForm (validación de formularios)
-│   ├── decorators/         # Decoradores personalizados
-│   │   └── nest_style.py   # @Injectable(), @Controller() (estilo NestJS)
-│   ├── exceptions/         # Excepciones HTTP
-│   │   └── http.py         # NotFoundException, BadRequestException, etc.
-│   ├── mixins/             # Mixins para vistas
-│   │   ├── message.py      # MessageMixin (mensajes flash)
-│   │   ├── export.py       # ExportMixin (exportación de datos)
-│   │   ├── pagination.py   # PaginationMixin (paginación)
-│   │   └── filter.py       # FilterMixin (filtros)
-│   ├── protocols/          # Protocolos de tipo (type checking)
-│   │   └── domain.py       # Interfaces de modelos (DishProtocol, CategoryProtocol)
-│   ├── validators/         # Validadores personalizados
-│   │   ├── name.py         # Validación de nombres
-│   │   ├── price.py        # Validación de precios
-│   │   └── capacity.py     # Validación de capacidad
-│   └── utils/              # Utilidades generales
-│       └── text.py         # Normalización de texto (acentos)
-├── modules/                # Módulos de dominio (feature modules)
-│   ├── authentication/     # Login/logout
-│   │   ├── views.py        # Vistas de autenticación
-│   │   ├── urls.py         # URLs del módulo
-│   │   └── forms.py        # LoginForm
-│   ├── category/           # Gestión de categorías
-│   │   ├── models.py       # Modelo Category
-│   │   ├── repository.py   # CategoryRepository
-│   │   ├── service.py      # CategoryService (lógica de negocio)
-│   │   ├── controller.py   # CategoryController (HTTP handlers)
-│   │   ├── views.py        # Views adapter (delega a controller)
-│   │   ├── forms.py        # CategoryForm
-│   │   ├── urls.py         # URLs del módulo
-│   │   └── static/         # Assets específicos del módulo
-│   ├── dish/               # Gestión de platos
-│   │   ├── models.py       # Modelo Dish
-│   │   ├── repository.py   # DishRepository
-│   │   ├── service.py      # DishService
-│   │   ├── controller.py   # DishController
-│   │   ├── views.py        # Views adapter
-│   │   ├── forms.py        # DishForm
-│   │   ├── urls.py         # URLs del módulo
-│   │   ├── templates/      # Templates específicos
-│   │   └── static/         # Assets (CSS/JS) del módulo
-│   ├── food_tag/           # Etiquetas de comida
-│   │   ├── models.py       # Modelo FoodTag
-│   │   ├── repository.py   # FoodTagRepository
-│   │   └── service.py      # FoodTagService
-│   ├── menu/               # Menús (en desarrollo)
-│   ├── order/              # Órdenes (en desarrollo)
-│   ├── reservation/        # Reservas (en desarrollo)
-│   └── table/              # Mesas (en desarrollo)
-├── shared/                 # Recursos compartidos
-│   ├── static/shared/      # Assets globales
-│   │   ├── css/            # CSS variables, base, components
-│   │   ├── js/             # JavaScript compartido (messages, utils)
-│   │   └── images/         # Imágenes globales
-│   ├── templates/          # Templates base
-│   └── templatetags/       # Template tags personalizados
-├── staticfiles/            # Assets compilados (generados por Vite)
-├── media/                  # Archivos subidos por usuarios
+├── apps/
+│   ├── backend/            # Django Backend Application
+│   │   ├── manage.py       # Django CLI
+│   │   ├── db.sqlite3      # Base de datos (desarrollo)
+│   │   ├── Pipfile         # Dependencias Python
+│   │   ├── config/         # Configuración Django
+│   │   │   ├── settings/   # Settings por entorno (dev/prod/base)
+│   │   │   │   ├── base.py         # Configuración compartida
+│   │   │   │   ├── development.py  # Settings de desarrollo
+│   │   │   │   └── production.py   # Settings de producción
+│   │   │   ├── formats/    # Formatos localizados (es_CL)
+│   │   │   ├── urls.py     # URLs principales
+│   │   │   └── wsgi.py     # WSGI application
+│   │   ├── core/           # Funcionalidad base reutilizable
+│   │   │   ├── base/       # Clases base abstractas
+│   │   │   │   ├── models.py       # BaseModel, NamedModel
+│   │   │   │   ├── services.py     # BaseService
+│   │   │   │   ├── repositories.py # BaseRepository
+│   │   │   │   ├── controllers.py  # BaseController
+│   │   │   │   └── forms.py        # BaseForm
+│   │   │   ├── decorators/ # @Injectable(), @Controller()
+│   │   │   ├── exceptions/ # NotFoundException, BadRequestException
+│   │   │   ├── mixins/     # MessageMixin, ExportMixin, etc.
+│   │   │   ├── protocols/  # Type protocols (DishProtocol, etc.)
+│   │   │   ├── validators/ # Validadores personalizados
+│   │   │   └── utils/      # Utilidades (normalize_text, etc.)
+│   │   ├── modules/        # Feature modules (domain-driven)
+│   │   │   ├── authentication/ # Login/logout
+│   │   │   ├── category/   # Gestión de categorías
+│   │   │   ├── dish/       # Gestión de platos
+│   │   │   ├── food_tag/   # Etiquetas alimentarias
+│   │   │   ├── menu/       # Menús (en desarrollo)
+│   │   │   ├── order/      # Órdenes (en desarrollo)
+│   │   │   ├── reservation/ # Reservas (en desarrollo)
+│   │   │   └── table/      # Mesas (en desarrollo)
+│   │   ├── shared/         # Templates y templatetags compartidos
+│   │   │   ├── templates/  # Templates base
+│   │   │   └── templatetags/ # Template tags personalizados
+│   │   └── media/          # Archivos subidos por usuarios
+│   └── frontend/           # Vite Frontend Application
+│       ├── src/            # Código fuente JavaScript/CSS
+│       │   ├── authentication/ # Assets de autenticación
+│       │   ├── category/   # Assets de categorías
+│       │   ├── dish/       # Assets de platos
+│       │   └── shared/     # Assets compartidos
+│       │       ├── js/     # Utils, messages, navigation
+│       │       └── styles/ # Variables CSS, base
+│       ├── staticfiles/    # Assets compilados (output)
+│       │   ├── authentication/
+│       │   ├── category/
+│       │   ├── dish/
+│       │   ├── shared/
+│       │   ├── vendor/     # Materialize, dependencias
+│       │   └── .vite/      # Manifest de Vite
+│       ├── vite.config.js  # Configuración de Vite
+│       ├── eslint.config.mjs # ESLint
+│       ├── package.json    # Dependencias Node.js
+│       ├── pnpm-lock.yaml  # Lock file
+│       └── jsconfig.json   # JavaScript config
+├── docs/                   # Documentación técnica
+│   ├── ARCHITECTURE.md     # Este archivo
+│   ├── SETUP.md            # Guía de instalación
+│   ├── CONTRIBUTING.md     # Guía de contribución
+│   ├── COMMANDS.md         # Referencia de comandos
+│   └── JAVASCRIPT_PATTERNS.md # Patrones JavaScript
 ├── scripts/                # Scripts de automatización
 │   ├── setup.sh            # Setup inicial
 │   ├── start-dev.sh        # Desarrollo
 │   └── build-prod.sh       # Build producción
-└── docs/                   # Documentación
-    ├── ARCHITECTURE.md     # Este archivo
-    ├── SETUP.md            # Guía de instalación
-    ├── CONTRIBUTING.md     # Guía de contribución
-    ├── COMMANDS.md         # Referencia de comandos
-    └── JAVASCRIPT_PATTERNS.md # Patrones JavaScript
+├── Makefile                # Comandos Make
+└── README.md               # Documentación principal
 ```
 
 ## Arquitectura CSS
 
-El proyecto utiliza **Vite** como empaquetador de módulos para compilar y optimizar assets:
+El proyecto utiliza **Vite** (en `apps/frontend/`) como empaquetador de módulos para compilar y optimizar assets:
 
 ### Sistema de Build con Vite
 
-- **Escaneo automático**: Vite escanea dinámicamente `modules/*/static/` y `shared/static/` para descubrir entry points
+- **Escaneo automático**: Vite escanea dinámicamente `apps/frontend/src/*/static/` para descubrir entry points
 - **Materialize CSS**: Importado como dependencia de Node.js y bundleado automáticamente
 - **ES Modules**: Uso de `import`/`export` estándar de JavaScript
 - **Sourcemaps**: Generación automática de `.js.map` y `.css.map` para debugging
@@ -220,6 +267,7 @@ El proyecto implementa un sistema de diseño modular y DRY:
 Después del build, los archivos estáticos se generan con rutas limpias:
 
 **CSS:**
+
 ```django
 {% load static %}
 <!-- Shared CSS -->
@@ -233,6 +281,7 @@ Después del build, los archivos estáticos se generan con rutas limpias:
 ```
 
 **JavaScript:**
+
 ```django
 <!-- Shared JS (Materialize + utilities) -->
 <script type="module" src="{% static 'shared/js/main.js' %}"></script>
@@ -242,9 +291,10 @@ Después del build, los archivos estáticos se generan con rutas limpias:
 <script type="module" src="{% static 'category/js/list.js' %}"></script>
 ```
 
-**Estructura de salida en `staticfiles/`:**
-```
-staticfiles/
+**Estructura de salida en `apps/frontend/staticfiles/`:**
+
+```sh
+apps/frontend/staticfiles/
 ├── .vite/
 │   └── manifest.json           # Mapeo de assets para integración Django
 ├── js/
@@ -281,7 +331,7 @@ staticfiles/
 
 El proyecto sigue una arquitectura en capas inspirada en NestJS con separación clara de responsabilidades:
 
-```
+```text
 ┌─────────────────────────────────────┐
 │  Views Layer (Django Views)         │  ← Delgada, solo routing
 │  - Adapters a controllers           │
@@ -317,16 +367,18 @@ El proyecto sigue una arquitectura en capas inspirada en NestJS con separación 
 ```
 
 #### Repository Pattern
+
 Separación de lógica de acceso a datos. Cada módulo tiene su propio `repository.py` que encapsula las operaciones de la base de datos.
 
 **Características:**
+
 - Hereda de `BaseRepository[T]` (genérico tipado)
 - Métodos estándar: `find_all()`, `find_by_id()`, `create()`, `update()`, `delete()`
 - Soft delete por defecto (marca `deleted=True`)
 - Queries específicas del dominio
 
 ```python
-# Ejemplo: modules/dish/repository.py
+# Ejemplo: apps/backend/modules/dish/repository.py
 from core import BaseRepository, Injectable
 from .models import Dish
 
@@ -351,16 +403,18 @@ class DishRepository(BaseRepository[Dish]):
 ```
 
 #### Service Layer
+
 Lógica de negocio independiente. Los servicios coordinan operaciones entre repositorios y aplican reglas de negocio.
 
 **Responsabilidades:**
+
 - Validaciones de negocio complejas
 - Coordinación de múltiples repositorios
 - Transformación de datos
 - Lanzamiento de excepciones de negocio
 
 ```python
-# Ejemplo: modules/dish/service.py
+# Ejemplo: apps/backend/modules/dish/service.py
 from core import BaseService, Injectable, NotFoundException, BadRequestException
 from .repository import DishRepository
 
@@ -399,9 +453,11 @@ class DishService(BaseService):
 ```
 
 #### Controller Pattern
+
 Controladores para cada módulo que manejan la lógica HTTP.
 
 **Responsabilidades:**
+
 - Parsear request (query params, body, files)
 - Validar formularios Django
 - Delegar a servicios
@@ -409,7 +465,7 @@ Controladores para cada módulo que manejan la lógica HTTP.
 - Retornar respuestas (render, redirect, JSON)
 
 ```python
-# Ejemplo: modules/dish/controller.py
+# Ejemplo: apps/backend/modules/dish/controller.py
 from core import BaseController, Controller
 from django.contrib.auth.decorators import login_required
 from .service import DishService
@@ -492,6 +548,7 @@ class DishModule:
 ```
 
 **Beneficios esperados:**
+
 - ✅ Mayor testabilidad (fácil mock de dependencias)
 - ✅ Desacoplamiento de implementaciones
 - ✅ Configuración centralizada de dependencias
@@ -499,6 +556,7 @@ class DishModule:
 - ✅ Lazy loading de servicios
 
 **Librerías a considerar:**
+
 - `injector` (Python DI framework)
 - `dependency-injector` (Container-based DI)
 - Implementación custom basada en decoradores
@@ -591,7 +649,7 @@ Validadores reutilizables para modelos y formularios:
 Validación centralizada con Django Forms en cada módulo.
 
 ```python
-# modules/dish/forms.py
+# apps/backend/modules/dish/forms.py
 class DishForm(forms.ModelForm):
     class Meta:
         model = Dish
@@ -609,7 +667,7 @@ Estilos modulares reutilizables que se pueden componer.
 
 **Estructura:**
 ```css
-/* shared/static/shared/css/variables.css */
+/* apps/frontend/src/shared/static/shared/css/variables.css */
 :root {
   --primary-color: #2196F3;
   --success-color: #4CAF50;
@@ -619,13 +677,13 @@ Estilos modulares reutilizables que se pueden componer.
   --shadow-sm: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* shared/static/shared/css/components/cards.css */
+/* apps/frontend/src/shared/static/shared/css/components/cards.css */
 .card {
   border-radius: var(--border-radius);
   box-shadow: var(--shadow-sm);
 }
 
-/* modules/dish/static/dish/css/list.css */
+/* apps/frontend/src/dish/static/dish/css/list.css */
 .dish-card {
   /* Extiende card con estilos específicos */
 }
@@ -635,6 +693,7 @@ Estilos modulares reutilizables que se pueden componer.
 JavaScript organizado sin frameworks, usando módulos ES6.
 
 **Características:**
+
 - ES Modules (`import`/`export`)
 - Custom Events para comunicación template ↔ JS
 - MutationObserver para contenido dinámico
@@ -643,7 +702,7 @@ JavaScript organizado sin frameworks, usando módulos ES6.
 
 **Ejemplo:**
 ```javascript
-// shared/static/shared/js/messages.js
+// apps/frontend/src/shared/static/shared/js/messages.js
 export function displayToast(message, tag) {
   M.toast({ html: message, classes: tag });
 }
@@ -691,11 +750,13 @@ Diseño responsive desde móvil hacia escritorio.
 ## Convenciones de Código
 
 ### Python
+
 - **PEP 8**: Estilo estándar Python
 - **Type Hints**: Anotaciones de tipo en funciones
 - **Docstrings**: Documentación en clases y funciones complejas
 
 ### JavaScript
+
 - **ESLint**: Configuración con reglas Prettier
 - **ES2021**: Sintaxis moderna JavaScript con ES Modules
 - **Naming**: camelCase para variables, PascalCase para clases
@@ -707,6 +768,7 @@ Diseño responsive desde móvil hacia escritorio.
   ```
 
 ### CSS
+
 - **BEM-like**: Clases descriptivas (.card-header, .filter-btn)
 - **CSS Variables**: Variables para valores reutilizables
 - **Mobile First**: Media queries de menor a mayor
@@ -714,6 +776,7 @@ Diseño responsive desde móvil hacia escritorio.
 ## Tecnologías
 
 ### Backend
+
 - **Django 4.2+**: Framework web Python
 - **Python 3.10+**: Lenguaje de programación
 - **SQLite**: Base de datos (desarrollo)
@@ -722,6 +785,7 @@ Diseño responsive desde móvil hacia escritorio.
 - **django-widget-tweaks**: Renderizado de formularios
 
 ### Frontend
+
 - **Materialize CSS 1.0.0**: Framework de componentes UI
 - **Vanilla JavaScript**: Sin dependencias jQuery
 - **CSS Variables**: Sistema de diseño modular
@@ -729,6 +793,7 @@ Diseño responsive desde móvil hacia escritorio.
 - **ESLint + Prettier**: Linting y formateo de código
 
 ### DevTools
+
 - **pipenv**: Gestión de entornos virtuales
 - **pnpm**: Gestor de paquetes Node.js
 - **Vite**: Build tool y dev server

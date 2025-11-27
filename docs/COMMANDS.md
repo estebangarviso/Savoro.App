@@ -59,81 +59,81 @@ Ubicados en `scripts/` para mantener el proyecto organizado.
 
 ### Servidor y Base de Datos
 
-| Comando                           | Descripción                            |
-| --------------------------------- | -------------------------------------- |
-| `python manage.py runserver`      | Iniciar servidor de desarrollo         |
-| `python manage.py runserver 8001` | Iniciar servidor en puerto específico  |
-| `python manage.py migrate`        | Aplicar migraciones a la base de datos |
-| `python manage.py makemigrations` | Crear nuevas migraciones               |
-| `python manage.py showmigrations` | Mostrar estado de migraciones          |
-| `python manage.py dbshell`        | Abrir shell de base de datos           |
+| Comando                                        | Descripción                            |
+| ---------------------------------------------- | -------------------------------------- |
+| `python apps/backend/manage.py runserver`      | Iniciar servidor de desarrollo         |
+| `python apps/backend/manage.py runserver 8001` | Iniciar servidor en puerto específico  |
+| `python apps/backend/manage.py migrate`        | Aplicar migraciones a la base de datos |
+| `python apps/backend/manage.py makemigrations` | Crear nuevas migraciones               |
+| `python apps/backend/manage.py showmigrations` | Mostrar estado de migraciones          |
+| `python apps/backend/manage.py dbshell`        | Abrir shell de base de datos           |
 
 ### Gestión de Usuarios
 
-| Comando                            | Descripción                 |
-| ---------------------------------- | --------------------------- |
-| `python manage.py createsuperuser` | Crear usuario administrador |
-| `python manage.py changepassword`  | Cambiar contraseña          |
+| Comando                                         | Descripción                 |
+| ----------------------------------------------- | --------------------------- |
+| `python apps/backend/manage.py createsuperuser` | Crear usuario administrador |
+| `python apps/backend/manage.py changepassword`  | Cambiar contraseña          |
 
 ### Datos y Contenido
 
-| Comando                      | Descripción            |
-| ---------------------------- | ---------------------- |
-| `python manage.py seed_data` | Poblar datos iniciales |
-| `python manage.py flush`     | Limpiar base de datos  |
-| `python manage.py loaddata`  | Cargar fixtures        |
-| `python manage.py dumpdata`  | Exportar datos         |
+| Comando                                   | Descripción            |
+| ----------------------------------------- | ---------------------- |
+| `python apps/backend/manage.py seed_data` | Poblar datos iniciales |
+| `python apps/backend/manage.py flush`     | Limpiar base de datos  |
+| `python apps/backend/manage.py loaddata`  | Cargar fixtures        |
+| `python apps/backend/manage.py dumpdata`  | Exportar datos         |
 
 ### Archivos Estáticos
 
-| Comando                          | Descripción                  |
-| -------------------------------- | ---------------------------- |
-| `python manage.py collectstatic` | Recopilar archivos estáticos |
-| `python manage.py findstatic`    | Buscar archivo estático      |
+| Comando                                       | Descripción                  |
+| --------------------------------------------- | ---------------------------- |
+| `python apps/backend/manage.py collectstatic` | Recopilar archivos estáticos |
+| `python apps/backend/manage.py findstatic`    | Buscar archivo estático      |
 
 ### Testing y Calidad
 
-| Comando                       | Descripción               |
-| ----------------------------- | ------------------------- |
-| `python manage.py test`       | Ejecutar todos los tests  |
-| `python manage.py test <app>` | Ejecutar tests de una app |
-| `pylint **/*.py`              | Análisis estático         |
+| Comando                                    | Descripción               |
+| ------------------------------------------ | ------------------------- |
+| `python apps/backend/manage.py test`       | Ejecutar todos los tests  |
+| `python apps/backend/manage.py test <app>` | Ejecutar tests de una app |
+| `pylint **/*.py`                           | Análisis estático         |
 
 ### Utilidades
 
-| Comando                     | Descripción                 |
-| --------------------------- | --------------------------- |
-| `python manage.py shell`    | Shell interactivo de Django |
-| `python manage.py check`    | Verificar proyecto          |
-| `python manage.py startapp` | Crear nueva aplicación      |
+| Comando                                  | Descripción                 |
+| ---------------------------------------- | --------------------------- |
+| `python apps/backend/manage.py shell`    | Shell interactivo de Django |
+| `python apps/backend/manage.py check`    | Verificar proyecto          |
+| `python apps/backend/manage.py startapp` | Crear nueva aplicación      |
 
 ## Comandos JavaScript/Node
 
 ### Gestión de Paquetes
 
-| Comando        | Descripción             |
-| -------------- | ----------------------- |
-| `pnpm install` | Instalar dependencias   |
-| `pnpm update`  | Actualizar dependencias |
-| `pnpm add`     | Agregar paquete         |
+| Comando                            | Descripción             |
+| ---------------------------------- | ----------------------- |
+| `cd apps/frontend && pnpm install` | Instalar dependencias   |
+| `cd apps/frontend && pnpm update`  | Actualizar dependencias |
+| `cd apps/frontend && pnpm add`     | Agregar paquete         |
 
 ### Build y Desarrollo (Vite)
 
-| Comando                | Descripción                                          |
-| ---------------------- | ---------------------------------------------------- |
-| `pnpm run dev`         | Iniciar servidor Vite con HMR (localhost:5173)       |
-| `pnpm run build`       | Compilar assets para producción con sourcemaps       |
-| `pnpm run build:watch` | Compilar en modo vigilancia (recompila al guardar)   |
-| `pnpm run preview`     | Vista previa de build de producción (localhost:4173) |
+| Comando                                    | Descripción                                          |
+| ------------------------------------------ | ---------------------------------------------------- |
+| `cd apps/frontend && pnpm run dev`         | Iniciar servidor Vite con HMR (localhost:5173)       |
+| `cd apps/frontend && pnpm run build`       | Compilar assets para producción con sourcemaps       |
+| `cd apps/frontend && pnpm run build:watch` | Compilar en modo vigilancia (recompila al guardar)   |
+| `cd apps/frontend && pnpm run preview`     | Vista previa de build de producción (localhost:4173) |
 
 ### Linting y Formateo
 
-| Comando                 | Descripción                                 |
-| ----------------------- | ------------------------------------------- |
-| `pnpm run lint`         | Verificar código JavaScript con ESLint      |
-| `pnpm run lint:fix`     | Corregir errores JavaScript automáticamente |
-| `pnpm run format`       | Formatear código (JS, CSS, HTML, JSON)      |
-| `pnpm run format:check` | Verificar formato sin modificar archivos    |
+| Comando                                     | Descripción                                 |
+| ------------------------------------------- | ------------------------------------------- |
+| `cd apps/frontend && pnpm run lint`         | Verificar código JavaScript con ESLint      |
+| `cd apps/frontend && pnpm run lint:fix`     | Corregir errores JavaScript automáticamente |
+| `cd apps/frontend && pnpm run format`       | Formatear código (JS, CSS, HTML, JSON)      |
+| `cd apps/frontend && pnpm run format:check` | Verificar formato sin modificar archivos    |
 
 ## Comandos Git Flow
 
@@ -182,32 +182,35 @@ git flow release finish <versión>
 
 ```bash
 # Activar entorno y ejecutar servidor
-pipenv shell && python manage.py runserver
+pipenv shell && python apps/backend/manage.py runserver
 
 # Migraciones completas
-python manage.py makemigrations && python manage.py migrate
+python apps/backend/manage.py makemigrations && python apps/backend/manage.py migrate
 
 # Limpiar y repoblar base de datos
-python manage.py flush --noinput && python manage.py seed_data
+python apps/backend/manage.py flush --noinput && python apps/backend/manage.py seed_data
 ```
 
 ### Testing
 
 ```bash
 # Tests con coverage
+cd apps/backend
 coverage run --source='.' manage.py test
 coverage report
 
 # Tests específicos
-python manage.py test modules.dish.tests
+python apps/backend/manage.py test modules.dish.tests
 ```
 
 ### Formateo de Código
 
 ```bash
 # Formatear todo
-pnpm run format && black . && isort .
+cd apps/frontend && pnpm run format
+cd apps/backend && black . && isort .
 
 # Verificar todo
-pnpm run lint && pylint **/*.py
+cd apps/frontend && pnpm run lint
+cd apps/backend && pylint **/*.py
 ```
