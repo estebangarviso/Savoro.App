@@ -127,6 +127,7 @@ Ver [apps/frontend/README.md](apps/frontend/README.md) para documentación compl
 ## ✨ Características Principales
 
 ### Backend
+
 - 🍽️ **Gestión de Platos**: CRUD con imágenes, categorías y etiquetas
 - 📋 **Categorías y Tags**: Organización con estadísticas
 - 👤 **Autenticación**: Login/logout con decoradores de permisos
@@ -135,6 +136,7 @@ Ver [apps/frontend/README.md](apps/frontend/README.md) para documentación compl
 - 🌐 **Localización**: Formato chileno para fechas y moneda
 
 ### Frontend
+
 - 🎨 **UI Moderna**: Materialize CSS con animaciones
 - ⚡ **Vite Build**: Assets optimizados con sourcemaps
 - 🔥 **HMR**: Hot Module Replacement en desarrollo
@@ -207,16 +209,21 @@ pnpm --version
 
 ## 📖 Flujo de Trabajo
 
-1. **Instalar dependencias**: `./scripts/setup.sh`
-2. **Crear superusuario**: `make superuser`
-3. **Iniciar desarrollo**: `./scripts/start-dev.sh`
-4. **Acceder al admin**: http://localhost:8000/admin
-5. **Editar frontend**: Los cambios en `apps/frontend/src/` se recargan automáticamente
-6. **Editar backend**: Guarda `.py` y Django recarga el servidor
+1. **Instala las dependencias**: `make setup`
+2. **Crea un superusuario**: `make superuser`
+3. **Opciones de desarrollo**:
+   1. **Modo Debug**: Presiona `F5` en VS Code para ejecutar la aplicación en modo *Full Stack Debug*. Esto inicia tanto el frontend como el backend en modo depuración, permitiendo establecer breakpoints en Python y JavaScript sin necesidad de agregar `debugger;` en el código JS.
+   2. **Modo Normal**:
+       1. **Inicia el frontend**: `make hmr`
+       2. **Inicia el backend**: `make dev`
+       3. **Accede al panel de administración**: <http://localhost:8000/admin>
+       4. **Edita el frontend**: Los cambios en `apps/frontend/src/` se reflejan automáticamente.
+       5. **Edita el backend**: Al guardar archivos `.py`, Django recarga el servidor automáticamente.
 
 ## 🤝 Contribuir
 
 Ver [CONTRIBUTING.md](docs/CONTRIBUTING.md) para:
+
 - Git Flow (feature/hotfix/release)
 - Conventional Commits
 - Estándares de código
