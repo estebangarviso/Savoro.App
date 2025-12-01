@@ -1,46 +1,27 @@
 # Referencia de Comandos - Savoro.App
 
-## 🚀 Comandos Simplificados (Recomendado)
+## 🚀 Comandos Principales
 
-Hay **3 formas** de ejecutar los comandos principales:
+Todos los comandos se ejecutan desde la raíz del proyecto usando **pnpm**.
 
-### 1. Scripts de Shell (Más visual)
+### Configuración y Desarrollo
 
-Ubicados en `scripts/` para mantener el proyecto organizado.
-
-| Comando                   | Descripción                                                |
-| ------------------------- | ---------------------------------------------------------- |
-| `./scripts/setup.sh`      | Configuración inicial completa del proyecto                |
-| `./scripts/start-dev.sh`  | Compilar assets + collectstatic + iniciar Django           |
-| `./scripts/build-prod.sh` | Build de producción completo (Vite + Django + migraciones) |
-
-> **💡 Nota**: Los scripts de limpieza son **dinámicos** y detectan automáticamente  
-> todos los módulos en `modules/` y `shared/` sin necesidad de actualizarlos manualmente.
-
-### 2. Makefile (Más limpio)
-
-| Comando          | Descripción                        |
-| ---------------- | ---------------------------------- |
-| `make help`      | Ver todos los comandos disponibles |
-| `make setup`     | Configuración inicial completa     |
-| `make dev`       | Iniciar desarrollo                 |
-| `make prod`      | Build de producción                |
-| `make build`     | Solo compilar assets               |
-| `make clean`     | Limpiar archivos generados         |
-| `make migrate`   | Ejecutar migraciones               |
-| `make superuser` | Crear superusuario                 |
-| `make test`      | Ejecutar tests                     |
-| `make lint`      | Verificar código                   |
-| `make format`    | Formatear código                   |
-| `make watch`     | Vite en modo watch                 |
-
-### 3. Scripts npm
-
-| Comando               | Descripción                         |
-| --------------------- | ----------------------------------- |
-| `pnpm run setup`      | Instalar dependencias + migraciones |
-| `pnpm run start:dev`  | Build + collectstatic + runserver   |
-| `pnpm run start:prod` | Build de producción + collectstatic |
+| Comando                 | Descripción                                                |
+| ----------------------- | ---------------------------------------------------------- |
+| `pnpm run setup`        | Configuración inicial completa del proyecto                |
+| `pnpm run dev`          | Compilar assets + collectstatic + iniciar Django           |
+| `pnpm run dev:frontend` | Iniciar Vite dev server con HMR (localhost:5173)           |
+| `pnpm run dev:backend`  | Iniciar solo Django server (localhost:8000)                |
+| `pnpm run build:prod`   | Build de producción completo (Vite + Django + migraciones) |
+| `pnpm run build`        | Solo compilar assets con Vite                              |
+| `pnpm run build:watch`  | Compilar assets en modo watch                              |
+| `pnpm run clean`        | Limpiar archivos generados de Vite                         |
+| `pnpm run migrate`      | Ejecutar migraciones de Django                             |
+| `pnpm run superuser`    | Crear superusuario                                         |
+| `pnpm run test`         | Ejecutar tests de Django                                   |
+| `pnpm run lint`         | Verificar código (Python + JavaScript)                     |
+| `pnpm run lint:fix`     | Corregir errores automáticamente                           |
+| `pnpm run format`       | Formatear código (Python + JavaScript)                     |
 
 ---
 

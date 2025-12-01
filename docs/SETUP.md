@@ -41,26 +41,26 @@ pipenv --version
 
 ### Otros requisitos
 
-- **Node.js 16+**: [nodejs.org](https://nodejs.org/) (opcional, para desarrollo frontend)
+- **Node.js 20+**: [nodejs.org](https://nodejs.org/) (opcional, para desarrollo frontend)
 - **pnpm**: [pnpm.io/installation](https://pnpm.io/installation) (opcional, gestor de paquetes JavaScript)
 - **Git**: [git-scm.com/downloads](https://git-scm.com/downloads)
 
 ## Guía de Inicio Rápido
 
-### Opción 1: Setup Automático (Recomendado)
+### Setup Automático (Recomendado)
 
 ```bash
 # Configuración completa del proyecto
-./scripts/setup.sh
+pnpm run setup
 
 # Crear superusuario
 pipenv run python apps/backend/manage.py createsuperuser
 
 # Iniciar desarrollo
-./scripts/start-dev.sh
+pnpm run dev
 ```
 
-### Opción 2: Setup Manual
+### Setup Manual
 
 ### 1. Configurar Entorno Python
 

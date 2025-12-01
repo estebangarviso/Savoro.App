@@ -44,54 +44,30 @@ python --version  # o python3 --version
 ### Primera vez (Setup completo)
 
 ```bash
-# Opción 1: Script de shell
-./scripts/setup.sh
-
-# Opción 2: Makefile
-make setup
-
-# Opción 3: npm
 pnpm run setup
 ```
 
 Luego crea un superusuario:
 ```bash
-pipenv run python apps/backend/manage.py createsuperuser
-# o
-make superuser
+pnpm run superuser
 ```
 
 ### Desarrollo
 
 ```bash
-# Opción 1: Script de shell (recomendado)
-./scripts/start-dev.sh
-
-# Opción 2: Makefile
-make dev
-
-# Opción 3: npm
-pnpm run start:dev
+pnpm run dev:backend
 ```
 
 ### Producción
 
 ```bash
-# Opción 1: Script de shell
-./scripts/build-prod.sh
-
-# Opción 2: Makefile
-make prod
-
-# Opción 3: npm
-pnpm run start:prod
+pnpm run build:prod
 ```
 
 Accede a la aplicación en http://localhost:8000
 
-> **💡 Tip**: El proyecto incluye **3 formas** de ejecutar comandos:  
-> `./scripts/script.sh` (shell) | `make comando` (Makefile) | `pnpm run comando` (npm)  
-> Elige la que prefieras. Ver [Referencia Completa](docs/COMMANDS.md)
+> **💡 Tip**: Todos los comandos se ejecutan desde el workspace raíz usando `pnpm run <comando>`.  
+> Ver [Referencia Completa](../../docs/COMMANDS.md)
 
 ## 📚 Documentación
 

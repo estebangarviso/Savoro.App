@@ -15,220 +15,103 @@ SavoroApp/
 ├── apps/
 │   ├── backend/        # Django REST API
 │   └── frontend/       # Vite + Materialize CSS assets
-├── docs/               # Documentación técnica
-└── scripts/            # Scripts de automatización
+└── docs/               # Documentación técnica
 ```
 
 ## 🚀 Inicio Rápido
 
-### Setup Completo
-
-Configura backend (Django + Python) y frontend (Vite + Node) automáticamente:
-
 ```bash
-# Opción 1: Script de shell (recomendado)
-./scripts/setup.sh
-
-# Opción 2: Makefile
-make setup
-
-# Opción 3: pnpm
+# 1. Instalar dependencias
 pnpm run setup
+
+# 2. Crear superusuario
+pnpm run superuser
+
+# 3. Iniciar desarrollo (2 terminales)
+pnpm run dev:frontend  # Terminal 1: JavaScript Debug Terminal
+pnpm run dev:backend   # Terminal 2: Django server
 ```
 
-Luego crea un superusuario para acceder al admin:
+**Acceso:** <http://localhost:8000> (Django) | <http://localhost:5173> (Vite HMR)
 
-```bash
-make superuser
-# o
-pipenv run python apps/backend/manage.py createsuperuser
-```
-
-### Desarrollo
-
-Inicia servidor Django + build watcher de Vite:
-
-```bash
-# Opción 1: Script de shell (recomendado)
-./scripts/start-dev.sh
-
-# Opción 2: Makefile
-make dev
-
-# Opción 3: pnpm
-pnpm run start:dev
-```
-
-Accede a la aplicación en **http://localhost:8000**
-
-### Producción
-
-Compila assets optimizados y ejecuta con configuración de producción:
-
-```bash
-# Opción 1: Script de shell
-./scripts/build-prod.sh
-
-# Opción 2: Makefile
-make prod
-
-# Opción 3: pnpm
-pnpm run start:prod
-```
+> 💡 **VS Code:** Presiona `F5` para iniciar en modo *Full Stack Debug* automáticamente
 
 ## 🏗️ Aplicaciones
 
-### [Backend (Django)](apps/backend/README.md)
+| App          | Tecnologías                    | Documentación                       |
+| ------------ | ------------------------------ | ----------------------------------- |
+| **Backend**  | Django 4.2+, Python 3.10-3.13  | [Ver docs](apps/backend/README.md)  |
+| **Frontend** | Vite 5.4+, Materialize CSS 1.0 | [Ver docs](apps/frontend/README.md) |
 
-API REST y panel de administración con arquitectura modular inspirada en NestJS:
+**Patrón Backend:** Controller → Service → Repository (inspirado en NestJS)  
+**Características:** Soft delete, localización chilena, type safety, HMR
 
-- **Tecnologías**: Django 4.2+, Python 3.10-3.13, SQLite/PostgreSQL
-- **Patrón**: Controller → Service → Repository
-- **Módulos**: `dish`, `category`, `food_tag`, `authentication`, `order`, `reservation`, `menu`, `table`
-- **Características**: Soft delete, localización chilena, type safety, validaciones custom
+## 💡 Comandos Principales
 
-**Comandos principales**:
 ```bash
-cd apps/backend
-pipenv shell                # Activar entorno virtual
-python manage.py migrate    # Aplicar migraciones
-python manage.py runserver  # Iniciar servidor
+# Desarrollo
+pnpm run dev:frontend      # Vite dev server (puerto 5173)
+pnpm run dev:backend       # Django server (puerto 8000)
+
+# Producción
+pnpm run build:prod        # Build completo + migraciones
+
+# Utilidades
+pnpm run migrate           # Aplicar migraciones
+pnpm run superuser         # Crear admin
+pnpm run lint              # Verificar código
+pnpm run test              # Ejecutar tests
 ```
 
-Ver [apps/backend/README.md](apps/backend/README.md) para documentación completa del backend.
-
-### [Frontend (Vite)](apps/frontend/README.md)
-
-Build system y assets con Vite + Materialize CSS:
-
-- **Tecnologías**: Vite 5.4+, Materialize CSS 1.0, ESLint, Prettier
-- **Características**: HMR, code splitting, tree shaking, minificación
-- **Integración**: Genera assets que Django sirve desde `staticfiles/`
-
-**Comandos principales**:
-```bash
-cd apps/frontend
-pnpm install           # Instalar dependencias
-pnpm run dev           # Dev server con HMR (port 5173)
-pnpm run build         # Compilar para producción
-pnpm run build:watch   # Compilar con vigilancia de cambios
-```
-
-Ver [apps/frontend/README.md](apps/frontend/README.md) para documentación completa del frontend.
+Ver [Referencia Completa de Comandos](docs/COMMANDS.md)
 
 ## 📚 Documentación
 
-- **[Guía de Instalación](docs/SETUP.md)** - Setup detallado de entornos Python y Node
-- **[Arquitectura del Proyecto](docs/ARCHITECTURE.md)** - Patrones de diseño, estructura modular
-- **[Guía de Contribución](docs/CONTRIBUTING.md)** - Git Flow, Conventional Commits
-- **[Referencia de Comandos](docs/COMMANDS.md)** - Comandos Django, pnpm, Make
-- **[Patrones JavaScript](docs/JAVASCRIPT_PATTERNS.md)** - Custom Events, MutationObserver
+- **[Guía de Instalación](docs/SETUP.md)** - Requisitos y configuración detallada
+- **[Arquitectura del Proyecto](docs/ARCHITECTURE.md)** - Patrones y estructura modular
+- **[Referencia de Comandos](docs/COMMANDS.md)** - Comandos Django, pnpm y workflows
+- **[Guía de Contribución](docs/CONTRIBUTING.md)** - Git Flow y estándares
+- **[Patrones JavaScript](docs/JAVASCRIPT_PATTERNS.md)** - Custom Events y MutationObserver
 
-## ✨ Características Principales
+## 🛠️ Stack Tecnológico
 
-### Backend
-
-- 🍽️ **Gestión de Platos**: CRUD con imágenes, categorías y etiquetas
-- 📋 **Categorías y Tags**: Organización con estadísticas
-- 👤 **Autenticación**: Login/logout con decoradores de permisos
-- 🔍 **Búsqueda Avanzada**: Normalización de texto sin acentos
-- 🗑️ **Soft Delete**: Eliminación lógica en todos los modelos
-- 🌐 **Localización**: Formato chileno para fechas y moneda
-
-### Frontend
-
-- 🎨 **UI Moderna**: Materialize CSS con animaciones
-- ⚡ **Vite Build**: Assets optimizados con sourcemaps
-- 🔥 **HMR**: Hot Module Replacement en desarrollo
-- 📦 **Code Splitting**: Lazy loading de módulos
-- 🧩 **Modular**: Custom Events para comunicación entre módulos
-
-## 🛠️ Tecnologías
-
-| Categoría      | Tecnología                      |
-| -------------- | ------------------------------- |
-| **Backend**    | Django 4.2+, Python 3.10-3.13   |
-| **Frontend**   | Vite 5.4+, Materialize CSS 1.0  |
-| **Database**   | SQLite (dev), PostgreSQL (prod) |
-| **Build**      | Vite, ESBuild                   |
-| **Package**    | pipenv (Python), pnpm (Node)    |
-| **Linting**    | pylint, ESLint, Prettier        |
-| **Automation** | Make, Shell scripts             |
-
-## 💡 Comandos Útiles
-
-### Gestión Global
-
-```bash
-# Setup completo (backend + frontend)
-./scripts/setup.sh
-
-# Desarrollo (Django server + Vite watch)
-./scripts/start-dev.sh
-
-# Producción (build + Django production)
-./scripts/build-prod.sh
-```
-
-### Backend (Django)
-
-```bash
-# Desde raíz del proyecto
-make migrate          # Aplicar migraciones
-make superuser        # Crear admin
-make shell            # Django shell
-
-# O directo con pipenv
-pipenv run python apps/backend/manage.py runserver
-```
-
-### Frontend (Vite)
-
-```bash
-# Desde apps/frontend/
-pnpm run dev          # Dev server con HMR
-pnpm run build        # Build de producción
-pnpm run lint         # Verificar código
-pnpm run format       # Formatear archivos
-```
+| Categoría       | Tecnología                      |
+| --------------- | ------------------------------- |
+| Backend         | Django 4.2+, Python 3.10-3.13   |
+| Frontend        | Vite 5.4+, Materialize CSS 1.0  |
+| Database        | SQLite (dev), PostgreSQL (prod) |
+| Package Manager | pipenv (Python), pnpm (Node)    |
+| Automation      | pnpm workspaces                 |
 
 ## 📋 Requisitos
 
-- **Python 3.10 - 3.13**: Backend Django → [Descargar](https://www.python.org/downloads/)
-- **pipenv**: Gestión de entornos Python → [Instalar](https://pipenv.pypa.io/en/latest/installation.html)
-- **Node.js 18+**: Build frontend → [Descargar](https://nodejs.org/)
-- **pnpm**: Gestor de paquetes rápido → [Instalar](https://pnpm.io/installation)
+- **Python 3.10-3.13** → [python.org](https://www.python.org/downloads/)
+- **pipenv** → [pipenv.pypa.io](https://pipenv.pypa.io/en/latest/installation.html)
+- **Node.js 20+** → [nodejs.org](https://nodejs.org/)
+- **pnpm** → [pnpm.io](https://pnpm.io/installation)
 
-Verifica tus versiones:
 ```bash
-python --version    # >= 3.10
-pipenv --version
-node --version      # >= 20
-pnpm --version
+# Verificar instalación
+python --version && pipenv --version
+node --version && pnpm --version
 ```
 
-## 📖 Flujo de Trabajo
+## 📖 Flujo de Desarrollo
 
-1. **Instala las dependencias**: `make setup`
-2. **Crea un superusuario**: `make superuser`
-3. **Opciones de desarrollo**:
-   1. **Modo Debug**: Presiona `F5` en VS Code para ejecutar la aplicación en modo *Full Stack Debug*. Esto inicia tanto el frontend como el backend en modo depuración, permitiendo establecer breakpoints en Python y JavaScript sin necesidad de agregar `debugger;` en el código JS.
-   2. **Modo Normal**:
-       1. **Inicia el frontend**: `make hmr`
-       2. **Inicia el backend**: `make dev`
-       3. **Accede al panel de administración**: <http://localhost:8000/admin>
-       4. **Edita el frontend**: Los cambios en `apps/frontend/src/` se reflejan automáticamente.
-       5. **Edita el backend**: Al guardar archivos `.py`, Django recarga el servidor automáticamente.
+### Opción A: Modo Debug (Recomendado)
+Presiona `F5` en VS Code → Inicia frontend + backend con breakpoints activos
+
+### Opción B: Modo Manual
+1. **Terminal 1** (JavaScript Debug Terminal): `pnpm run dev:frontend`
+2. **Terminal 2**: `pnpm run dev:backend`
+3. Accede a <http://localhost:8000/admin>
+
+**HMR activo:** Cambios en `apps/frontend/src/` y `.py` se recargan automáticamente
 
 ## 🤝 Contribuir
 
-Ver [CONTRIBUTING.md](docs/CONTRIBUTING.md) para:
-
-- Git Flow (feature/hotfix/release)
-- Conventional Commits
-- Estándares de código
-- Testing guidelines
+Ver [CONTRIBUTING.md](docs/CONTRIBUTING.md) para Git Flow, Conventional Commits y estándares de código.
 
 ## 📄 Licencia
 
-[Especificar licencia aquí]
+MIT License - Ver [LICENSE](LICENSE)
