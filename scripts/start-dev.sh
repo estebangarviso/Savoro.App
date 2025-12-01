@@ -25,11 +25,9 @@ echo -e "${BLUE}📦 Activando entorno virtual de Python...${NC}"
 export PIPENV_VERBOSITY=-1
 
 # Verificar que node_modules existe
-if [ ! -d "apps/frontend/node_modules" ]; then
+if [ ! -d "node_modules" ]; then
     echo -e "${YELLOW}⚠️  node_modules no encontrado. Instalando dependencias...${NC}"
-    cd apps/frontend
     pnpm install
-    cd ../..
 fi
 
 echo ""
@@ -38,7 +36,7 @@ echo ""
 echo -e "${BLUE}🌐 Iniciando servidor Django...${NC}"
 echo -e "${YELLOW}   Accede a: http://localhost:8000${NC}"
 echo ""
-echo -e "${YELLOW}💡 Ahora ejecuta 'make hmr' en JavaScript Debug Terminal${NC}"
+echo -e "${YELLOW}💡 Ahora ejecuta 'pnpm run dev:frontend' en JavaScript Debug Terminal${NC}"
 echo ""
 
 # Iniciar Django

@@ -1,0 +1,30 @@
+{
+  "name": "savoro-app",
+  "version": "1.0.0",
+  "description": "Django restaurant management system with monorepo architecture",
+  "private": true,
+  "packageManager": "pnpm@9.0.0",
+  "scripts": {
+    "setup": "pnpm install && cd apps/backend && pipenv install --dev && pipenv run python manage.py migrate && cd ../..",
+    "dev": "pnpm --filter @savoro/backend dev",
+    "dev:frontend": "pnpm --filter @savoro/frontend dev",
+    "dev:backend": "pnpm --filter @savoro/backend dev",
+    "build": "pnpm --filter @savoro/frontend build",
+    "build:prod": "pnpm run clean && NODE_ENV=production pnpm run build && pnpm --filter @savoro/backend collectstatic && pnpm run migrate",
+    "build:watch": "pnpm --filter @savoro/frontend build:watch",
+    "clean": "pnpm --filter @savoro/frontend clean",
+    "migrate": "pnpm --filter @savoro/backend migrate",
+    "superuser": "pnpm --filter @savoro/backend superuser",
+    "lint": "pnpm --recursive run lint",
+    "lint:fix": "pnpm --filter @savoro/frontend lint:fix && pnpm --filter @savoro/backend format",
+    "format": "pnpm --recursive run format",
+    "test": "pnpm --filter @savoro/backend test"
+  },
+  "workspaces": [
+    "apps/*"
+  ],
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  }
+}

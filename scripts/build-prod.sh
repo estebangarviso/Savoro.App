@@ -29,35 +29,13 @@ if [ ! -d "node_modules" ]; then
     exit 1
 fi
 
-# Limpiar build anterior dinámicamente
-echo -e "${BLUE}🧹 Limpiando archivos de build anteriores...${NC}"
-
-
-# Limpiar manifest y cache de Vite
-rm -rf apps/frontend/staticfiles/.vite
-
-# Limpiar JS y CSS generados por Vite en cada módulo
-for module_dir in apps/frontend/staticfiles/*/; do
-    module_name=$(basename "$module_dir")
-    [ -d "apps/frontend/staticfiles/$module_name/js" ] && rm -rf "apps/frontend/staticfiles/$module_name/js"
-    [ -d "apps/frontend/staticfiles/$module_name/css" ] && rm -rf "apps/frontend/staticfiles/$module_name/css"
-done
-
-# Limpiar shared si existe
-[ -d "apps/frontend/staticfiles/shared/js" ] && rm -rf "apps/frontend/staticfiles/shared/js"
-[ -d "apps/frontend/staticfiles/shared/css" ] && rm -rf "apps/frontend/staticfiles/shared/css"
-
-# Limpiar chunks generados por Vite
-[ -d "apps/frontend/staticfiles/js/chunks" ] && rm -rf "apps/frontend/staticfiles/js/chunks"
-
-echo -e "${GREEN}✓ Limpieza completada${NC}"
+# Limpiar build anterior
+echo -e "${BLUE}🧹 Limpiando builds anteriores...${NC}"
+pnpm --filter @savoro/frontend clean
 
 # Compilar assets con Vite (producción)
-
 echo -e "${BLUE}🔨 Compilando assets con Vite (modo producción)...${NC}"
-cd apps/frontend
-NODE_ENV=production pnpm run build
-cd ../..
+NODE_ENV=production pnpm --filter @savoro/frontend build
 
 # Verificar que la compilación fue exitosa
 if [ $? -ne 0 ]; then

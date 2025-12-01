@@ -28,7 +28,7 @@ SavoroApp/
 │       └── vite.config.js
 ├── docs/                 # Documentación técnica
 ├── scripts/              # Scripts de automatización
-├── Makefile              # Comandos Make
+├── package.json          # Comandos pnpm del monorepo
 └── README.md             # Documentación principal
 ```
 
@@ -54,11 +54,13 @@ SavoroApp/
 
 3. **Integración**:
    ```bash
-   # Terminal 1: Vite watch mode
-   cd apps/frontend && pnpm run build:watch
+   # Terminal 1: Frontend dev server
+   pnpm run dev:frontend
    
-   # Terminal 2: Django server
-   cd apps/backend && python manage.py runserver
+   # Terminal 2: Backend dev server
+   pnpm run dev:backend
+   
+   # O usar VS Code debug mode (F5) para iniciar ambos
    ```
 
 ## Arquitectura Modular
@@ -230,11 +232,8 @@ SavoroApp/
 │   ├── CONTRIBUTING.md     # Guía de contribución
 │   ├── COMMANDS.md         # Referencia de comandos
 │   └── JAVASCRIPT_PATTERNS.md # Patrones JavaScript
-├── scripts/                # Scripts de automatización
-│   ├── setup.sh            # Setup inicial
-│   ├── start-dev.sh        # Desarrollo
-│   └── build-prod.sh       # Build producción
-├── Makefile                # Comandos Make
+├── package.json            # Comandos pnpm del monorepo
+├── pnpm-workspace.yaml     # Configuración workspace
 └── README.md               # Documentación principal
 ```
 

@@ -1,0 +1,15 @@
+{
+  "name": "@savoro/backend",
+  "version": "1.0.0",
+  "description": "Django backend for Savoro restaurant management system (scripts wrapper for pipenv)",
+  "private": true,
+  "scripts": {
+    "dev": "pipenv run python manage.py runserver",
+    "migrate": "pipenv run python manage.py migrate",
+    "collectstatic": "pipenv run python manage.py collectstatic --noinput",
+    "superuser": "pipenv run python manage.py createsuperuser",
+    "test": "pipenv run python manage.py test",
+    "lint": "pipenv run pylint **/*.py || true",
+    "format": "pipenv run black . && pipenv run isort ."
+  }
+}
