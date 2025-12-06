@@ -1,100 +1,97 @@
-# Guía de Diseño y Estándares UI/UX
-**Stack:** Penpot (Self-hosted) + RSuite + React / React Native
+# Guía de Diseño y Entorno de Desarrollo
 
-Este documento define las reglas visuales, la paleta de colores y las pruebas de calidad (QA de Diseño) necesarias para asegurar que nuestros wireframes sean funcionales y estéticos.
+**Proyecto:** App Multiplataforma (Web & Mobile)
+**Stack:** Penpot (Self-hosted) + RSuite + React + FontAwesome
 
-## 1. 🔡 Tipografía: Roboto
+Este documento detalla cómo levantar el entorno de diseño local, los estándares visuales (Roboto + RSuite) y las pruebas de calidad UI/UX requeridas.
 
-Hemos seleccionado **Roboto** como nuestra fuente corporativa.
+## ⚡ 1. Puesta en Marcha (Docker)
 
-### ¿Por qué Roboto?
+Para trabajar en los wireframes, necesitamos levantar nuestra instancia local de Penpot.
 
-* **Nativa en Android:** Al ser la fuente por defecto de Android, nuestra App en React Native se sentirá 100% nativa y fluida sin peso extra en el bundle.
-* **Neutralidad:** Es una tipografía "Grotesca" geométrica que funciona perfecto con el estilo limpio de RSuite.
-* **Versatilidad:** Posee una gran variedad de pesos (Thin a Black) que nos permiten crear jerarquías visuales claras.
+### Requisitos
+* Docker y Docker Compose instalados.
+* Archivo `docker-compose.yaml` en la raíz de este directorio.
 
-### Implementación
+### Comandos de Inicio
+Abre tu terminal en la carpeta del proyecto y ejecuta:
 
-* **En Penpot:** Si no aparece en el selector, subir los archivos `.ttf` desde Google Fonts a la configuración del equipo.
-* **Pesos permitidos:**
-  * Regular (400) - Texto cuerpo.
-  * Medium (500) - Botones y Subtítulos.
-  * Bold (700) - Encabezados importantes.
+```bash
+# Levantar los contenedores en segundo plano
+docker compose up -d
+````
 
+*(Nota: Si usas una versión antigua de Docker, usa `docker-compose up -d`)*
 
-## 2. 🎨 Paleta de Colores (Sistema RSuite)
+### Acceso
 
-Para facilitar el desarrollo, utilizaremos una adaptación de la paleta por defecto de RSuite (Blue).
+Una vez finalizado el arranque:
 
-### Colores Primarios (Brand)
+1.  Abre tu navegador en: **http://localhost:9001**
+2.  Si es tu primera vez, crea una cuenta (no requiere verificación de email en entorno local).
 
-Usados para acciones principales, estados activos y destacados.
+## 2\. 🔡 Tipografía: Roboto
 
-* 🔵 **Primary Main:** `#3498FF` (RSuite Blue base)
-* 🔵 **Primary Hover:** `#2589F5` (Interacción)
-* 🔵 **Primary Dark:** `#0060AA` (Textos sobre fondos claros)
+Utilizaremos **Roboto** como fuente única para garantizar consistencia nativa en Android y neutralidad en Web.
 
-### Colores Neutros (Grays)
+* **Pesos Permitidos:**
+  * `Regular (400)`: Texto general, párrafos.
+  * `Medium (500)`: Botones, inputs, subtítulos.
+  * `Bold (700)`: Títulos principales (H1, H2).
+* **Configuración:** Si la fuente no aparece en Penpot, subir los archivos `.ttf` en *Team Settings \> Fonts*.
 
-Usados para texto, bordes y fondos.
+## 3\. 🎨 Paleta de Colores (RSuite System)
 
-* ⚫ **Text Primary:** `#272C36` (Casi negro - Títulos)
-* ⚫ **Text Secondary:** `#575757` (Cuerpo de texto)
-* ⚪ **Borders:** `#E5E5EA` (Divisiones sutiles)
-* ⚪ **Background:** `#F7F7FA` (Fondos de pantalla app/web)
+Usamos una adaptación del sistema "RSuite Blue" para facilitar la implementación en código.
 
-### Colores Semánticos (Feedback)
+| Uso         | Color          | Hex       | Notas                             |
+| :---------- | :------------- | :-------- | :-------------------------------- |
+| **Primary** | RSuite Blue    | `#3498FF` | Botones, Links, Estados Activos.  |
+| **Hover**   | Blue Hover     | `#2589F5` | Interacción al pasar el mouse.    |
+| **Dark**    | Blue Dark      | `#0060AA` | Textos sobre fondos claros.       |
+| **Text**    | Title Black    | `#272C36` | Encabezados (No usar negro puro). |
+| **Text**    | Body Gray      | `#575757` | Párrafos y etiquetas secundarias. |
+| **Bg**      | App Background | `#F7F7FA` | Fondo general de pantallas.       |
+| **Status**  | Error Red      | `#F44336` | Alertas críticas.                 |
 
-* 🟢 **Success:** `#58B15B` (Completado, Aprobado)
-* 🔴 **Error:** `#F44336` (Fallos, Borrar, Alertas críticas)
-* 🟠 **Warning:** `#FFB300` (Precaución, Pendiente)
+## 4\. 🧪 Pruebas Prácticas de UI/UX (QA Checklist)
 
-> **Regla de Diseño:** No uses negro puro (`#000000`) ni gris por defecto. Usa siempre los códigos hexadecimales de arriba para mantener la elegancia.
-s
-## 3. 🧪 Pruebas Prácticas de UI/UX (Design QA)
+Antes de aprobar un diseño, debe superar estas 4 pruebas:
 
-Antes de pasar un diseño a desarrollo (Handoff), el wireframe debe aprobar estas 4 pruebas rápidas:
+### ✅ A. La Prueba del Pulgar (Thumb Zone) - *Mobile*
 
-### A. La Prueba del Pulgar (The Thumb Zone) - *Solo Mobile*
-* **Objetivo:** Verificar que la app sea usable con una mano.
-* **Check:**
-    * ¿Los botones de acción principal (CTA) están en el tercio inferior de la pantalla?
-    * ¿El botón "Atrás" o el menú hamburguesa es accesible sin estirar demasiado el dedo?
+Verifica que las zonas de interacción principales sean alcanzables con una mano.
 
-### B. La Regla de los 44px (Touch Targets)
-* **Objetivo:** Evitar la frustración del usuario al tocar botones pequeños ("Fat finger error").
-* **Check:**
-    * Ningún elemento interactivo (botón o icono clicable) debe medir menos de **44x44px** (o tener un padding transparente que llegue a ese tamaño).
-    * En Penpot, asegúrate de que el contenedor del icono tenga ese tamaño mínimo.
+* **OK:** Botones de acción (Guardar, Siguiente) en el tercio inferior.
+* **OK:** Menús de navegación al alcance del pulgar.
 
-### C. Prueba de Contraste (Accesibilidad)
-* **Objetivo:** Asegurar que el texto se lea bien sobre el fondo.
-* **Herramienta:** Usa el plugin de Penpot "Contrast Checker" o una web externa.
-* **Check:**
-    * Texto normal: Ratio mínimo de **4.5:1**.
-    * Texto grande/negrita: Ratio mínimo de **3:1**.
-    * *Ejemplo:* No poner texto gris claro sobre fondo blanco.
+### ✅ B. La Regla de los 44px
 
-### D. The Squint Test (La prueba de entrecerrar los ojos)
-* **Objetivo:** Validar la Jerarquía Visual.
-* **Acción:** Aléjate de la pantalla y entrecierra los ojos hasta que todo se vea borroso.
-* **Check:**
-    * ¿Sigue destacando el botón más importante (Primary Button)?
-    * ¿Se entiende cuál es el título y cuál es el contenido?
-    * Si todo se ve como una mancha gris uniforme, falta contraste o jerarquía (tamaño/negrita).
+Evita el "error de dedo gordo".
 
+* Ningún elemento táctil debe medir menos de **44x44px** (incluyendo padding transparente). Si el icono es pequeño, agranda su contenedor en Penpot.
 
-## 4. 🧩 Sistema de Iconos: FontAwesome
+### ✅ C. Contraste y Legibilidad
 
-* **Librería:** FontAwesome 6 (Versión Free).
-* **Formato:** SVG Vectorial (a través de Penpot Libraries).
-* **Consistencia:**
-    * Todos los iconos deben tener el mismo estilo (Solid o Regular). No mezclar estilos en la misma pantalla.
-    * Si el texto es gris, el icono debe ser gris (o Primary si es interactivo).
+* Texto normal: Ratio mínimo **4.5:1** contra el fondo.
+* No usar gris claro sobre fondo blanco. Usa el plugin de contraste de Penpot si tienes dudas.
 
+### ✅ D. The Squint Test (Entrecerrar los ojos)
 
-## 5. 🚀 Flujo de Trabajo y Buenas Prácticas
+Aléjate y entrecierra los ojos hasta ver borroso:
 
-1.  **Mobile First:** Diseña primero la pantalla de React Native (360px ancho). Es más fácil escalar hacia Web que reducir desde Web.
-2.  **Layouts Flex:** Usa siempre las herramientas de Flexbox de Penpot (`Gap`, `Align`, `Justify`). No posiciones elementos "a ojo".
-3.  **Componentes:** Si un elemento se repite más de 2 veces (ej: una tarjeta de producto), conviértelo en Componente en Penpot.
+* ¿Aún se distingue cuál es el botón principal (Primary)?
+* ¿Se diferencia el título del contenido?
+* *Si todo se ve gris plano, falta jerarquía (negritas o tamaño).*
+
+## 5\. 🧩 Iconografía
+
+* **Librería:** **FontAwesome 6 (Free)**.
+* **Formato:** Usar solo SVGs desde las *Penpot Shared Libraries*.
+* **Estilo:** Mantener consistencia (no mezclar iconos rellenos con iconos de línea en la misma vista).
+
+## 6\. 🚀 Buenas Prácticas de Diseño
+
+1.  **Mobile First:** Diseña siempre el Artboard de **360x800** primero.
+2.  **Layouts Flex:** No agrupes formas. Usa la herramienta **Layout (Flex)** de Penpot para definir `Gap` y `Padding`. Esto genera el código CSS/React Native automáticamente.
+3.  **Nombres de Capas:** Nombra las capas como componentes de React (ej: `SubmitButton`, `HeaderContainer`) para agilizar el trabajo del desarrollador.
