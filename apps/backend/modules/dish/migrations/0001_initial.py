@@ -35,7 +35,6 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name': 'Plato',
                 'verbose_name_plural': 'Platos',
-                'db_table': 'savoro_dish',
                 'ordering': ['name'],
             },
         ),
