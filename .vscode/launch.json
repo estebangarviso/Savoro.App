@@ -11,7 +11,8 @@
       "justMyCode": true,
       "env": {
         "DJANGO_SETTINGS_MODULE": "config.settings.development"
-      }
+      },
+      "preLaunchTask": "Vite Dev Server"
     },
     {
       "type": "chrome",

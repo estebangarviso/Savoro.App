@@ -15,6 +15,11 @@
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "monosans.djlint"
   },
+  "python.analysis.typeCheckingMode": "standard",
+  "python.analysis.diagnosticSeverityOverrides": {
+    "reportUnknownMemberType": "none",
+    "reportMissingTypeStubs": "none"
+  },
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
