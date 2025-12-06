@@ -14,6 +14,7 @@
     "build:watch": "pnpm --filter @savoro/frontend build:watch",
     "clean": "pnpm --filter @savoro/frontend clean",
     "migrate": "pnpm --filter @savoro/backend migrate",
+    "loaddata": "pnpm --filter @savoro/backend loaddata",
     "superuser": "pnpm --filter @savoro/backend superuser",
     "lint": "pnpm --recursive run lint",
     "lint:fix": "pnpm --filter @savoro/frontend lint:fix && pnpm --filter @savoro/backend format",
