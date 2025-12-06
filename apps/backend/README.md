@@ -81,7 +81,7 @@ Accede a la aplicación en http://localhost:8000
 **Backend**: Django 4.2+ • Python 3.10+ • SQLite (dev) / PostgreSQL (prod)  
 **Frontend**: Materialize CSS 1.0.0 • Vanilla JavaScript (ES Modules) • CSS Variables  
 **Build Tools**: Vite • pnpm • pipenv  
-**DevTools**: pylint • black • isort • djlint • ESLint • Prettier
+**DevTools**: mypy * pylint • black • isort • djlint • ESLint • Prettier
 
 ## 🤝 Contribuir
 
