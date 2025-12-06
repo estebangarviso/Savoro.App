@@ -17,6 +17,7 @@ Todos los comandos se ejecutan desde la raíz del proyecto usando **pnpm**.
 | `pnpm run build:watch`  | Compilar assets en modo watch                              |
 | `pnpm run clean`        | Limpiar archivos generados de Vite                         |
 | `pnpm run migrate`      | Ejecutar migraciones de Django                             |
+| `pnpm run loaddata`     | Cargar datos iniciales desde fixtures                      |
 | `pnpm run superuser`    | Crear superusuario                                         |
 | `pnpm run test`         | Ejecutar tests de Django                                   |
 | `pnpm run lint`         | Verificar código (Python + JavaScript)                     |
@@ -58,12 +59,12 @@ Todos los comandos se ejecutan desde la raíz del proyecto usando **pnpm**.
 
 ### Datos y Contenido
 
-| Comando                                   | Descripción            |
-| ----------------------------------------- | ---------------------- |
-| `python apps/backend/manage.py seed_data` | Poblar datos iniciales |
-| `python apps/backend/manage.py flush`     | Limpiar base de datos  |
-| `python apps/backend/manage.py loaddata`  | Cargar fixtures        |
-| `python apps/backend/manage.py dumpdata`  | Exportar datos         |
+| Comando                                               | Descripción                           |
+| ----------------------------------------------------- | ------------------------------------- |
+| `python apps/backend/manage.py loaddata initial_data` | Cargar datos iniciales desde fixtures |
+| `python apps/backend/manage.py dumpdata <app.model>`  | Exportar datos a JSON                 |
+| `python apps/backend/manage.py flush`                 | Limpiar base de datos completamente   |
+| `python apps/backend/manage.py loaddata <fixture>`    | Cargar fixtures personalizados        |
 
 ### Archivos Estáticos
 
@@ -157,6 +158,80 @@ git flow release start <versión>
 git flow release finish <versión>
 ```
 
+## Gestión de Fixtures (Datos Iniciales)
+
+Django proporciona comandos nativos para exportar e importar datos en formato JSON. Esto es útil para compartir datos de ejemplo entre entornos o crear datos iniciales.
+
+### Cargar Fixtures
+
+```bash
+# Cargar fixture de datos iniciales (categorías, tags, platos)
+python apps/backend/manage.py loaddata initial_data
+
+# Cargar múltiples fixtures
+python apps/backend/manage.py loaddata categories dishes tags
+
+# Cargar desde ruta específica
+python apps/backend/manage.py loaddata fixtures/custom_data.json
+```
+
+### Exportar Datos (dumpdata)
+
+```bash
+# Exportar todos los datos de una app
+python apps/backend/manage.py dumpdata dish --indent 2 > fixtures/dishes.json
+
+# Exportar modelo específico
+python apps/backend/manage.py dumpdata category.category --indent 2 > fixtures/categories.json
+
+# Exportar múltiples apps
+python apps/backend/manage.py dumpdata category dish food_tag --indent 2 > fixtures/restaurant_data.json
+
+# Exportar excluyendo apps (útil para evitar auth, sessions, etc.)
+python apps/backend/manage.py dumpdata --exclude auth --exclude contenttypes --indent 2 > fixtures/data.json
+
+# Exportar usando natural keys (usa identificadores naturales en lugar de PKs)
+python apps/backend/manage.py dumpdata --natural-foreign --natural-primary --indent 2 > fixtures/natural_data.json
+```
+
+### Limpiar y Repoblar Base de Datos
+
+```bash
+# Eliminar todos los datos pero mantener estructura
+python apps/backend/manage.py flush --noinput
+
+# Limpiar y cargar datos iniciales
+python apps/backend/manage.py flush --noinput && python apps/backend/manage.py loaddata initial_data
+
+# Reset completo (borrar DB, recrear, migrar y poblar)
+rm apps/backend/db.sqlite3
+python apps/backend/manage.py migrate
+python apps/backend/manage.py loaddata initial_data
+```
+
+### Estructura de Fixtures
+
+Los fixtures están en formato JSON con la siguiente estructura:
+
+```json
+[
+  {
+    "model": "app.modelname",
+    "pk": 1,
+    "fields": {
+      "field1": "value",
+      "foreign_key_field": 2,
+      "many_to_many_field": [1, 2, 3]
+    }
+  }
+]
+```
+
+**Manejo de relaciones:**
+- **ForeignKey**: Usa el PK del objeto relacionado
+- **ManyToMany**: Lista de PKs de objetos relacionados
+- Django respeta el orden y resuelve dependencias automáticamente
+
 ## Atajos Útiles
 
 ### Desarrollo Rápido
@@ -169,7 +244,10 @@ pipenv shell && python apps/backend/manage.py runserver
 python apps/backend/manage.py makemigrations && python apps/backend/manage.py migrate
 
 # Limpiar y repoblar base de datos
-python apps/backend/manage.py flush --noinput && python apps/backend/manage.py seed_data
+python apps/backend/manage.py flush --noinput && python apps/backend/manage.py loaddata initial_data
+
+# Exportar datos actuales a fixture
+python apps/backend/manage.py dumpdata category dish food_tag --indent 2 > fixtures/my_data.json
 ```
 
 ### Testing
