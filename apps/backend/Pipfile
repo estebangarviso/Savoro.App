@@ -17,6 +17,7 @@ djlint = "==1.36.4"
 django-upgrade = "==1.29.1"
 black = "==25.11.0"
 isort = "==6.1.0"
+mypy = "==1.19.0"
 
 [requires]
 python_version = ">=3,<=3.13"
