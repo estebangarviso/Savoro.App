@@ -4,9 +4,9 @@
     {
       "label": "Vite Dev Server",
       "type": "shell",
-      "command": "pnpm run dev",
+      "command": "pnpm run dev:frontend",
       "options": {
-        "cwd": "${workspaceFolder}/apps/frontend"
+        "cwd": "${workspaceFolder}"
       },
       "isBackground": true,
       "problemMatcher": {
@@ -28,7 +28,10 @@
     {
       "label": "Django Dev Server",
       "type": "shell",
-      "command": "pipenv run python apps/backend/manage.py runserver",
+      "command": "pnpm run dev:backend",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
       "isBackground": true,
       "problemMatcher": {
         "owner": "django",

@@ -53,8 +53,11 @@ pipenv --version
 # Configuración completa del proyecto
 pnpm run setup
 
+# Cargar datos iniciales (opcional)
+pnpm run loaddata
+
 # Crear superusuario
-pipenv run python apps/backend/manage.py createsuperuser
+pnpm run superuser
 
 # Iniciar desarrollo
 pnpm run dev
@@ -103,8 +106,9 @@ python apps/backend/manage.py createsuperuser
 # Password: (tu contraseña segura)
 
 # Poblar datos de prueba (opcional)
-# Crea categorías, etiquetas y platos de ejemplo
-python apps/backend/manage.py seed_data  # Si existe el comando
+# Carga fixtures con categorías, etiquetas y platos de ejemplo
+pnpm run loaddata
+# O manualmente: python apps/backend/manage.py loaddata initial_data
 ```
 
 **Configuración de entornos:**

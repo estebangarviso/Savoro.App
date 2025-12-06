@@ -1,0 +1,99 @@
+version: "3.8"
+
+networks:
+  penpot:
+
+volumes:
+  penpot_postgres_v15:
+  penpot_assets:
+
+services:
+  # ---------------------------------------------------------
+  # Penpot Frontend
+  # ---------------------------------------------------------
+  penpot-frontend:
+    image: "penpotapp/frontend:latest"
+    restart: always
+    ports:
+      - "9001:8080"
+    volumes:
+      - penpot_assets:/opt/data/assets
+    depends_on:
+      - penpot-backend
+      - penpot-exporter
+    networks:
+      - penpot
+    environment:
+      - PENPOT_FLAGS=disable-secure-session-cookies disable-email-verification disable-registration-with-activation
+      # If deploying to a domain, change http://localhost:9001 to your actual URL
+      - PENPOT_PUBLIC_URI=http://localhost:9001
+
+  # ---------------------------------------------------------
+  # Penpot Backend
+  # ---------------------------------------------------------
+  penpot-backend:
+    image: "penpotapp/backend:latest"
+    restart: always
+    volumes:
+      - penpot_assets:/opt/data/assets
+    depends_on:
+      penpot-postgres:
+        condition: service_healthy
+      penpot-redis:
+        condition: service_started
+    networks:
+      - penpot
+    environment:
+      - PENPOT_FLAGS=disable-secure-session-cookies disable-email-verification disable-registration-with-activation
+      - PENPOT_PUBLIC_URI=http://localhost:9001
+      - PENPOT_DATABASE_URI=postgresql://penpot-postgres/penpot
+      - PENPOT_DATABASE_USERNAME=penpot
+      - PENPOT_DATABASE_PASSWORD=penpot
+      - PENPOT_REDIS_URI=redis://penpot-redis/0
+      - PENPOT_ASSETS_STORAGE_BACKEND=assets-fs
+      - PENPOT_STORAGE_ASSETS_FS_DIRECTORY=/opt/data/assets
+      - PENPOT_TELEMETRY_ENABLED=false
+
+  # ---------------------------------------------------------
+  # Penpot Exporter (for exporting SVG/PDF/PNG)
+  # ---------------------------------------------------------
+  penpot-exporter:
+    image: "penpotapp/exporter:latest"
+    restart: always
+    networks:
+      - penpot
+    environment:
+      - PENPOT_PUBLIC_URI=http://localhost:9001
+      - PENPOT_REDIS_URI=redis://penpot-redis/0
+
+  # ---------------------------------------------------------
+  # Database (PostgreSQL)
+  # ---------------------------------------------------------
+  penpot-postgres:
+    image: "postgres:15"
+    restart: always
+    stop_signal: SIGINT
+    volumes:
+      - penpot_postgres_v15:/var/lib/postgresql/data
+    networks:
+      - penpot
+    environment:
+      - POSTGRES_INITDB_ARGS=--data-checksums
+      - POSTGRES_DB=penpot
+      - POSTGRES_USER=penpot
+      - POSTGRES_PASSWORD=penpot
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U penpot -d penpot"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # ---------------------------------------------------------
+  # Cache & Queue (Redis)
+  # ---------------------------------------------------------
+  penpot-redis:
+    image: "redis:7"
+    restart: always
+    networks:
+      - penpot

@@ -106,6 +106,10 @@ repository.delete(id)  # Sets deleted=True, not physical delete
 pnpm run setup        # Installs deps, runs migrations, builds frontend
 pnpm run superuser    # Create admin user
 
+# Load initial data (optional)
+pnpm run loaddata  # From workspace root
+# Or: cd apps/backend && pipenv run python manage.py loaddata initial_data
+
 # Daily development (2 terminals)
 pnpm run dev:frontend # Terminal 1: Vite HMR on :5173
 pnpm run dev:backend  # Terminal 2: Django on :8000
@@ -165,6 +169,26 @@ pipenv run python manage.py makemigrations
 # Apply migrations
 pnpm run migrate  # From workspace root
 ```
+
+### Working with Fixtures (Initial Data)
+
+```bash
+# Load initial data (categories, tags, dishes)
+python manage.py loaddata initial_data
+
+# Export current data to fixture
+python manage.py dumpdata category dish food_tag --indent 2 > fixtures/my_data.json
+
+# Reset database and reload
+python manage.py flush --noinput
+python manage.py loaddata initial_data
+```
+
+Django fixtures use JSON format with automatic relation resolution:
+
+- **ForeignKey**: Reference by PK (`"category": 1`)
+- **ManyToMany**: List of PKs (`"tags": [1, 2, 3]`)
+- Files in `apps/backend/fixtures/*.json` are auto-discovered
 
 ### Building for Production
 

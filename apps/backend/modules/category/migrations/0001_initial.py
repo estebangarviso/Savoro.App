@@ -25,7 +25,6 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name': 'Categoría',
                 'verbose_name_plural': 'Categorías',
-                'db_table': 'savoro_category',
                 'ordering': ['name'],
             },
         ),

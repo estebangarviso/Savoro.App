@@ -1,0 +1,827 @@
+[
+  {
+    "model": "food_tag.foodtag",
+    "pk": 1,
+    "fields": {
+      "name": "Vegano",
+      "deleted": false,
+      "is_active": true,
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "food_tag.foodtag",
+    "pk": 2,
+    "fields": {
+      "name": "Vegetariano",
+      "deleted": false,
+      "is_active": true,
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "food_tag.foodtag",
+    "pk": 3,
+    "fields": {
+      "name": "Sin Gluten",
+      "deleted": false,
+      "is_active": true,
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "food_tag.foodtag",
+    "pk": 4,
+    "fields": {
+      "name": "Sin Lactosa",
+      "deleted": false,
+      "is_active": true,
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "food_tag.foodtag",
+    "pk": 5,
+    "fields": {
+      "name": "Picante",
+      "deleted": false,
+      "is_active": true,
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "food_tag.foodtag",
+    "pk": 6,
+    "fields": {
+      "name": "Mariscos",
+      "deleted": false,
+      "is_active": true,
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "food_tag.foodtag",
+    "pk": 7,
+    "fields": {
+      "name": "Maní",
+      "deleted": false,
+      "is_active": true,
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "food_tag.foodtag",
+    "pk": 8,
+    "fields": {
+      "name": "Frutos Secos",
+      "deleted": false,
+      "is_active": true,
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "food_tag.foodtag",
+    "pk": 9,
+    "fields": {
+      "name": "Huevo",
+      "deleted": false,
+      "is_active": true,
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "food_tag.foodtag",
+    "pk": 10,
+    "fields": {
+      "name": "Soya",
+      "deleted": false,
+      "is_active": true,
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "food_tag.foodtag",
+    "pk": 11,
+    "fields": {
+      "name": "Orgánico",
+      "deleted": false,
+      "is_active": true,
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "food_tag.foodtag",
+    "pk": 12,
+    "fields": {
+      "name": "Bajo en Calorías",
+      "deleted": false,
+      "is_active": true,
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "category.category",
+    "pk": 1,
+    "fields": {
+      "name": "Entradas",
+      "deleted": false,
+      "is_active": true,
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "category.category",
+    "pk": 2,
+    "fields": {
+      "name": "Ensaladas",
+      "deleted": false,
+      "is_active": true,
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "category.category",
+    "pk": 3,
+    "fields": {
+      "name": "Sopas",
+      "deleted": false,
+      "is_active": true,
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "category.category",
+    "pk": 4,
+    "fields": {
+      "name": "Pastas",
+      "deleted": false,
+      "is_active": true,
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "category.category",
+    "pk": 5,
+    "fields": {
+      "name": "Carnes",
+      "deleted": false,
+      "is_active": true,
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "category.category",
+    "pk": 6,
+    "fields": {
+      "name": "Pescados y Mariscos",
+      "deleted": false,
+      "is_active": true,
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "category.category",
+    "pk": 7,
+    "fields": {
+      "name": "Pizzas",
+      "deleted": false,
+      "is_active": true,
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "category.category",
+    "pk": 8,
+    "fields": {
+      "name": "Postres",
+      "deleted": false,
+      "is_active": true,
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "category.category",
+    "pk": 9,
+    "fields": {
+      "name": "Bebidas",
+      "deleted": false,
+      "is_active": true,
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "category.category",
+    "pk": 10,
+    "fields": {
+      "name": "Vinos",
+      "deleted": false,
+      "is_active": true,
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "dish.dish",
+    "pk": 1,
+    "fields": {
+      "name": "Empanadas de Carne",
+      "description": "Deliciosas empanadas rellenas de carne molida, cebolla y especias tradicionales",
+      "price": "4500.00",
+      "category": 1,
+      "deleted": false,
+      "is_active": true,
+      "tags": [],
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "dish.dish",
+    "pk": 2,
+    "fields": {
+      "name": "Tabla de Quesos",
+      "description": "Selección de quesos artesanales con mermelada de higos y frutos secos",
+      "price": "8900.00",
+      "category": 1,
+      "deleted": false,
+      "is_active": true,
+      "tags": [
+        2,
+        8
+      ],
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "dish.dish",
+    "pk": 3,
+    "fields": {
+      "name": "Ceviche de Pescado",
+      "description": "Pescado fresco marinado en limón con cebolla morada, cilantro y ají",
+      "price": "9500.00",
+      "category": 1,
+      "deleted": false,
+      "is_active": true,
+      "tags": [
+        3,
+        5
+      ],
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "dish.dish",
+    "pk": 4,
+    "fields": {
+      "name": "Bruschetta Caprese",
+      "description": "Pan tostado con tomate, mozzarella fresca, albahaca y aceite de oliva",
+      "price": "5200.00",
+      "category": 1,
+      "deleted": false,
+      "is_active": true,
+      "tags": [
+        2
+      ],
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "dish.dish",
+    "pk": 5,
+    "fields": {
+      "name": "Ensalada César",
+      "description": "Lechuga romana, crutones, parmesano y aderezo César casero",
+      "price": "6800.00",
+      "category": 2,
+      "deleted": false,
+      "is_active": true,
+      "tags": [
+        9
+      ],
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "dish.dish",
+    "pk": 6,
+    "fields": {
+      "name": "Ensalada Mediterránea",
+      "description": "Mix de lechugas, tomate, pepino, aceitunas, queso feta y vinagreta",
+      "price": "7200.00",
+      "category": 2,
+      "deleted": false,
+      "is_active": true,
+      "tags": [
+        2,
+        3
+      ],
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "dish.dish",
+    "pk": 7,
+    "fields": {
+      "name": "Ensalada Vegana Bowl",
+      "description": "Quinoa, garbanzos, aguacate, tomates cherry, espinaca y tahini",
+      "price": "7900.00",
+      "category": 2,
+      "deleted": false,
+      "is_active": true,
+      "tags": [
+        1,
+        3,
+        11
+      ],
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "dish.dish",
+    "pk": 8,
+    "fields": {
+      "name": "Cazuela de Vacuno",
+      "description": "Tradicional sopa chilena con carne de vacuno, zapallo, choclo y papas",
+      "price": "8500.00",
+      "category": 3,
+      "deleted": false,
+      "is_active": true,
+      "tags": [],
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "dish.dish",
+    "pk": 9,
+    "fields": {
+      "name": "Crema de Zapallo",
+      "description": "Suave crema de zapallo con jengibre y crema de leche",
+      "price": "5800.00",
+      "category": 3,
+      "deleted": false,
+      "is_active": true,
+      "tags": [
+        2
+      ],
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "dish.dish",
+    "pk": 10,
+    "fields": {
+      "name": "Fetuccini Alfredo",
+      "description": "Pasta fresca con salsa cremosa de parmesano y mantequilla",
+      "price": "9800.00",
+      "category": 4,
+      "deleted": false,
+      "is_active": true,
+      "tags": [
+        2
+      ],
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "dish.dish",
+    "pk": 11,
+    "fields": {
+      "name": "Espagueti Boloñesa",
+      "description": "Pasta con salsa de carne molida, tomate y hierbas italianas",
+      "price": "10500.00",
+      "category": 4,
+      "deleted": false,
+      "is_active": true,
+      "tags": [],
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "dish.dish",
+    "pk": 12,
+    "fields": {
+      "name": "Ravioles de Espinaca y Ricotta",
+      "description": "Ravioles rellenos de espinaca y ricotta con salsa de tomate albahaca",
+      "price": "11200.00",
+      "category": 4,
+      "deleted": false,
+      "is_active": true,
+      "tags": [
+        2
+      ],
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "dish.dish",
+    "pk": 13,
+    "fields": {
+      "name": "Pasta Arrabiata",
+      "description": "Penne con salsa de tomate picante, ajo y perejil",
+      "price": "9200.00",
+      "category": 4,
+      "deleted": false,
+      "is_active": true,
+      "tags": [
+        2,
+        1,
+        5
+      ],
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "dish.dish",
+    "pk": 14,
+    "fields": {
+      "name": "Bife de Chorizo",
+      "description": "Jugoso bife de chorizo de 300g con papas rústicas y vegetales",
+      "price": "15900.00",
+      "category": 5,
+      "deleted": false,
+      "is_active": true,
+      "tags": [
+        3
+      ],
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "dish.dish",
+    "pk": 15,
+    "fields": {
+      "name": "Lomo a la Pimienta",
+      "description": "Medallones de lomo con salsa de pimienta verde y puré de papas",
+      "price": "17500.00",
+      "category": 5,
+      "deleted": false,
+      "is_active": true,
+      "tags": [],
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "dish.dish",
+    "pk": 16,
+    "fields": {
+      "name": "Costillar de Cerdo BBQ",
+      "description": "Costillar de cerdo glaseado con salsa BBQ casera y ensalada coleslaw",
+      "price": "14800.00",
+      "category": 5,
+      "deleted": false,
+      "is_active": true,
+      "tags": [],
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "dish.dish",
+    "pk": 17,
+    "fields": {
+      "name": "Pollo al Limón",
+      "description": "Pechuga de pollo con salsa de limón, alcaparras y arroz pilaf",
+      "price": "11900.00",
+      "category": 5,
+      "deleted": false,
+      "is_active": true,
+      "tags": [
+        3,
+        12
+      ],
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "dish.dish",
+    "pk": 18,
+    "fields": {
+      "name": "Salmón a la Plancha",
+      "description": "Filete de salmón con espárragos y salsa de eneldo",
+      "price": "16500.00",
+      "category": 6,
+      "deleted": false,
+      "is_active": true,
+      "tags": [
+        3,
+        12
+      ],
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "dish.dish",
+    "pk": 19,
+    "fields": {
+      "name": "Paella de Mariscos",
+      "description": "Arroz con camarones, calamares, mejillones y azafrán",
+      "price": "18900.00",
+      "category": 6,
+      "deleted": false,
+      "is_active": true,
+      "tags": [
+        6,
+        3
+      ],
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "dish.dish",
+    "pk": 20,
+    "fields": {
+      "name": "Corvina con Alcaparras",
+      "description": "Filete de corvina con salsa de alcaparras, limón y papas al vapor",
+      "price": "15200.00",
+      "category": 6,
+      "deleted": false,
+      "is_active": true,
+      "tags": [
+        3
+      ],
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "dish.dish",
+    "pk": 21,
+    "fields": {
+      "name": "Pizza Margherita",
+      "description": "Salsa de tomate, mozzarella fresca, albahaca y aceite de oliva",
+      "price": "9500.00",
+      "category": 7,
+      "deleted": false,
+      "is_active": true,
+      "tags": [
+        2
+      ],
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "dish.dish",
+    "pk": 22,
+    "fields": {
+      "name": "Pizza Pepperoni",
+      "description": "Salsa de tomate, mozzarella y abundante pepperoni",
+      "price": "10800.00",
+      "category": 7,
+      "deleted": false,
+      "is_active": true,
+      "tags": [],
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "dish.dish",
+    "pk": 23,
+    "fields": {
+      "name": "Pizza Cuatro Quesos",
+      "description": "Mozzarella, gorgonzola, parmesano y provolone",
+      "price": "11500.00",
+      "category": 7,
+      "deleted": false,
+      "is_active": true,
+      "tags": [
+        2
+      ],
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "dish.dish",
+    "pk": 24,
+    "fields": {
+      "name": "Pizza Vegetariana",
+      "description": "Champiñones, pimientos, cebolla, aceitunas y tomate",
+      "price": "10200.00",
+      "category": 7,
+      "deleted": false,
+      "is_active": true,
+      "tags": [
+        2
+      ],
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "dish.dish",
+    "pk": 25,
+    "fields": {
+      "name": "Tiramisú",
+      "description": "Clásico postre italiano con café, mascarpone y cacao",
+      "price": "5500.00",
+      "category": 8,
+      "deleted": false,
+      "is_active": true,
+      "tags": [
+        2,
+        9
+      ],
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "dish.dish",
+    "pk": 26,
+    "fields": {
+      "name": "Cheesecake de Frutos Rojos",
+      "description": "Tarta de queso con base de galleta y coulis de frutos rojos",
+      "price": "5800.00",
+      "category": 8,
+      "deleted": false,
+      "is_active": true,
+      "tags": [
+        2
+      ],
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "dish.dish",
+    "pk": 27,
+    "fields": {
+      "name": "Brownie con Helado",
+      "description": "Brownie de chocolate tibio con helado de vainilla y salsa de chocolate",
+      "price": "5200.00",
+      "category": 8,
+      "deleted": false,
+      "is_active": true,
+      "tags": [
+        2,
+        8
+      ],
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "dish.dish",
+    "pk": 28,
+    "fields": {
+      "name": "Flan Casero",
+      "description": "Flan tradicional con caramelo casero y crema chantilly",
+      "price": "4200.00",
+      "category": 8,
+      "deleted": false,
+      "is_active": true,
+      "tags": [
+        2,
+        3
+      ],
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "dish.dish",
+    "pk": 29,
+    "fields": {
+      "name": "Limonada Natural",
+      "description": "Limonada fresca con menta y hielo",
+      "price": "2500.00",
+      "category": 9,
+      "deleted": false,
+      "is_active": true,
+      "tags": [
+        1,
+        3
+      ],
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "dish.dish",
+    "pk": 30,
+    "fields": {
+      "name": "Jugo Natural del Día",
+      "description": "Jugo de frutas frescas de temporada",
+      "price": "2800.00",
+      "category": 9,
+      "deleted": false,
+      "is_active": true,
+      "tags": [
+        1,
+        3
+      ],
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  },
+  {
+    "model": "dish.dish",
+    "pk": 31,
+    "fields": {
+      "name": "Café Espresso",
+      "description": "Café espresso italiano",
+      "price": "1800.00",
+      "category": 9,
+      "deleted": false,
+      "is_active": true,
+      "tags": [
+        1
+      ],
+      "created_at": "2025-12-01T21:39:37.420534+00:00",
+      "updated_at": "2025-12-01T21:39:37.420534+00:00",
+      "delete_at": null
+    }
+  }
+]

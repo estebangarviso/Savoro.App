@@ -105,6 +105,9 @@
 **Herramientas de linting:**
 
 ```bash
+# Verificar tipos de Python
+pipenv run mypy .
+
 # Linter principal (configurado para Django)
 pipenv run pylint modules/ core/
 

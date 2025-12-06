@@ -1,6 +1,5 @@
 {
   "pylint.args": [
-    "--rcfile=${workspaceFolder}/.pylintrc",
     "--load-plugins=pylint_django",
     "--django-settings-module=config.settings"
   ],
@@ -14,6 +13,11 @@
   "[django-html]": {
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "monosans.djlint"
+  },
+  "python.analysis.typeCheckingMode": "standard",
+  "python.analysis.diagnosticSeverityOverrides": {
+    "reportUnknownMemberType": "none",
+    "reportMissingTypeStubs": "none"
   },
   "[javascript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
