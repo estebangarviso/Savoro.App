@@ -1,6 +1,5 @@
 {
   "pylint.args": [
-    "--rcfile=${workspaceFolder}/.pylintrc",
     "--load-plugins=pylint_django",
     "--django-settings-module=config.settings"
   ],
