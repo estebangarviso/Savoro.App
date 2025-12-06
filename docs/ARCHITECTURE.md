@@ -796,6 +796,7 @@ Diseño responsive desde móvil hacia escritorio.
 - **pipenv**: Gestión de entornos virtuales
 - **pnpm**: Gestor de paquetes Node.js
 - **Vite**: Build tool y dev server
+- **mypy**: Comprobación de tipos estática
 - **pylint**: Linter para Python
 - **django-stubs**: Type hints para Django
 - **djlint**: Linter para templates Django

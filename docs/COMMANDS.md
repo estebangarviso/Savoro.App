@@ -79,6 +79,7 @@ Todos los comandos se ejecutan desde la raíz del proyecto usando **pnpm**.
 | ------------------------------------------ | ------------------------- |
 | `python apps/backend/manage.py test`       | Ejecutar todos los tests  |
 | `python apps/backend/manage.py test <app>` | Ejecutar tests de una app |
+| `mypy .`                                   | Verificar tipos de Python |
 | `pylint **/*.py`                           | Análisis estático         |
 
 ### Utilidades
@@ -271,5 +272,5 @@ cd apps/backend && black . && isort .
 
 # Verificar todo
 cd apps/frontend && pnpm run lint
-cd apps/backend && pylint **/*.py
+cd apps/backend && pylint **/*.py && mypy .
 ```

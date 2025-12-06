@@ -56,7 +56,7 @@
 
 - **Estándares de Código Python** expandidos:
   - Herramientas de linting con comandos exactos
-  - pylint, black, isort
+  - mypy, pylint, black, isort
   
 - **Estándares JavaScript** mejorados:
   - Reglas específicas (NO contaminar window)
@@ -75,7 +75,7 @@
   - Tests de frontend con Jest/Vitest (ejemplo)
 
 - **Checklists actualizados**:
-  - Pre-commit más completo (black, isort, pylint, migraciones)
+  - Pre-commit más completo (black, isort, mypy, pylint, migraciones)
   - Pull Request más detallado (code review, migraciones)
 
 ### 📝 README.md - Características Actualizadas
