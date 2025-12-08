@@ -10,16 +10,18 @@ Este documento detalla cómo levantar el entorno de diseño local, los estándar
 Para trabajar en los wireframes, necesitamos levantar nuestra instancia local de Penpot.
 
 ### Requisitos
+
 * Docker y Docker Compose instalados.
 * Archivo `docker-compose.yaml` en la raíz de este directorio.
 
 ### Comandos de Inicio
+
 Abre tu terminal en la carpeta del proyecto y ejecuta:
 
 ```bash
 # Levantar los contenedores en segundo plano
 docker compose up -d
-````
+```
 
 *(Nota: Si usas una versión antigua de Docker, usa `docker-compose up -d`)*
 
@@ -27,10 +29,10 @@ docker compose up -d
 
 Una vez finalizado el arranque:
 
-1.  Abre tu navegador en: **http://localhost:9001**
-2.  Si es tu primera vez, crea una cuenta (no requiere verificación de email en entorno local).
+1. Abre tu navegador en: **<http://localhost:9001>**
+2. Si es tu primera vez, crea una cuenta (no requiere verificación de email en entorno local).
 
-## 2\. 🔡 Tipografía: Roboto
+## 2. 🔡 Tipografía: Roboto
 
 Utilizaremos **Roboto** como fuente única para garantizar consistencia nativa en Android y neutralidad en Web.
 
@@ -40,7 +42,7 @@ Utilizaremos **Roboto** como fuente única para garantizar consistencia nativa e
   * `Bold (700)`: Títulos principales (H1, H2).
 * **Configuración:** Si la fuente no aparece en Penpot, subir los archivos `.ttf` en *Team Settings \> Fonts*.
 
-## 3\. 🎨 Paleta de Colores (RSuite System)
+## 3. 🎨 Paleta de Colores (RSuite System)
 
 Usamos una adaptación del sistema "RSuite Blue" para facilitar la implementación en código.
 
@@ -54,7 +56,7 @@ Usamos una adaptación del sistema "RSuite Blue" para facilitar la implementaci�
 | **Bg**      | App Background | `#F7F7FA` | Fondo general de pantallas.       |
 | **Status**  | Error Red      | `#F44336` | Alertas críticas.                 |
 
-## 4\. 🧪 Pruebas Prácticas de UI/UX (QA Checklist)
+## 4. 🧪 Pruebas Prácticas de UI/UX (QA Checklist)
 
 Antes de aprobar un diseño, debe superar estas 4 pruebas:
 
@@ -84,14 +86,14 @@ Aléjate y entrecierra los ojos hasta ver borroso:
 * ¿Se diferencia el título del contenido?
 * *Si todo se ve gris plano, falta jerarquía (negritas o tamaño).*
 
-## 5\. 🧩 Iconografía
+## 5. 🧩 Iconografía
 
 * **Librería:** **FontAwesome 6 (Free)**.
 * **Formato:** Usar solo SVGs desde las *Penpot Shared Libraries*.
 * **Estilo:** Mantener consistencia (no mezclar iconos rellenos con iconos de línea en la misma vista).
 
-## 6\. 🚀 Buenas Prácticas de Diseño
+## 6. 🚀 Buenas Prácticas de Diseño
 
-1.  **Mobile First:** Diseña siempre el Artboard de **360x800** primero.
-2.  **Layouts Flex:** No agrupes formas. Usa la herramienta **Layout (Flex)** de Penpot para definir `Gap` y `Padding`. Esto genera el código CSS/React Native automáticamente.
-3.  **Nombres de Capas:** Nombra las capas como componentes de React (ej: `SubmitButton`, `HeaderContainer`) para agilizar el trabajo del desarrollador.
+1. **Mobile First:** Diseña siempre el Artboard de **360x800** primero.
+2. **Layouts Flex:** No agrupes formas. Usa la herramienta **Layout (Flex)** de Penpot para definir `Gap` y `Padding`. Esto genera el código CSS/React Native automáticamente.
+3. **Nombres de Capas:** Nombra las capas como componentes de React (ej: `SubmitButton`, `HeaderContainer`) para agilizar el trabajo del desarrollador.
